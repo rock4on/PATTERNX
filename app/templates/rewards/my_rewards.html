@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block title %}My Rewards{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12 mb-4">
+        <div class="d-flex justify-content-between align-items-center">
+            <h2><i class="fas fa-award me-2"></i> My Rewards</h2>
+            <div class="bg-light rounded p-3">
+                <span class="fw-bold">Available Points:</span>
+                <span class="ms-2 text-primary fw-bold">{{ points_summary.available_points }}</span>
+            </div>
+        </div>
+        <p class="lead">Track the status of your redeemed rewards.</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">Redemption History</h5>
+            </div>
+            <div class="card-body">
+                {% if redemptions %}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Reward</th>
+                                    <th>Points Spent</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for redemption in redemptions %}
+                                    <tr>
+                                        <td>{{ redemption.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                                        <td>{{ redemption.reward.name }}</td>
+                                        <td>{{ redemption.points_spent }}</td>
+                                        <td>
+                                            {% if redemption.status == 'pending' %}
+                                                <span class="badge bg-warning text-dark">Pending</span>
+                                            {% elif redemption.status == 'completed' %}
+                                                <span class="badge bg-success">Completed</span>
+                                            {% elif redemption.status == 'cancelled' %}
+                                                <span class="badge bg-danger">Cancelled</span>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div class="text-center py-5">
+                        <i class="fas fa-gift fa-4x text-muted mb-3"></i>
+                        <h4>No rewards redeemed yet</h4>
+                        <p class="text-muted">You haven't redeemed any rewards yet.</p>
+                        <a href="{{ url_for('rewards.index') }}" class="btn btn-primary mt-3">
+                            <i class="fas fa-gift me-2"></i> Browse Rewards
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if redemptions %}
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <div class="card shadow-sm">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0">Status Information</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="p-3 rounded bg-light mb-3 mb-md-0">
+                                <h6><span class="badge bg-warning text-dark me-2">Pending</span> What it means:</h6>
+                                <p class="mb-0 small">Your redemption is being processed. Please allow some time for our team to fulfill your request.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="p-3 rounded bg-light mb-3 mb-md-0">
+                                <h6><span class="badge bg-success me-2">Completed</span> What it means:</h6>
+                                <p class="mb-0 small">Your reward has been delivered or is ready for pickup. Check your email for further instructions.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="p-3 rounded bg-light">
+                                <h6><span class="badge bg-danger me-2">Cancelled</span> What it means:</h6>
+                                <p class="mb-0 small">The redemption was cancelled. This could be due to unavailability or issues with the redemption.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}
+{% endblock %}

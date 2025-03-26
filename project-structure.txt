@@ -1,0 +1,71 @@
+survey_platform/
+│
+├── .env.example                # Example environment variables
+├── config.py                   # Configuration settings
+├── requirements.txt            # Project dependencies
+├── run.py                      # Application entry point
+│
+├── app/
+│   ├── __init__.py             # Flask application factory
+│   ├── extensions.py           # Flask extensions
+│   ├── models/                 # Database models
+│   │   ├── __init__.py
+│   │   ├── user.py             # User model
+│   │   ├── survey.py           # Survey model
+│   │   ├── completion.py       # Survey completion model
+│   │   ├── reward.py           # Rewards model
+│   │   └── point.py            # Points model
+│   │
+│   ├── views/                  # Route handlers
+│   │   ├── __init__.py
+│   │   ├── auth.py             # Authentication routes
+│   │   ├── admin.py            # Admin routes
+│   │   ├── main.py             # Main routes
+│   │   ├── surveys.py          # Survey routes
+│   │   └── rewards.py          # Rewards routes
+│   │
+│   ├── services/               # Business logic
+│   │   ├── __init__.py
+│   │   ├── limesurvey.py       # LimeSurvey API integration
+│   │   ├── survey_service.py   # Survey business logic
+│   │   ├── user_service.py     # User business logic
+│   │   └── points_service.py   # Points business logic
+│   │
+│   ├── forms/                  # Flask-WTF forms
+│   │   ├── __init__.py
+│   │   ├── auth.py             # Authentication forms
+│   │   ├── admin.py            # Admin forms
+│   │   └── user.py             # User forms
+│   │
+│   ├── templates/              # Jinja2 templates
+│   │   ├── base.html           # Base template
+│   │   ├── auth/               # Authentication templates
+│   │   │   ├── login.html      
+│   │   │   └── register.html
+│   │   ├── admin/              # Admin templates
+│   │   │   ├── dashboard.html
+│   │   │   ├── users.html
+│   │   │   └── rewards.html
+│   │   ├── main/               # Main templates
+│   │   │   └── index.html
+│   │   ├── surveys/            # Survey templates
+│   │   │   ├── list.html
+│   │   │   └── detail.html
+│   │   └── rewards/            # Rewards templates
+│   │       ├── list.html
+│   │       └── detail.html
+│   │
+│   └── static/                 # Static files
+│       ├── css/
+│       ├── js/
+│       └── img/
+│
+├── migrations/                 # Database migrations (Alembic)
+│
+└── tests/                      # Test suite
+    ├── __init__.py
+    ├── conftest.py             # Test configuration
+    ├── test_auth.py
+    ├── test_admin.py
+    ├── test_surveys.py
+    └── test_rewards.py

@@ -1,0 +1,274 @@
+/* Apple-Inspired Modern CSS for Survey Platform */
+
+:root {
+    --primary-color: #007aff;
+    --primary-gradient: linear-gradient(135deg, #007aff, #0064ff);
+    --background-color: #f2f2f7;
+    --text-color: #1d1d1f;
+    --card-background: #ffffff;
+    --card-gradient: linear-gradient(to bottom right, #ffffff, #f9f9f9);
+    --accent-color: #5856d6;
+    --accent-gradient: linear-gradient(135deg, #5856d6, #6e5bdb);
+    --hover-color: #0056b3;
+    --transition-speed: 0.3s;
+}
+
+* {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+}
+
+/* Navigation */
+.navbar {
+    background-color: rgba(255, 255, 255, 0.8) !important;
+    backdrop-filter: saturate(180%) blur(20px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow: 0 1px 6px 0 rgba(0, 0, 0, 0.02);
+}
+
+.navbar-brand {
+    font-weight: 600;
+    color: var(--text-color) !important;
+    transition: opacity var(--transition-speed);
+}
+
+.navbar-brand:hover {
+    opacity: 0.8;
+}
+
+.nav-link {
+    color: var(--text-color) !important;
+    font-weight: 500;
+    transition: color var(--transition-speed);
+}
+
+.nav-link:hover {
+    color: var(--primary-color) !important;
+}
+
+/* Cards */
+.card {
+    background: var(--card-gradient);
+    border: none;
+    border-radius: 16px;
+    box-shadow: 
+        0 4px 6px rgba(0, 0, 0, 0.04), 
+        0 1px 3px rgba(0, 0, 0, 0.06);
+    transition: all var(--transition-speed);
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--primary-gradient);
+    opacity: 0.8;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 
+        0 6px 12px rgba(0, 0, 0, 0.06), 
+        0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
+.card-header {
+    background-color: rgba(0, 0, 0, 0.02);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    font-weight: 600;
+    padding: 0.75rem 1.25rem;
+}
+
+/* Buttons */
+.btn {
+    border-radius: 12px;
+    font-weight: 500;
+    text-transform: none;
+    border: none;
+    transition: all var(--transition-speed);
+    padding: 0.5rem 1rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-primary {
+    background: var(--primary-gradient);
+    color: white;
+    position: relative;
+}
+
+.btn-primary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.2);
+    opacity: 0;
+    transition: opacity var(--transition-speed);
+}
+
+.btn-primary:hover::before {
+    opacity: 1;
+}
+
+.btn-primary:active {
+    transform: scale(0.98);
+}
+
+.btn-outline-primary {
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+    background-color: transparent;
+    transition: all var(--transition-speed);
+}
+
+.btn-outline-primary:hover {
+    background: var(--primary-gradient);
+    color: white;
+    border-color: transparent;
+}
+
+/* Badge Styles */
+.badge {
+    border-radius: 8px;
+    font-weight: 500;
+    padding: 0.35em 0.65em;
+    background: var(--primary-gradient);
+}
+
+.badge.bg-warning {
+    background: linear-gradient(135deg, #ffcc00, #ffdf00);
+    color: #000;
+}
+
+.badge.bg-success {
+    background: linear-gradient(135deg, #34c759, #30d158);
+}
+
+.badge.bg-secondary {
+    background: linear-gradient(135deg, #8e8e93, #aeaeb2);
+}
+
+/* Forms */
+.form-control {
+    border-radius: 8px;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    padding: 0.75rem 1rem;
+    transition: all var(--transition-speed);
+}
+
+.form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+}
+
+/* Alerts */
+.alert {
+    border-radius: 8px;
+    border: none;
+    padding: 1rem;
+}
+
+.alert-success {
+    background-color: rgba(48, 209, 88, 0.1);
+    color: #007a3b;
+}
+
+.alert-danger {
+    background-color: rgba(255, 59, 48, 0.1);
+    color: #d70015;
+}
+
+/* Tables */
+.table {
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.table thead {
+    background-color: rgba(0, 0, 0, 0.03);
+}
+
+.table th {
+    font-weight: 600;
+    color: var(--text-color);
+    border: none;
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(0, 122, 255, 0.05);
+}
+
+/* Badges */
+.badge {
+    border-radius: 6px;
+    font-weight: 500;
+    padding: 0.35em 0.65em;
+}
+
+.badge-primary {
+    background-color: var(--primary-color);
+}
+
+/* Footer */
+footer {
+    background-color: var(--card-background) !important;
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+    padding: 1.5rem 0;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .card {
+        margin-bottom: 1rem;
+    }
+    
+    .btn {
+        width: 100%;
+    }
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+    animation: fadeIn var(--transition-speed) ease-out;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(0, 0, 0, 0.3);
+}

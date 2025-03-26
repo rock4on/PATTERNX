@@ -1,0 +1,217 @@
+{% extends "base.html" %}
+
+{% block title %}Survey Platform - Home{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center animate-fade-in">
+    <div class="col-md-10">
+        <!-- Hero Section -->
+        <div class="hero-section mb-5">
+            <div class="container-fluid py-5">
+                <h1 class="display-5 fw-bold">Take Surveys, Earn Rewards</h1>
+                <p class="col-md-8 fs-4 text-white-50">Join our platform to complete surveys and earn points that can be redeemed for amazing rewards.</p>
+                {% if not current_user.is_authenticated %}
+                    <div class="mt-4">
+                        <a href="{{ url_for('auth.register') }}" class="btn btn-primary me-2">
+                            <i class="fas fa-user-plus me-2"></i> Sign Up
+                        </a>
+                        <a href="{{ url_for('auth.login') }}" class="btn btn-outline-light">
+                            <i class="fas fa-sign-in-alt me-2"></i> Log In
+                        </a>
+                    </div>
+                {% else %}
+                    <div class="mt-4">
+                        <a href="{{ url_for('surveys.index') }}" class="btn btn-primary me-2">
+                            <i class="fas fa-poll me-2"></i> Available Surveys
+                        </a>
+                        <a href="{{ url_for('rewards.index') }}" class="btn btn-outline-light">
+                            <i class="fas fa-gift me-2"></i> View Rewards
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Features Section -->
+        <div class="row g-4 mb-5">
+            <div class="col-md-4">
+                <div class="feature-card h-100 animate-fade-in">
+                    <div class="feature-icon">
+                        <i class="fas fa-tasks"></i>
+                    </div>
+                    <h3 class="card-title">Complete Surveys</h3>
+                    <p class="text-muted">Browse and complete available surveys on topics that matter to you.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card h-100 animate-fade-in">
+                    <div class="feature-icon">
+                        <i class="fas fa-coins"></i>
+                    </div>
+                    <h3 class="card-title">Earn Points</h3>
+                    <p class="text-muted">Get rewarded with points for every survey you complete successfully.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card h-100 animate-fade-in">
+                    <div class="feature-icon">
+                        <i class="fas fa-gift"></i>
+                    </div>
+                    <h3 class="card-title">Redeem Rewards</h3>
+                    <p class="text-muted">Exchange your earned points for exciting rewards and benefits.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Section -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card stats-card animate-fade-in">
+                    <div class="card-body p-4">
+                        <h3 class="text-center mb-4 fw-bold">Platform Statistics</h3>
+                        <div class="row g-4 text-center">
+                            <div class="col-md-4">
+                                <div class="stats-box">
+                                    <h4 class="fw-bold text-primary">{{ active_surveys_count }}</h4>
+                                    <p class="text-muted mb-0">Active Surveys</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="stats-box">
+                                    <h4 class="fw-bold text-primary">{{ '%d+' % (active_surveys_count * 10) }}</h4>
+                                    <p class="text-muted mb-0">Registered Users</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="stats-box">
+                                    <h4 class="fw-bold text-primary">{{ '%d+' % (active_surveys_count * 100) }}</h4>
+                                    <p class="text-muted mb-0">Surveys Completed</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .hero-section {
+        background: linear-gradient(135deg, #4e73df, #224abe);
+        color: white;
+        border-radius: 16px;
+        padding: 3rem 2rem;
+        box-shadow: 
+            0 15px 30px rgba(78, 115, 223, 0.2), 
+            0 8px 15px rgba(78, 115, 223, 0.15);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .hero-section::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(
+            circle at center, 
+            rgba(255,255,255,0.1) 0%, 
+            transparent 70%
+        );
+        animation: subtle-shine 5s infinite alternate;
+    }
+
+    @keyframes subtle-shine {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    .feature-card {
+        background: white;
+        border-radius: 16px;
+        padding: 2rem 1.5rem;
+        text-align: center;
+        box-shadow: 
+            0 10px 25px rgba(0,0,0,0.05), 
+            0 5px 15px rgba(0,0,0,0.03);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .feature-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 
+            0 15px 35px rgba(0,0,0,0.08), 
+            0 8px 20px rgba(0,0,0,0.06);
+    }
+
+    .feature-icon {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, #6f42c1, #553d8b);
+        color: white;
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.5rem;
+        font-size: 2.5rem;
+        box-shadow: 
+            0 10px 25px rgba(111, 66, 193, 0.2), 
+            0 5px 15px rgba(111, 66, 193, 0.15);
+    }
+
+    .stats-card {
+        border-radius: 16px;
+        box-shadow: 
+            0 10px 25px rgba(0,0,0,0.05), 
+            0 5px 15px rgba(0,0,0,0.03);
+    }
+
+    .stats-box {
+        background-color: #f8f9fa;
+        border-radius: 12px;
+        padding: 1.5rem;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .stats-box:hover {
+        transform: translateY(-5px);
+        box-shadow: 
+            0 10px 20px rgba(0,0,0,0.06), 
+            0 5px 10px rgba(0,0,0,0.04);
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #4e73df, #224abe);
+        border: none;
+        border-radius: 12px;
+        padding: 0.75rem 1.5rem;
+        font-weight: 600;
+        transition: transform 0.3s ease;
+    }
+
+    .btn-primary:hover {
+        transform: scale(1.05);
+        background: linear-gradient(135deg, #4e73df, #224abe);
+    }
+
+    .btn-outline-light {
+        border-radius: 12px;
+        border: 2px solid rgba(255,255,255,0.5);
+        color: white;
+        padding: 0.75rem 1.5rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .btn-outline-light:hover {
+        background: white;
+        color: #4e73df;
+    }
+</style>
+{% endblock %}

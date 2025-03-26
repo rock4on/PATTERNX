@@ -1,0 +1,164 @@
+{% extends "base.html" %}
+
+{% block title %}Admin - Redemptions{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12 mb-4">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ url_for('admin.index') }}">Admin</a></li>
+                <li class="breadcrumb-item active">Redemptions</li>
+            </ol>
+        </nav>
+        <h2><i class="fas fa-exchange-alt me-2"></i> Reward Redemptions</h2>
+        <p class="lead">Manage and process user reward redemptions.</p>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <!-- Status Filter -->
+    <div class="col-md-12 mb-4">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <div class="btn-group w-100" role="group">
+                    <a href="{{ url_for('admin.redemptions') }}" class="btn btn-outline-primary {% if not request.args.get('status') %}active{% endif %}">
+                        All Redemptions
+                    </a>
+                    <a href="{{ url_for('admin.redemptions', status='pending') }}" class="btn btn-outline-warning {% if request.args.get('status') == 'pending' %}active{% endif %}">
+                        <i class="fas fa-clock me-2"></i> Pending
+                    </a>
+                    <a href="{{ url_for('admin.redemptions', status='completed') }}" class="btn btn-outline-success {% if request.args.get('status') == 'completed' %}active{% endif %}">
+                        <i class="fas fa-check-circle me-2"></i> Completed
+                    </a>
+                    <a href="{{ url_for('admin.redemptions', status='cancelled') }}" class="btn btn-outline-danger {% if request.args.get('status') == 'cancelled' %}active{% endif %}">
+                        <i class="fas fa-times-circle me-2"></i> Cancelled
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Redemptions</h5>
+                <span class="badge bg-light text-primary">Total: {{ redemptions|length }}</span>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <input type="text" id="searchInput" class="form-control" placeholder="Search redemptions...">
+                </div>
+                
+                {% if redemptions %}
+                    <div class="table-responsive">
+                        <table class="table table-hover" id="redemptionsTable">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Date</th>
+                                    <th>User</th>
+                                    <th>Reward</th>
+                                    <th>Points</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for redemption in redemptions %}
+                                    <tr>
+                                        <td>{{ redemption.id }}</td>
+                                        <td>{{ redemption.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                                        <td>
+                                            <a href="{{ url_for('admin.user_detail', user_id=redemption.user_id) }}">
+                                                {{ redemption.user.username }}
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a href="{{ url_for('admin.edit_reward', reward_id=redemption.reward_id) }}">
+                                                {{ redemption.reward.name }}
+                                            </a>
+                                        </td>
+                                        <td>{{ redemption.points_spent }}</td>
+                                        <td>
+                                            {% if redemption.status == 'pending' %}
+                                                <span class="badge bg-warning text-dark">Pending</span>
+                                            {% elif redemption.status == 'completed' %}
+                                                <span class="badge bg-success">Completed</span>
+                                            {% elif redemption.status == 'cancelled' %}
+                                                <span class="badge bg-danger">Cancelled</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if redemption.status == 'pending' %}
+                                                <div class="btn-group">
+                                                    <form method="POST" action="{{ url_for('admin.update_redemption_status', redemption_id=redemption.id) }}" class="me-1">
+                                                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                                        <input type="hidden" name="status" value="completed">
+                                                        <button type="submit" class="btn btn-sm btn-success">
+                                                            <i class="fas fa-check me-1"></i> Complete
+                                                        </button>
+                                                    </form>
+                                                    <form method="POST" action="{{ url_for('admin.update_redemption_status', redemption_id=redemption.id) }}">
+                                                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                                        <input type="hidden" name="status" value="cancelled">
+                                                        <button type="submit" class="btn btn-sm btn-danger">
+                                                            <i class="fas fa-times me-1"></i> Cancel
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            {% elif redemption.status == 'completed' %}
+                                                <form method="POST" action="{{ url_for('admin.update_redemption_status', redemption_id=redemption.id) }}">
+                                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                                    <input type="hidden" name="status" value="cancelled">
+                                                    <button type="submit" class="btn btn-sm btn-danger">
+                                                        <i class="fas fa-times me-1"></i> Mark Cancelled
+                                                    </button>
+                                                </form>
+                                            {% elif redemption.status == 'cancelled' %}
+                                                <form method="POST" action="{{ url_for('admin.update_redemption_status', redemption_id=redemption.id) }}">
+                                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                                    <input type="hidden" name="status" value="completed">
+                                                    <button type="submit" class="btn btn-sm btn-success">
+                                                        <i class="fas fa-check me-1"></i> Mark Completed
+                                                    </button>
+                                                </form>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div class="text-center py-5">
+                        <i class="fas fa-gift fa-4x text-muted mb-3"></i>
+                        <h4>No redemptions found</h4>
+                        <p class="text-muted">
+                            {% if request.args.get('status') %}
+                                No {{ request.args.get('status') }} redemptions found.
+                            {% else %}
+                                No reward redemptions have been made yet.
+                            {% endif %}
+                        </p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    $(document).ready(function() {
+        // Add simple search functionality to the table
+        $("#searchInput").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            $("#redemptionsTable tbody tr").filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+            });
+        });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,405 @@
+{% extends "base.html" %}
+
+{% block title %}Admin - User Detail{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12 mb-4">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ url_for('admin.index') }}">Admin</a></li>
+                <li class="breadcrumb-item"><a href="{{ url_for('admin.users') }}">Users</a></li>
+                <li class="breadcrumb-item active">{{ user.username }}</li>
+            </ol>
+        </nav>
+        <h2><i class="fas fa-user me-2"></i> User Profile: {{ user.username }}</h2>
+    </div>
+</div>
+
+<div class="row">
+    <!-- User Info Card -->
+    <div class="col-md-4 mb-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">User Information</h5>
+            </div>
+            <div class="card-body">
+                <div class="text-center mb-4">
+                    <i class="fas fa-user-circle fa-5x text-primary mb-3"></i>
+                    <h4>{{ user.full_name }}</h4>
+                    <p class="text-muted mb-0">{{ user.username }}</p>
+                </div>
+                
+                <hr>
+                
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span><i class="fas fa-envelope me-2"></i> Email:</span>
+                        <span>{{ user.email }}</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span><i class="fas fa-calendar-alt me-2"></i> Joined:</span>
+                        <span>{{ user.created_at.strftime('%Y-%m-%d') }}</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span><i class="fas fa-toggle-on me-2"></i> Status:</span>
+                        <span>
+                            {% if user.is_active %}
+                                <span class="badge bg-success">Active</span>
+                            {% else %}
+                                <span class="badge bg-danger">Inactive</span>
+                            {% endif %}
+                        </span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span><i class="fas fa-user-shield me-2"></i> Role:</span>
+                        <span>
+                            {% if user.is_admin %}
+                                <span class="badge bg-primary">Admin</span>
+                            {% else %}
+                                <span class="badge bg-secondary">User</span>
+                            {% endif %}
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <div class="card-footer">
+                <div class="d-grid gap-2">
+                    {% if user.is_active %}
+                        <button class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deactivateModal">
+                            <i class="fas fa-user-times me-2"></i> Deactivate User
+                        </button>
+                    {% else %}
+                        <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#activateModal">
+                            <i class="fas fa-user-check me-2"></i> Activate User
+                        </button>
+                    {% endif %}
+                    
+                    {% if not user.is_admin %}
+                        <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#makeAdminModal">
+                            <i class="fas fa-user-shield me-2"></i> Make Admin
+                        </button>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Points Summary Card -->
+    <div class="col-md-8 mb-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">Points Summary</h5>
+            </div>
+            <div class="card-body">
+                <div class="row text-center mb-4">
+                    <div class="col-md-4">
+                        <div class="p-3 bg-light rounded">
+                            <h3 class="text-primary">{{ points_summary.available_points }}</h3>
+                            <p class="mb-0">Available Points</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="p-3 bg-light rounded">
+                            <h3>{{ points_summary.total_points }}</h3>
+                            <p class="mb-0">Total Earned</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="p-3 bg-light rounded">
+                            <h3>{{ points_summary.spent_points }}</h3>
+                            <p class="mb-0">Points Spent</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <h5 class="mb-3">Add Points</h5>
+                <form method="POST" action="{{ url_for('admin.add_points', user_id=user.id) }}">
+                    {{ add_points_form.hidden_tag() }}
+                    <div class="row">
+                        <div class="col-md-4">
+                            {{ add_points_form.amount.label(class="form-label") }}
+                            {{ add_points_form.amount(class="form-control") }}
+                        </div>
+                        <div class="col-md-6">
+                            {{ add_points_form.description.label(class="form-label") }}
+                            {{ add_points_form.description(class="form-control", placeholder="Reason for adding points") }}
+                        </div>
+                        <div class="col-md-2 d-flex align-items-end">
+                            {{ add_points_form.submit(class="btn btn-primary w-100") }}
+                        </div>
+                    </div>
+                </form>
+                
+                <hr>
+                
+                <h5 class="mb-3">Points History</h5>
+                <div class="table-responsive">
+                    <table class="table table-sm table-hover">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Description</th>
+                                <th>Source</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for point in points_history %}
+                                <tr>
+                                    <td>{{ point.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                                    <td>{{ point.description }}</td>
+                                    <td>
+                                        {% if point.source == 'survey' %}
+                                            <span class="badge bg-primary">Survey</span>
+                                        {% elif point.source == 'reward' %}
+                                            <span class="badge bg-warning text-dark">Reward</span>
+                                        {% elif point.source == 'bonus' %}
+                                            <span class="badge bg-success">Bonus</span>
+                                        {% else %}
+                                            <span class="badge bg-secondary">{{ point.source }}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td class="{% if point.amount > 0 %}text-success{% else %}text-danger{% endif %}">
+                                        {% if point.amount > 0 %}+{% endif %}{{ point.amount }}
+                                    </td>
+                                    <td>
+                                        {% if point.is_spent %}
+                                            <span class="badge bg-secondary">Spent</span>
+                                        {% else %}
+                                            <span class="badge bg-success">Available</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Survey Completions Card -->
+    <div class="col-md-6 mb-4">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">Survey Completions</h5>
+            </div>
+            <div class="card-body">
+                {% if completions %}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Survey</th>
+                                    <th>Points</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for completion in completions %}
+                                    <tr>
+                                        <td>{{ completion.completed_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                                        <td>{{ completion.survey.title }}</td>
+                                        <td>{{ completion.points_awarded }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div class="text-center py-4">
+                        <i class="fas fa-clipboard fa-3x text-muted mb-3"></i>
+                        <p class="mb-0">No surveys completed yet</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <!-- Reward Redemptions Card -->
+    <div class="col-md-6 mb-4">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">Reward Redemptions</h5>
+            </div>
+            <div class="card-body">
+                {% if rewards %}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Reward</th>
+                                    <th>Points</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for reward in rewards %}
+                                    <tr>
+                                        <td>{{ reward.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                                        <td>{{ reward.reward.name }}</td>
+                                        <td>{{ reward.points_spent }}</td>
+                                        <td>
+                                            {% if reward.status == 'pending' %}
+                                                <span class="badge bg-warning text-dark">Pending</span>
+                                            {% elif reward.status == 'completed' %}
+                                                <span class="badge bg-success">Completed</span>
+                                            {% elif reward.status == 'cancelled' %}
+                                                <span class="badge bg-danger">Cancelled</span>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div class="text-center py-4">
+                        <i class="fas fa-gift fa-3x text-muted mb-3"></i>
+                        <p class="mb-0">No rewards redeemed yet</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modals for User Actions -->
+<div class="modal fade" id="deactivateModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title">Deactivate User</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to deactivate this user? They will no longer be able to log in or use the platform.</p>
+                <p><strong>Username:</strong> {{ user.username }}</p>
+                <p><strong>Email:</strong> {{ user.email }}</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <form method="POST" action="">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <button type="submit" class="btn btn-danger">Deactivate</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="activateModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title">Activate User</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to activate this user? They will be able to log in and use the platform.</p>
+                <p><strong>Username:</strong> {{ user.username }}</p>
+                <p><strong>Email:</strong> {{ user.email }}</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <form method="POST" action="">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <button type="submit" class="btn btn-success">Activate</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="makeAdminModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title">Make Admin</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to grant admin privileges to this user? They will have full access to the admin panel.</p>
+                <p><strong>Username:</strong> {{ user.username }}</p>
+                <p><strong>Email:</strong> {{ user.email }}</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <!-- Modals for User Detail Page -->
+<div class="modal fade" id="makeAdminModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title">Make Admin</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to grant admin privileges to this user? They will have full access to the admin panel.</p>
+                <p><strong>Username:</strong> {{ user.username }}</p>
+                <p><strong>Email:</strong> {{ user.email }}</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <form method="POST" action="">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <input type="hidden" name="action" value="make_admin">
+                    <button type="submit" class="btn btn-primary">Make Admin</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deactivateModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title">Deactivate User</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to deactivate this user? They will no longer be able to log in or use the platform.</p>
+                <p><strong>Username:</strong> {{ user.username }}</p>
+                <p><strong>Email:</strong> {{ user.email }}</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <form method="POST" action="">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <input type="hidden" name="action" value="deactivate">
+                    <button type="submit" class="btn btn-danger">Deactivate</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="activateModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title">Activate User</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to activate this user? They will be able to log in and use the platform.</p>
+                <p><strong>Username:</strong> {{ user.username }}</p>
+                <p><strong>Email:</strong> {{ user.email }}</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <form method="POST" action="">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <input type="hidden" name="action" value="activate">
+                    <button type="submit" class="btn btn-success">Activate</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

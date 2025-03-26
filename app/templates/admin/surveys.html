@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+
+{% block title %}Admin - Surveys{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12 mb-4">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ url_for('admin.index') }}">Admin</a></li>
+                <li class="breadcrumb-item active">Surveys</li>
+            </ol>
+        </nav>
+        <div class="d-flex justify-content-between align-items-center">
+            <h2><i class="fas fa-poll me-2"></i> Surveys Management</h2>
+            <form action="{{ url_for('admin.sync_surveys') }}" method="POST">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-sync me-2"></i> Sync Surveys from LimeSurvey
+                </button>
+            </form>
+        </div>
+        <p class="lead">Manage surveys from LimeSurvey and configure point values.</p>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-12">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">All Surveys</h5>
+                <span class="badge bg-light text-primary">Total: {{ surveys|length }}</span>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <input type="text" id="searchInput" class="form-control" placeholder="Search for surveys...">
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover" id="surveysTable">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>LimeSurvey ID</th>
+                                <th>Title</th>
+                                <th>Points Value</th>
+                                <th>Status</th>
+                                <th>Date Range</th>
+                                <th>Completions</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for survey in surveys %}
+                                <tr>
+                                    <td>{{ survey.id }}</td>
+                                    <td>{{ survey.limesurvey_id }}</td>
+                                    <td>{{ survey.title }}</td>
+                                    <td>{{ survey.points_value }}</td>
+                                    <td>
+                                        {% if survey.is_active %}
+                                            <span class="badge bg-success">Active</span>
+                                        {% else %}
+                                            <span class="badge bg-danger">Inactive</span>
+                                        {% endif %}
+                                        
+                                        {% if survey.is_available %}
+                                            <span class="badge bg-info">Available</span>
+                                        {% else %}
+                                            <span class="badge bg-warning text-dark">Unavailable</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if survey.start_date %}
+                                            {{ survey.start_date.strftime('%Y-%m-%d') }}
+                                        {% else %}
+                                            --
+                                        {% endif %}
+                                        to
+                                        {% if survey.end_date %}
+                                            {{ survey.end_date.strftime('%Y-%m-%d') }}
+                                        {% else %}
+                                            --
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ survey.total_completions }}</td>
+                                    <td>
+                                        <a href="{{ url_for('admin.survey_detail', survey_id=survey.id) }}" class="btn btn-sm btn-primary">
+                                            <i class="fas fa-edit"></i> Edit
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    $(document).ready(function() {
+        // Add simple search functionality to the table
+        $("#searchInput").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            $("#surveysTable tbody tr").filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+            });
+        });
+    });
+</script>
+{% endblock %}

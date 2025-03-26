@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block title %}Available Rewards{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12 mb-4">
+        <div class="d-flex justify-content-between align-items-center">
+            <h2><i class="fas fa-gift me-2"></i> Available Rewards</h2>
+            <div class="bg-light rounded p-3">
+                <span class="fw-bold">Your Points:</span>
+                <span class="ms-2 text-primary fw-bold ">{{ points_summary.available_points }}</span>
+            </div>
+        </div>
+        <p class="lead">Redeem your points for these exciting rewards.</p>
+    </div>
+</div>
+
+<div class="row">
+    {% if rewards %}
+        {% for reward in rewards %}
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 shadow-sm">
+                    {% if reward.image_url %}
+                        <img src="{{ reward.image_url }}" class="card-img-top" alt="{{ reward.name }}">
+                    {% else %}
+                        <div class="card-img-top bg-light text-center py-5">
+                            <i class="fas fa-gift fa-4x text-primary"></i>
+                        </div>
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ reward.name }}</h5>
+                        <p class="card-text">{{ reward.description|truncate(100) }}</p>
+                    </div>
+                    <div class="card-footer bg-white">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="text-primary fw-bold">{{ reward.points_cost }} points</span>
+                            
+                            {% if points_summary.available_points >= reward.points_cost %}
+                                <a href="{{ url_for('rewards.detail', reward_id=reward.id) }}" class="btn btn-primary">
+                                    <i class="fas fa-exchange-alt me-2"></i> Redeem
+                                </a>
+                            {% else %}
+                                <button class="btn btn-outline-secondary" disabled>
+                                    <i class="fas fa-lock me-2"></i> Not Enough Points
+                                </button>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="col-md-12">
+            <div class="card shadow-sm">
+                <div class="card-body text-center py-5">
+                    <i class="fas fa-gift fa-4x text-muted mb-3"></i>
+                    <h3>No rewards available right now</h3>
+                    <p class="text-muted">Check back later for new reward opportunities.</p>
+                    <a href="{{ url_for('main.dashboard') }}" class="btn btn-primary mt-3">
+                        <i class="fas fa-home me-2"></i> Return to Dashboard
+                    </a>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
