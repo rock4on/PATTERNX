@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ session.language }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}PATTERNX{% endblock %}</title>
+    <title>{% block title %}{{ _('PATTERNX') }}{% endblock %}</title>
     
-    <!-- Bootstrap CSS (for grid and component structure) -->
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     
     <!-- Font Awesome -->
@@ -13,74 +13,130 @@
     
     <!-- Custom Apple-Inspired CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/css.css') }}">
-    
+
+    <style>
+        body {
+            background-color: #f9f9fb;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+
+        .navbar {
+            background-color: #fff;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+            padding: 1rem 0.5rem;
+        }
+
+        .navbar-brand {
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+
+        .nav-link, .dropdown-item {
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover, .dropdown-item:hover {
+            color: #0d6efd !important;
+        }
+
+        .alert {
+            animation: fadeIn 0.5s ease-in-out;
+            border-radius: 8px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        footer {
+            background-color: #fff;
+            border-top: 1px solid #eee;
+            padding: 1rem 0;
+            margin-top: 3rem;
+            font-size: 0.875rem;
+        }
+
+        footer a:hover {
+            color: #0d6efd;
+        }
+    </style>
+
     {% block extra_css %}{% endblock %}
 </head>
 <body>
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg">
+    <nav class="navbar navbar-expand-lg" style="position: sticky; z-index: 1060;">
         <div class="container">
             <a class="navbar-brand" href="{{ url_for('main.index') }}">
-                <img src="{{ url_for('static', filename='img/decor-1.png') }}" style="margin-right: 8px; width: 24px; height: 24px; vertical-align: middle;">PATTERNX
+                <img src="{{ url_for('static', filename='img/decor-1.png') }}" style="margin-right: 8px; width: 24px; height: 24px; vertical-align: middle;">
+                {{ _('PATTERNX') }}
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
+                <!-- Left Menu -->
                 <ul class="navbar-nav me-auto">
                     {% if current_user.is_authenticated %}
+
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('main.dashboard') }}">Dashboard</a>
+                            <a class="nav-link" href="{{ url_for('surveys.index') }}">{{ _('Surveys') }}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('surveys.index') }}">Surveys</a>
+                            <a class="nav-link" href="{{ url_for('rewards.index') }}">{{ _('Rewards') }}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('rewards.index') }}">Rewards</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('rewards.my_rewards') }}">My Rewards</a>
+                            <a class="nav-link" href="{{ url_for('rewards.my_rewards') }}">{{ _('My Rewards') }}</a>
                         </li>
                         {% if current_user.is_admin %}
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                                    Admin
-                                </a>
+                                <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">{{ _('Admin') }}</a>
                                 <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="{{ url_for('admin.index') }}">Dashboard</a></li>
-                                    <li><a class="dropdown-item" href="{{ url_for('admin.users') }}">Users</a></li>
-                                    <li><a class="dropdown-item" href="{{ url_for('admin.surveys') }}">Surveys</a></li>
-                                    <li><a class="dropdown-item" href="{{ url_for('admin.rewards') }}">Rewards</a></li>
-                                    <li><a class="dropdown-item" href="{{ url_for('admin.redemptions') }}">Redemptions</a></li>
+                                    <li><a class="dropdown-item" href="{{ url_for('admin.index') }}">{{ _('Dashboard') }}</a></li>
+                                    <li><a class="dropdown-item" href="{{ url_for('admin.users') }}">{{ _('Users') }}</a></li>
+                                    <li><a class="dropdown-item" href="{{ url_for('admin.surveys') }}">{{ _('Surveys') }}</a></li>
+                                    <li><a class="dropdown-item" href="{{ url_for('admin.rewards') }}">{{ _('Rewards') }}</a></li>
+                                    <li><a class="dropdown-item" href="{{ url_for('admin.redemptions') }}">{{ _('Redemptions') }}</a></li>
                                 </ul>
                             </li>
                         {% endif %}
                     {% endif %}
                 </ul>
+                <!-- Right Menu -->
                 <ul class="navbar-nav align-items-center">
+                    <!-- Language Switch -->
+                    <li class="nav-item dropdown mx-2">
+                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+                            <i class="fas fa-globe me-1"></i>
+                            {% if session.language == 'ro' %} Română {% else %} English {% endif %}
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{{ url_for('main.set_language', language='en') }}">English</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('main.set_language', language='ro') }}">Română</a></li>
+                        </ul>
+                    </li>
+
                     {% if current_user.is_authenticated %}
                         <li class="nav-item me-3">
-                            <span class="nav-link">
-                                <i class="fas fa-coins text-warning me-1"></i> 
-                                {{ current_user.available_points }} points
-                            </span>
+                            <span class="nav-link"><i class="fas fa-coins text-warning me-1"></i>{{ current_user.available_points }} {{ _('points') }}</span>
                         </li>
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
                                 <i class="fas fa-user-circle me-1"></i> {{ current_user.username }}
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end">
-                                <li><a class="dropdown-item" href="{{ url_for('auth.profile') }}">Profile</a></li>
+                                <li><a class="dropdown-item" href="{{ url_for('auth.profile') }}">{{ _('Profile') }}</a></li>
                                 <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="{{ url_for('auth.logout') }}">Logout</a></li>
+                                <li><a class="dropdown-item" href="{{ url_for('auth.logout') }}">{{ _('Logout') }}</a></li>
                             </ul>
                         </li>
                     {% else %}
                         <li class="nav-item">
-                            <a class="btn btn-primary me-2" href="{{ url_for('auth.login') }}">Login</a>
+                            <a class="btn btn-primary me-2" href="{{ url_for('auth.login') }}">{{ _('Login') }}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="btn btn-outline-primary" href="{{ url_for('auth.register') }}">Register</a>
+                            <a class="btn btn-outline-primary" href="{{ url_for('auth.register') }}">{{ _('Register') }}</a>
                         </li>
                     {% endif %}
                 </ul>
@@ -93,7 +149,7 @@
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 {% for category, message in messages %}
-                    <div class="alert alert-{{ category }} alert-dismissible fade show animate-fade-in">
+                    <div class="alert alert-{{ category }} alert-dismissible fade show">
                         {{ message }}
                         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                     </div>
@@ -102,33 +158,25 @@
         {% endwith %}
     </div>
 
-    <!-- Main Content -->
+    <!-- Page Content -->
     <div class="container mt-4 mb-5">
         {% block content %}{% endblock %}
     </div>
 
     <!-- Footer -->
     <footer>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6 text-md-end">
-                    <a href="#" class="text-decoration-none text-secondary me-3">Privacy Policy</a>
-                    <a href="#" class="text-decoration-none text-secondary me-3">Terms of Service</a>
-                    <a href="#" class="text-decoration-none text-secondary">Contact</a>
-                </div>
-            </div>
+        <div class="container d-flex justify-content-center justify-content-md-end">
+            <a href="#" class="text-decoration-none text-secondary me-3">{{ _('Privacy Policy') }}</a>
+            <a href="#" class="text-decoration-none text-secondary me-3">{{ _('Terms of Service') }}</a>
+            <a href="#" class="text-decoration-none text-secondary">{{ _('Contact') }}</a>
         </div>
     </footer>
 
-    <!-- Bootstrap JS -->
+    <!-- JS Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
-    <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    
-    <!-- Custom JS -->
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
-    
+
     {% block extra_js %}{% endblock %}
 </body>
 </html>

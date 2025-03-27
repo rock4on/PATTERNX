@@ -1,7 +1,7 @@
 import os
-from flask import Flask
+from flask import Flask, request,session
 
-from .extensions import db, migrate, login_manager, bcrypt, csrf
+from .extensions import db, migrate, login_manager, bcrypt, csrf,babel
 from config import config
 import pymysql
 pymysql.install_as_MySQLdb()
@@ -14,7 +14,19 @@ def create_app(config_name=None):
     # Create and configure the app
     app = Flask(__name__)
     app.config.from_object(config[config_name])
+    app.config["BABEL_TRANSLATION_DIRECTORIES"]='/home/andrei/Desktop/survey/app/translations'
+
+    from .utils.date_utils import format_datetime_localized
     
+    # Register with Jinja2
+    app.jinja_env.globals.update(
+        format_datetime_localized=format_datetime_localized
+    )
+
+
+    from .utils.translation_helpers import register_template_helpers
+    register_template_helpers(app)
+
     # Initialize extensions
     register_extensions(app)
     
@@ -34,9 +46,21 @@ def register_extensions(app):
     login_manager.init_app(app)
     bcrypt.init_app(app)
     csrf.init_app(app)
-    
+
+    def get_locale():
+
+        if session.get('language'):
+            lang=session['language']
+        else:
+            session['language']='ro'
+        return session['language']
     # Configure the login manager
     from .models.user import User
+
+    babel.init_app(app,locale_selector=get_locale)
+
+
+
     
     @login_manager.user_loader
     def load_user(user_id):

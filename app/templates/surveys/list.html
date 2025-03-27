@@ -1,14 +1,14 @@
 {% extends "base.html" %}
 
-{% block title %}Available Surveys{% endblock %}
+{% block title %}{{ gettext('Available Surveys') }}{% endblock %}
 
 {% block content %}
 <div class="row animate-fade-in">
     <div class="col-md-12 mb-4">
         <div class="d-flex justify-content-between align-items-center">
-            <h2 class="fw-bold"><i class="fas fa-poll me-2 text-primary"></i> Available Surveys</h2>
+            <h2 class="fw-bold"><i class="fas fa-poll me-2 text-primary"></i> {{ _('Available Surveys') }}</h2>
         </div>
-        <p class="text-muted">Complete surveys to earn points and redeem rewards.</p>
+        <p class="text-muted">{{ _('Complete surveys to earn points and redeem rewards.') }}</p>
     </div>
 </div>
 
@@ -19,7 +19,7 @@
                 <div class="card h-100 survey-card animate-fade-in">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h5 class="mb-0 fw-bold">{{ survey.title }}</h5>
-                        <span class="badge bg-primary rounded-pill">{{ survey.points_value }} pts</span>
+                        <span class="badge bg-primary rounded-pill">{{ survey.points_value }} {{ _('pts') }}</span>
                     </div>
                     <div class="card-body">
                         <p class="text-muted">{{ survey.description|truncate(150) }}</p>
@@ -27,21 +27,21 @@
                         <div class="d-flex justify-content-between align-items-center mt-3">
                             <small class="text-muted">
                                 {% if survey.end_date %}
-                                    Available until: {{ survey.end_date.strftime('%Y-%m-%d') }}
+                                    {{ _('Available until') }}: {{ format_date_localized(survey.end_date) }}
                                 {% else %}
-                                    Always available
+                                    {{ _('Always available') }}
                                 {% endif %}
                             </small>
                             <div>
                                 <span class="badge bg-info rounded-pill">
-                                    <i class="fas fa-clock me-1"></i> {{ (survey.points_value // 5) + 2 }} min
+                                    <i class="fas fa-clock me-1"></i> {{ (survey.points_value // 5) + 2 }} {{ _('min') }}
                                 </span>
                             </div>
                         </div>
                     </div>
                     <div class="card-footer">
                         <a href="{{ url_for('surveys.detail', survey_id=survey.id) }}" class="btn btn-primary w-100">
-                            <i class="fas fa-clipboard-check me-2"></i> Take Survey
+                            <i class="fas fa-clipboard-check me-2"></i> {{ _('Take Survey') }}
                         </a>
                     </div>
                 </div>
@@ -52,10 +52,10 @@
             <div class="card text-center no-surveys-card animate-fade-in">
                 <div class="card-body py-5">
                     <i class="fas fa-clipboard-list fa-4x text-muted mb-4"></i>
-                    <h3 class="fw-bold mb-3">No surveys available right now</h3>
-                    <p class="text-muted mb-4">Check back later for new survey opportunities.</p>
+                    <h3 class="fw-bold mb-3">{{ _('No surveys available right now') }}</h3>
+                    <p class="text-muted mb-4">{{ _('Check back later for new survey opportunities.') }}</p>
                     <a href="{{ url_for('main.dashboard') }}" class="btn btn-primary">
-                        <i class="fas fa-home me-2"></i> Return to Dashboard
+                        <i class="fas fa-home me-2"></i> {{ _('Return to Dashboard') }}
                     </a>
                 </div>
             </div>

@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Survey Platform - Home{% endblock %}
+{% block title %}{{ _('Survey Platform - Home') }}{% endblock %}
 
 {% block content %}
 <div class="row justify-content-center animate-fade-in">
@@ -8,24 +8,24 @@
         <!-- Hero Section -->
         <div class="hero-section mb-5">
             <div class="container-fluid py-5">
-                <h1 class="display-5 fw-bold">Take Surveys, Earn Rewards</h1>
-                <p class="col-md-8 fs-4 text-white-50">Join our platform to complete surveys and earn points that can be redeemed for amazing rewards.</p>
+                <h1 class="display-5 fw-bold">{{ _('Take Surveys, Earn Rewards') }}</h1>
+                <p class="col-md-8 fs-4 text-white-50">{{ _('Join our platform to complete surveys and earn points that can be redeemed for amazing rewards.') }}</p>
                 {% if not current_user.is_authenticated %}
                     <div class="mt-4">
                         <a href="{{ url_for('auth.register') }}" class="btn btn-primary me-2">
-                            <i class="fas fa-user-plus me-2"></i> Sign Up
+                            <i class="fas fa-user-plus me-2"></i> {{ _('Sign Up') }}
                         </a>
                         <a href="{{ url_for('auth.login') }}" class="btn btn-outline-light">
-                            <i class="fas fa-sign-in-alt me-2"></i> Log In
+                            <i class="fas fa-sign-in-alt me-2"></i> {{ _('Log In') }}
                         </a>
                     </div>
                 {% else %}
                     <div class="mt-4">
                         <a href="{{ url_for('surveys.index') }}" class="btn btn-primary me-2">
-                            <i class="fas fa-poll me-2"></i> Available Surveys
+                            <i class="fas fa-poll me-2"></i> {{ _('Available Surveys') }}
                         </a>
                         <a href="{{ url_for('rewards.index') }}" class="btn btn-outline-light">
-                            <i class="fas fa-gift me-2"></i> View Rewards
+                            <i class="fas fa-gift me-2"></i> {{ _('View Rewards') }}
                         </a>
                     </div>
                 {% endif %}
@@ -39,8 +39,8 @@
                     <div class="feature-icon">
                         <i class="fas fa-tasks"></i>
                     </div>
-                    <h3 class="card-title">Complete Surveys</h3>
-                    <p class="text-muted">Browse and complete available surveys on topics that matter to you.</p>
+                    <h3 class="card-title">{{ _('Complete Surveys') }}</h3>
+                    <p class="text-muted">{{ _('Browse and complete available surveys on topics that matter to you.') }}</p>
                 </div>
             </div>
             <div class="col-md-4">
@@ -48,8 +48,8 @@
                     <div class="feature-icon">
                         <i class="fas fa-coins"></i>
                     </div>
-                    <h3 class="card-title">Earn Points</h3>
-                    <p class="text-muted">Get rewarded with points for every survey you complete successfully.</p>
+                    <h3 class="card-title">{{ _('Earn Points') }}</h3>
+                    <p class="text-muted">{{ _('Get rewarded with points for every survey you complete successfully.') }}</p>
                 </div>
             </div>
             <div class="col-md-4">
@@ -57,8 +57,8 @@
                     <div class="feature-icon">
                         <i class="fas fa-gift"></i>
                     </div>
-                    <h3 class="card-title">Redeem Rewards</h3>
-                    <p class="text-muted">Exchange your earned points for exciting rewards and benefits.</p>
+                    <h3 class="card-title">{{ _('Redeem Rewards') }}</h3>
+                    <p class="text-muted">{{ _('Exchange your earned points for exciting rewards and benefits.') }}</p>
                 </div>
             </div>
         </div>
@@ -68,24 +68,24 @@
             <div class="col-12">
                 <div class="card stats-card animate-fade-in">
                     <div class="card-body p-4">
-                        <h3 class="text-center mb-4 fw-bold">Platform Statistics</h3>
+                        <h3 class="text-center mb-4 fw-bold">{{ _('Platform Statistics') }}</h3>
                         <div class="row g-4 text-center">
                             <div class="col-md-4">
                                 <div class="stats-box">
                                     <h4 class="fw-bold text-primary">{{ active_surveys_count }}</h4>
-                                    <p class="text-muted mb-0">Active Surveys</p>
+                                    <p class="text-muted mb-0">{{ _('Active Surveys') }}</p>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="stats-box">
                                     <h4 class="fw-bold text-primary">{{ '%d+' % (active_surveys_count * 10) }}</h4>
-                                    <p class="text-muted mb-0">Registered Users</p>
+                                    <p class="text-muted mb-0">{{ _('Registered Users') }}</p>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="stats-box">
                                     <h4 class="fw-bold text-primary">{{ '%d+' % (active_surveys_count * 100) }}</h4>
-                                    <p class="text-muted mb-0">Surveys Completed</p>
+                                    <p class="text-muted mb-0">{{ _('Surveys Completed') }}</p>
                                 </div>
                             </div>
                         </div>

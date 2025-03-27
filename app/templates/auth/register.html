@@ -1,13 +1,13 @@
 {% extends "base.html" %}
 
-{% block title %}Register{% endblock %}
+{% block title %}{{ _('Register') }}{% endblock %}
 
 {% block content %}
 <div class="row justify-content-center">
     <div class="col-md-8">
         <div class="card shadow">
             <div class="card-header bg-primary text-white">
-                <h4 class="mb-0"><i class="fas fa-user-plus me-2"></i> Register</h4>
+                <h4 class="mb-0"><i class="fas fa-user-plus me-2"></i> {{ _('Register') }}</h4>
             </div>
             <div class="card-body p-4">
                 <form method="POST" action="{{ url_for('auth.register') }}">
@@ -105,7 +105,7 @@
                 </form>
             </div>
             <div class="card-footer text-center">
-                <p class="mb-0">Already have an account? <a href="{{ url_for('auth.login') }}">Login here</a></p>
+                <p class="mb-0">{{ _('Already have an account?') }} <a href="{{ url_for('auth.login') }}">{{ _('Login here') }}</a></p>
             </div>
         </div>
     </div>

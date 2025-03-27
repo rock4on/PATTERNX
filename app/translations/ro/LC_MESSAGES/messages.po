@@ -1,0 +1,1471 @@
+# Romanian translations for PatternX survey platform.
+# Copyright (C) 2025 PatternX
+msgid ""
+msgstr ""
+"Project-Id-Version:  1.0\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2025-03-26 17:23+0200\n"
+"PO-Revision-Date: 2025-03-26 10:00+0200\n"
+"Last-Translator: PatternX Team <contact@patternx.com>\n"
+"Language: ro\n"
+"Language-Team: ro <ro@li.org>\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n==0 || (n%100 > 0 && n%100 "
+"< 20) ? 1 : 2);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: app/templates/base.html:6 app/templates/base.html:24
+msgid "PATTERNX"
+msgstr ""
+
+#: app/templates/base.html:33 app/templates/base.html:50
+#: app/templates/rewards/detail.html:10 app/templates/surveys/detail.html:10
+msgid "Dashboard"
+msgstr "Panou de control"
+
+#: app/templates/base.html:36 app/templates/base.html:52
+#: app/templates/surveys/detail.html:11
+msgid "Surveys"
+msgstr "Sondaje"
+
+#: app/templates/base.html:39 app/templates/base.html:53
+#: app/templates/rewards/detail.html:11
+msgid "Rewards"
+msgstr "Recompense"
+
+#: app/templates/base.html:42 app/templates/rewards/my_rewards.html:3
+#: app/templates/rewards/my_rewards.html:9
+msgid "My Rewards"
+msgstr "Recompensele mele"
+
+#: app/templates/base.html:47
+msgid "Admin"
+msgstr "Admin"
+
+#: app/templates/base.html:51
+msgid "Users"
+msgstr "Utilizatori"
+
+# Common words
+#: app/templates/base.html:54
+#, fuzzy
+msgid "Redemptions"
+msgstr "puncte"
+
+#: app/templates/base.html:80 app/templates/rewards/detail.html:32
+#: app/templates/rewards/detail.html:98 app/templates/rewards/list.html:37
+#: app/templates/surveys/detail.html:36
+msgid "points"
+msgstr "puncte"
+
+#: app/templates/base.html:88
+#, fuzzy
+msgid "Profile"
+msgstr "Profil"
+
+#: app/templates/base.html:90
+msgid "Logout"
+msgstr "Deconectare"
+
+#: app/templates/auth/login.html:3 app/templates/auth/login.html:10
+#: app/templates/base.html:95 app/templates/main/dashboard.html:25
+msgid "Login"
+msgstr "Autentificare"
+
+#: app/templates/auth/register.html:3 app/templates/auth/register.html:10
+#: app/templates/base.html:98
+msgid "Register"
+msgstr "Înregistrare"
+
+#: app/templates/base.html:130
+msgid "Privacy Policy"
+msgstr "Politica de confidențialitate"
+
+#: app/templates/base.html:131
+msgid "Terms of Service"
+msgstr "Termeni și condiții"
+
+#: app/templates/base.html:132
+msgid "Contact"
+msgstr "Contact"
+
+#: app/templates/auth/login.html:55
+msgid "Don't have an account?"
+msgstr "Nu ai un cont?"
+
+#: app/templates/auth/login.html:55
+msgid "Register here"
+msgstr "Înregistrează-te aici"
+
+#: app/templates/auth/register.html:108
+msgid "Already have an account?"
+msgstr "Ai deja un cont?"
+
+#: app/templates/auth/register.html:108
+msgid "Login here"
+msgstr "Autentifică-te aici"
+
+#: app/templates/main/dashboard.html:3
+msgid "Welcome to Survey Platform"
+msgstr "Bun venit pe platforma de sondaje"
+
+#: app/templates/main/dashboard.html:10 app/templates/main/index.html:11
+msgid "Take Surveys, Earn Rewards"
+msgstr "Completează sondaje, câștigă recompense"
+
+#: app/templates/main/dashboard.html:11 app/templates/main/index.html:12
+msgid ""
+"Join our platform to complete surveys and earn points that can be "
+"redeemed for amazing rewards."
+msgstr ""
+"Alătură-te platformei noastre pentru a completa sondaje și a câștiga "
+"puncte care pot fi răscumpărate pentru recompense uimitoare."
+
+#: app/templates/main/dashboard.html:15 app/templates/main/index.html:25
+#: app/templates/surveys/list.html:3 app/templates/surveys/list.html:9
+msgid "Available Surveys"
+msgstr "Sondaje disponibile"
+
+#: app/templates/main/dashboard.html:18 app/templates/main/index.html:28
+#, fuzzy
+msgid "View Rewards"
+msgstr "Vezi Recompense"
+
+#: app/templates/main/dashboard.html:22
+msgid "Get Started"
+msgstr "Începe"
+
+#: app/templates/main/dashboard.html:39 app/templates/main/index.html:42
+msgid "Complete Surveys"
+msgstr "Completează sondaje"
+
+#: app/templates/main/dashboard.html:40 app/templates/main/index.html:43
+msgid "Browse and complete available surveys on topics that matter to you."
+msgstr ""
+"Răsfoiește și completează sondajele disponibile pe subiecte care te "
+"interesează."
+
+#: app/templates/main/dashboard.html:48 app/templates/main/index.html:51
+msgid "Earn Points"
+msgstr "Câștigă puncte"
+
+#: app/templates/main/dashboard.html:49 app/templates/main/index.html:52
+msgid "Get rewarded with points for every survey you complete successfully."
+msgstr "Fii recompensat cu puncte pentru fiecare sondaj completat cu succes."
+
+#: app/templates/main/dashboard.html:57 app/templates/main/index.html:60
+msgid "Redeem Rewards"
+msgstr "Răscumpără recompense"
+
+#: app/templates/main/dashboard.html:58 app/templates/main/index.html:61
+msgid "Exchange your earned points for exciting rewards and benefits."
+msgstr "Schimbă punctele câștigate pentru recompense și beneficii interesante."
+
+#: app/templates/main/index.html:3
+msgid "Survey Platform - Home"
+msgstr "Platforma de sondaje - Acasă"
+
+#: app/templates/main/index.html:16
+msgid "Sign Up"
+msgstr "Înregistrare"
+
+#: app/templates/main/index.html:19
+msgid "Log In"
+msgstr "Autentificare"
+
+#: app/templates/main/index.html:71
+msgid "Platform Statistics"
+msgstr "Statistici platformă"
+
+#: app/templates/main/index.html:76
+msgid "Active Surveys"
+msgstr "Sondaje active"
+
+#: app/templates/main/index.html:82
+msgid "Registered Users"
+msgstr "Utilizatori înregistrați"
+
+#: app/templates/main/index.html:88
+msgid "Surveys Completed"
+msgstr "Sondaje completate"
+
+#: app/templates/rewards/detail.html:3 app/templates/rewards/my_rewards.html:32
+#: app/templates/surveys/detail.html:34
+msgid "Reward"
+msgstr "Recompensă"
+
+#: app/templates/rewards/detail.html:33
+#, fuzzy
+msgid "Required for redemption"
+msgstr "Necesar pentru revendicare"
+
+#: app/templates/rewards/detail.html:37
+msgid "Your Available Points"
+msgstr "Punctele tale disponibile"
+
+#: app/templates/rewards/detail.html:45
+msgid "Description"
+msgstr "Descriere"
+
+#: app/templates/rewards/detail.html:50
+msgid "Limited availability"
+msgstr "Disponibilitate limitată"
+
+#: app/templates/rewards/detail.html:50
+msgid "Only"
+msgstr "Doar"
+
+#: app/templates/rewards/detail.html:50
+msgid "left"
+msgstr "rămase"
+
+#: app/templates/rewards/detail.html:56
+msgid "Redemption Instructions"
+msgstr "Instrucțiuni de răscumpărare"
+
+#: app/templates/rewards/detail.html:58
+msgid "Verify you have enough points"
+msgstr "Verifică dacă ai suficiente puncte"
+
+#: app/templates/rewards/detail.html:58
+msgid "required"
+msgstr "necesar"
+
+#: app/templates/rewards/detail.html:59
+msgid "Click the \"Redeem Now\" button below."
+msgstr "Apasă butonul „Răscumpără acum” de mai jos."
+
+#: app/templates/rewards/detail.html:60
+msgid "Confirm your redemption."
+msgstr "Confirmă răscumpărarea."
+
+#: app/templates/rewards/detail.html:61
+msgid "Your reward status will be updated in \"My Rewards\" section."
+msgstr ""
+"Starea recompensei tale va fi actualizată în secțiunea „Recompensele "
+"mele”."
+
+#: app/templates/rewards/detail.html:67
+msgid "Redeem Now"
+msgstr "Răscumpără acum"
+
+#: app/templates/rewards/detail.html:71 app/templates/rewards/list.html:45
+msgid "Not Enough Points"
+msgstr "Nu ai suficiente puncte"
+
+#: app/templates/rewards/detail.html:74
+msgid "Earn More Points"
+msgstr "Câștigă mai multe puncte"
+
+#: app/templates/rewards/detail.html:91 app/templates/rewards/detail.html:110
+msgid "Confirm Redemption"
+msgstr "Confirmă răscumpărarea"
+
+#: app/templates/rewards/detail.html:98
+msgid "You are about to redeem this reward for"
+msgstr "Ești pe cale să răscumperi această recompensă pentru"
+
+#: app/templates/rewards/detail.html:98
+#, fuzzy
+msgid "This action cannot be undone."
+msgstr "Această acțiune nu poate fi anulată."
+
+#: app/templates/rewards/detail.html:102
+msgid "Your current points"
+msgstr "Punctele tale actuale"
+
+#: app/templates/rewards/detail.html:103
+msgid "After redemption"
+msgstr "După răscumpărare"
+
+#: app/templates/rewards/detail.html:116 app/templates/surveys/detail.html:97
+msgid "Cancel"
+msgstr "Anulează"
+
+#: app/templates/rewards/list.html:3 app/templates/rewards/list.html:9
+msgid "Available Rewards"
+msgstr "Recompense disponibile"
+
+#: app/templates/rewards/list.html:11
+msgid "Your Points"
+msgstr "Punctele tale"
+
+#: app/templates/rewards/list.html:15
+msgid "Redeem your points for these exciting rewards."
+msgstr "Răscumpără-ți punctele pentru aceste recompense interesante."
+
+#: app/templates/rewards/list.html:41
+msgid "Redeem"
+msgstr "Răscumpără"
+
+#: app/templates/rewards/list.html:58
+msgid "No rewards available right now"
+msgstr "Momentan nu sunt recompense disponibile"
+
+#: app/templates/rewards/list.html:59
+msgid "Check back later for new reward opportunities."
+msgstr "Verifică mai târziu pentru noi oportunități de recompensare."
+
+#: app/templates/rewards/list.html:61 app/templates/surveys/list.html:58
+msgid "Return to Dashboard"
+msgstr "Înapoi la panoul de control"
+
+#: app/templates/rewards/my_rewards.html:11
+msgid "Available Points"
+msgstr "Puncte disponibile"
+
+#: app/templates/rewards/my_rewards.html:15
+msgid "Track the status of your redeemed rewards."
+msgstr "Urmărește starea recompenselor răscumpărate."
+
+#: app/templates/rewards/my_rewards.html:23
+msgid "Redemption History"
+msgstr "Istoricul răscumpărărilor"
+
+#: app/templates/rewards/my_rewards.html:31
+msgid "Date"
+msgstr "Data"
+
+#: app/templates/rewards/my_rewards.html:33
+msgid "Points Spent"
+msgstr "Puncte cheltuite"
+
+#: app/templates/rewards/my_rewards.html:34
+msgid "Status"
+msgstr "Stare"
+
+#: app/templates/rewards/my_rewards.html:45
+#: app/templates/rewards/my_rewards.html:83
+msgid "Pending"
+msgstr "În așteptare"
+
+#: app/templates/rewards/my_rewards.html:47
+#: app/templates/rewards/my_rewards.html:89
+msgid "Completed"
+msgstr "Finalizat"
+
+#: app/templates/rewards/my_rewards.html:49
+#: app/templates/rewards/my_rewards.html:95
+msgid "Cancelled"
+msgstr "Anulat"
+
+#: app/templates/rewards/my_rewards.html:60
+msgid "No rewards redeemed yet"
+msgstr "Încă nu ai răscumpărat recompense"
+
+#: app/templates/rewards/my_rewards.html:61
+msgid "You haven't redeemed any rewards yet."
+msgstr "Nu ai răscumpărat încă nicio recompensă."
+
+#: app/templates/rewards/my_rewards.html:63
+msgid "Browse Rewards"
+msgstr "Răsfoiește recompense"
+
+#: app/templates/rewards/my_rewards.html:77
+msgid "Status Information"
+msgstr "Informații despre stare"
+
+#: app/templates/rewards/my_rewards.html:83
+#: app/templates/rewards/my_rewards.html:89
+#: app/templates/rewards/my_rewards.html:95
+msgid "What it means"
+msgstr "Ce înseamnă"
+
+#: app/templates/rewards/my_rewards.html:84
+msgid ""
+"Your redemption is being processed. Please allow some time for our team "
+"to fulfill your request."
+msgstr ""
+"Răscumpărarea ta este în curs de procesare. Te rugăm să acorzi ceva timp "
+"echipei noastre pentru a îndeplini cererea ta."
+
+#: app/templates/rewards/my_rewards.html:90
+msgid ""
+"Your reward has been delivered or is ready for pickup. Check your email "
+"for further instructions."
+msgstr ""
+"Recompensa ta a fost livrată sau este gata de ridicare. Verifică e-mailul"
+" pentru instrucțiuni suplimentare."
+
+#: app/templates/rewards/my_rewards.html:96
+msgid ""
+"The redemption was cancelled. This could be due to unavailability or "
+"issues with the redemption."
+msgstr ""
+"Răscumpărarea a fost anulată. Aceasta se poate datora indisponibilității "
+"sau problemelor cu răscumpărarea."
+
+#: app/templates/surveys/detail.html:3
+msgid "Survey"
+msgstr "Sondaj"
+
+#: app/templates/surveys/detail.html:23
+msgid "About this survey"
+msgstr "Despre acest sondaj"
+
+#: app/templates/surveys/detail.html:28 app/templates/surveys/list.html:30
+msgid "Available until"
+msgstr "Disponibil până la"
+
+#: app/templates/surveys/detail.html:37
+msgid "Estimated time"
+msgstr "Timp estimat"
+
+#: app/templates/surveys/detail.html:37
+msgid "minutes"
+msgstr "minute"
+
+#: app/templates/surveys/detail.html:45
+msgid "Instructions"
+msgstr "Instrucțiuni"
+
+#: app/templates/surveys/detail.html:47
+msgid "Click the \"Start Survey\" button below to open the survey."
+msgstr "Apasă butonul „Începe sondajul” de mai jos pentru a deschide sondajul."
+
+#: app/templates/surveys/detail.html:48
+msgid "Complete all questions in the survey."
+msgstr "Completează toate întrebările din sondaj."
+
+#: app/templates/surveys/detail.html:49
+msgid "Submit your responses at the end of the survey."
+msgstr "Trimite răspunsurile la finalul sondajului."
+
+#: app/templates/surveys/detail.html:50
+msgid "Return to this page and click \"Mark as Completed\" to earn your points."
+msgstr ""
+"Revenind la această pagină și apasă „Marchează ca finalizat” pentru a "
+"câștiga punctele."
+
+#: app/templates/surveys/detail.html:54
+msgid ""
+"Your responses are important to us. Please answer all questions honestly "
+"and completely."
+msgstr ""
+"Răspunsurile tale sunt importante pentru noi. Te rugăm să răspunzi la "
+"toate întrebările sincer și complet."
+
+#: app/templates/surveys/detail.html:59
+msgid "Start Survey"
+msgstr "Începe sondajul"
+
+#: app/templates/surveys/detail.html:63
+msgid "Mark as Completed"
+msgstr "Marchează ca finalizat"
+
+#: app/templates/surveys/detail.html:77
+msgid "Confirm Survey Completion"
+msgstr "Confirmă finalizarea sondajului"
+
+#: app/templates/surveys/detail.html:81
+msgid "To confirm that you've completed the survey, please click on this button."
+msgstr "Pentru a confirma că ai completat sondajul, te rugăm să apeși acest buton."
+
+#: app/templates/surveys/detail.html:82
+msgid "Make sure that all the questions are finished"
+msgstr "Asigură-te că toate întrebările sunt finalizate"
+
+#: app/templates/surveys/detail.html:91
+msgid "Confirm Completion"
+msgstr "Confirmă finalizarea"
+
+#: app/templates/surveys/list.html:11
+msgid "Complete surveys to earn points and redeem rewards."
+msgstr "Completează sondaje pentru a câștiga puncte și a răscumpăra recompense."
+
+# Common words
+#: app/templates/surveys/list.html:22
+#, fuzzy
+msgid "pts"
+msgstr "puncte"
+
+#: app/templates/surveys/list.html:32
+msgid "Always available"
+msgstr "Întotdeauna disponibil"
+
+#: app/templates/surveys/list.html:37
+msgid "min"
+msgstr "min"
+
+#: app/templates/surveys/list.html:44
+msgid "Take Survey"
+msgstr "Completează sondajul"
+
+#: app/templates/surveys/list.html:55
+msgid "No surveys available right now"
+msgstr "Momentan nu sunt sondaje disponibile"
+
+#: app/templates/surveys/list.html:56
+msgid "Check back later for new survey opportunities."
+msgstr "Verifică mai târziu pentru noi oportunități de sondare."
+
+# General
+#~ msgid "PATTERNX"
+#~ msgstr "PATTERNX"
+
+#~ msgid "Survey Platform - Home"
+#~ msgstr "Platforma de Sondaje - Acasă"
+
+#~ msgid "Welcome to Survey Platform"
+#~ msgstr "Bine ați venit la Platforma de Sondaje"
+
+# Navigation
+#~ msgid "Dashboard"
+#~ msgstr "Panou de Control"
+
+#~ msgid "Surveys"
+#~ msgstr "Sondaje"
+
+#~ msgid "Rewards"
+#~ msgstr "Recompense"
+
+#~ msgid "My Rewards"
+#~ msgstr "Recompensele Mele"
+
+#~ msgid "Admin"
+#~ msgstr "Admin"
+
+#~ msgid "Logout"
+#~ msgstr "Deconectare"
+
+#~ msgid "Login"
+#~ msgstr "Autentificare"
+
+#~ msgid "Register"
+#~ msgstr "Înregistrare"
+
+#~ msgid "Privacy Policy"
+#~ msgstr "Politica de Confidențialitate"
+
+#~ msgid "Terms of Service"
+#~ msgstr "Termeni și Condiții"
+
+#~ msgid "Contact"
+#~ msgstr "Contact"
+
+#~ msgid "pts"
+#~ msgstr "pct"
+
+#~ msgid "Cancel"
+#~ msgstr "Anulează"
+
+#~ msgid "Submit"
+#~ msgstr "Trimite"
+
+#~ msgid "Edit"
+#~ msgstr "Editează"
+
+#~ msgid "View Details"
+#~ msgstr "Vezi Detalii"
+
+#~ msgid "Date"
+#~ msgstr "Data"
+
+#~ msgid "Status"
+#~ msgstr "Stare"
+
+# Authentication
+#~ msgid "Email"
+#~ msgstr "Email"
+
+#~ msgid "Password"
+#~ msgstr "Parolă"
+
+#~ msgid "Remember Me"
+#~ msgstr "Ține-mă minte"
+
+#~ msgid "Log In"
+#~ msgstr "Autentificare"
+
+#~ msgid "Don't have an account?"
+#~ msgstr "Nu ai cont?"
+
+#~ msgid "Register here"
+#~ msgstr "Înregistrează-te aici"
+
+#~ msgid "Username"
+#~ msgstr "Nume utilizator"
+
+#~ msgid "First Name"
+#~ msgstr "Prenume"
+
+#~ msgid "Last Name"
+#~ msgstr "Nume"
+
+#~ msgid "Confirm Password"
+#~ msgstr "Confirmare parolă"
+
+#~ msgid "Already have an account?"
+#~ msgstr "Ai deja un cont?"
+
+#~ msgid "Login here"
+#~ msgstr "Autentifică-te aici"
+
+#~ msgid "Please log in to access this page."
+#~ msgstr "Te rugăm să te autentifici pentru a accesa această pagină."
+
+#~ msgid "Registration successful! You can now log in."
+#~ msgstr "Înregistrare reușită! Acum te poți autentifica."
+
+#~ msgid "You have been logged out."
+#~ msgstr "Ai fost deconectat."
+
+#~ msgid "Current Password"
+#~ msgstr "Parola actuală"
+
+#~ msgid "New Password"
+#~ msgstr "Parolă nouă"
+
+#~ msgid "Confirm New Password"
+#~ msgstr "Confirmă parola nouă"
+
+#~ msgid "Change Password"
+#~ msgstr "Schimbă parola"
+
+#~ msgid "Passwords must match."
+#~ msgstr "Parolele trebuie să coincidă."
+
+#~ msgid "Username already in use. Please choose a different one."
+#~ msgstr "Numele de utilizator este deja folosit. Te rugăm să alegi altul."
+
+#~ msgid "Email already registered. Please use a different one or log in."
+#~ msgstr ""
+#~ "Email-ul este deja înregistrat. Te "
+#~ "rugăm să folosești altul sau să te"
+#~ " autentifici."
+
+#~ msgid "Current password is incorrect."
+#~ msgstr "Parola actuală este incorectă."
+
+#~ msgid "Update Profile"
+#~ msgstr "Actualizează profil"
+
+# Dashboard/Home
+#~ msgid "Take Surveys, Earn Rewards"
+#~ msgstr "Completează Sondaje, Câștigă Recompense"
+
+#~ msgid ""
+#~ "Join our platform to complete surveys"
+#~ " and earn points that can be "
+#~ "redeemed for amazing rewards."
+#~ msgstr ""
+#~ "Înscrie-te pe platforma noastră pentru"
+#~ " a completa sondaje și a câștiga "
+#~ "puncte care pot fi schimbate pentru "
+#~ "recompense grozave."
+
+#~ msgid "Sign Up"
+#~ msgstr "Înregistrare"
+
+#~ msgid "Get Started"
+#~ msgstr "Începe"
+
+#~ msgid "Complete Surveys"
+#~ msgstr "Completează Sondaje"
+
+#~ msgid "Browse and complete available surveys on topics that matter to you."
+#~ msgstr ""
+#~ "Navighează și completează sondajele "
+#~ "disponibile pe teme care contează pentru"
+#~ " tine."
+
+#~ msgid "Earn Points"
+#~ msgstr "Câștigă Puncte"
+
+#~ msgid "Get rewarded with points for every survey you complete successfully."
+#~ msgstr "Primește puncte pentru fiecare sondaj completat cu succes."
+
+#~ msgid "Redeem Rewards"
+#~ msgstr "Revendică Recompense"
+
+#~ msgid "Exchange your earned points for exciting rewards and benefits."
+#~ msgstr "Schimbă punctele câștigate pentru recompense și beneficii interesante."
+
+#~ msgid "Platform Statistics"
+#~ msgstr "Statistici Platformă"
+
+#~ msgid "Active Surveys"
+#~ msgstr "Sondaje Active"
+
+#~ msgid "Registered Users"
+#~ msgstr "Utilizatori Înregistrați"
+
+#~ msgid "Surveys Completed"
+#~ msgstr "Sondaje Completate"
+
+#~ msgid "Available Surveys"
+#~ msgstr "Sondaje Disponibile"
+
+#~ msgid "Return to Dashboard"
+#~ msgstr "Înapoi la Panoul de Control"
+
+# Surveys
+#~ msgid "Survey"
+#~ msgstr "Sondaj"
+
+#~ msgid "Complete surveys to earn points and redeem rewards."
+#~ msgstr "Completează sondaje pentru a câștiga puncte și a revendica recompense."
+
+#~ msgid "Take Survey"
+#~ msgstr "Completează Sondajul"
+
+#~ msgid "Available until"
+#~ msgstr "Disponibil până la"
+
+#~ msgid "Always available"
+#~ msgstr "Mereu disponibil"
+
+#~ msgid "min"
+#~ msgstr "min"
+
+#~ msgid "minutes"
+#~ msgstr "minute"
+
+#~ msgid "About this survey"
+#~ msgstr "Despre acest sondaj"
+
+#~ msgid "Reward"
+#~ msgstr "Recompensă"
+
+#~ msgid "Estimated time"
+#~ msgstr "Timp estimat"
+
+#~ msgid "Instructions"
+#~ msgstr "Instrucțiuni"
+
+#~ msgid "Click the \"Start Survey\" button below to open the survey."
+#~ msgstr ""
+#~ "Apasă butonul \"Începe Sondajul\" de mai"
+#~ " jos pentru a deschide sondajul."
+
+#~ msgid "Complete all questions in the survey."
+#~ msgstr "Completează toate întrebările din sondaj."
+
+#~ msgid "Submit your responses at the end of the survey."
+#~ msgstr "Trimite răspunsurile tale la sfârșitul sondajului."
+
+#~ msgid ""
+#~ "Return to this page and click "
+#~ "\"Mark as Completed\" to earn your "
+#~ "points."
+#~ msgstr ""
+#~ "Revino la această pagină și apasă "
+#~ "\"Marchează ca Finalizat\" pentru a "
+#~ "primi punctele."
+
+#~ msgid ""
+#~ "Your responses are important to us. "
+#~ "Please answer all questions honestly and"
+#~ " completely."
+#~ msgstr ""
+#~ "Răspunsurile tale sunt importante pentru "
+#~ "noi. Te rugăm să răspunzi onest și"
+#~ " complet la toate întrebările."
+
+#~ msgid "Start Survey"
+#~ msgstr "Începe Sondajul"
+
+#~ msgid "Mark as Completed"
+#~ msgstr "Marchează ca Finalizat"
+
+#~ msgid "Confirm Survey Completion"
+#~ msgstr "Confirmă Finalizarea Sondajului"
+
+#~ msgid ""
+#~ "To confirm that you've completed the "
+#~ "survey, please click on this button."
+#~ msgstr ""
+#~ "Pentru a confirma că ai finalizat "
+#~ "sondajul, te rugăm să apeși acest "
+#~ "buton."
+
+#~ msgid "Make sure that all the questions are finished"
+#~ msgstr "Asigură-te că toate întrebările sunt finalizate"
+
+#~ msgid "Confirm Completion"
+#~ msgstr "Confirmă Finalizarea"
+
+#~ msgid "No surveys available right now"
+#~ msgstr "Nu există sondaje disponibile în acest moment"
+
+#~ msgid "Check back later for new survey opportunities."
+#~ msgstr "Revino mai târziu pentru noi oportunități de sondaje."
+
+# Rewards
+#~ msgid "Available Rewards"
+#~ msgstr "Recompense Disponibile"
+
+#~ msgid "Redeem your points for these exciting rewards."
+#~ msgstr "Schimbă punctele tale pentru aceste recompense interesante."
+
+#~ msgid "Your Points"
+#~ msgstr "Punctele Tale"
+
+#~ msgid "Redeem"
+#~ msgstr "Revendică"
+
+#~ msgid "Not Enough Points"
+#~ msgstr "Puncte Insuficiente"
+
+#~ msgid "Your Available Points"
+#~ msgstr "Punctele Tale Disponibile"
+
+#~ msgid "Description"
+#~ msgstr "Descriere"
+
+#~ msgid "Limited availability"
+#~ msgstr "Disponibilitate limitată"
+
+#~ msgid "Only"
+#~ msgstr "Doar"
+
+#~ msgid "left"
+#~ msgstr "rămase"
+
+#~ msgid "Redemption Instructions"
+#~ msgstr "Instrucțiuni de Revendicare"
+
+#~ msgid "Verify you have enough points"
+#~ msgstr "Verifică dacă ai suficiente puncte"
+
+#~ msgid "Click the \"Redeem Now\" button below."
+#~ msgstr "Apasă butonul \"Revendică Acum\" de mai jos."
+
+#~ msgid "Confirm your redemption."
+#~ msgstr "Confirmă revendicarea ta."
+
+#~ msgid "Your reward status will be updated in \"My Rewards\" section."
+#~ msgstr ""
+#~ "Starea recompensei tale va fi "
+#~ "actualizată în secțiunea \"Recompensele "
+#~ "Mele\"."
+
+#~ msgid "Redeem Now"
+#~ msgstr "Revendică Acum"
+
+#~ msgid "Earn More Points"
+#~ msgstr "Câștigă Mai Multe Puncte"
+
+#~ msgid "Confirm Redemption"
+#~ msgstr "Confirmă Revendicarea"
+
+#~ msgid "You are about to redeem this reward for"
+#~ msgstr "Ești pe cale să revendici această recompensă pentru"
+
+#~ msgid "Your current points"
+#~ msgstr "Punctele tale actuale"
+
+#~ msgid "After redemption"
+#~ msgstr "După revendicare"
+
+#~ msgid "No rewards available right now"
+#~ msgstr "Nu există recompense disponibile în acest moment"
+
+#~ msgid "Check back later for new reward opportunities."
+#~ msgstr "Revino mai târziu pentru noi oportunități de recompense."
+
+# My Rewards
+#~ msgid "Track the status of your redeemed rewards."
+#~ msgstr "Urmărește starea recompenselor revendicate."
+
+#~ msgid "Redemption History"
+#~ msgstr "Istoric Revendicări"
+
+#~ msgid "Points Spent"
+#~ msgstr "Puncte Cheltuite"
+
+#~ msgid "Pending"
+#~ msgstr "În așteptare"
+
+#~ msgid "Completed"
+#~ msgstr "Finalizat"
+
+#~ msgid "Cancelled"
+#~ msgstr "Anulat"
+
+#~ msgid "No rewards redeemed yet"
+#~ msgstr "Nu ai revendicat încă nicio recompensă"
+
+#~ msgid "You haven't redeemed any rewards yet."
+#~ msgstr "Nu ai revendicat încă nicio recompensă."
+
+#~ msgid "Browse Rewards"
+#~ msgstr "Explorează Recompense"
+
+#~ msgid "Status Information"
+#~ msgstr "Informații despre Stare"
+
+#~ msgid "What it means"
+#~ msgstr "Ce înseamnă"
+
+#~ msgid ""
+#~ "Your redemption is being processed. "
+#~ "Please allow some time for our "
+#~ "team to fulfill your request."
+#~ msgstr ""
+#~ "Revendicarea ta este în curs de "
+#~ "procesare. Te rugăm să permiți echipei"
+#~ " noastre un timp pentru a îndeplini"
+#~ " cererea ta."
+
+#~ msgid ""
+#~ "Your reward has been delivered or "
+#~ "is ready for pickup. Check your "
+#~ "email for further instructions."
+#~ msgstr ""
+#~ "Recompensa ta a fost livrată sau "
+#~ "este pregătită pentru ridicare. Verifică "
+#~ "email-ul pentru instrucțiuni suplimentare."
+
+#~ msgid ""
+#~ "The redemption was cancelled. This could"
+#~ " be due to unavailability or issues"
+#~ " with the redemption."
+#~ msgstr ""
+#~ "Revendicarea a fost anulată. Acest lucru"
+#~ " ar putea fi din cauza "
+#~ "indisponibilității sau a problemelor cu "
+#~ "revendicarea."
+
+# Error Pages
+#~ msgid "Unauthorized"
+#~ msgstr "Neautorizat"
+
+#~ msgid "You are not authorized to access this page."
+#~ msgstr "Nu ești autorizat să accesezi această pagină."
+
+#~ msgid "Return to Home"
+#~ msgstr "Înapoi la Pagina Principală"
+
+#~ msgid "Page Not Found"
+#~ msgstr "Pagina Nu a Fost Găsită"
+
+#~ msgid "The page you're looking for doesn't exist or has been moved."
+#~ msgstr "Pagina pe care o cauți nu există sau a fost mutată."
+
+#~ msgid "Server Error"
+#~ msgstr "Eroare de Server"
+
+#~ msgid "Internal Server Error"
+#~ msgstr "Eroare Internă de Server"
+
+#~ msgid "Something went wrong on our end. Please try again later."
+#~ msgstr ""
+#~ "Ceva nu a funcționat corect la "
+#~ "noi. Te rugăm să încerci din nou"
+#~ " mai târziu."
+
+#~ msgid "{editor}: Editing failed"
+#~ msgstr ""
+
+#~ msgid "{editor}: Editing failed: {e}"
+#~ msgstr ""
+
+#~ msgid "Aborted!"
+#~ msgstr ""
+
+#~ msgid "(Deprecated) {text}"
+#~ msgstr ""
+
+#~ msgid "Got unexpected extra argument ({args})"
+#~ msgid_plural "Got unexpected extra arguments ({args})"
+#~ msgstr[0] ""
+#~ msgstr[1] ""
+#~ msgstr[2] ""
+
+#~ msgid "DeprecationWarning: The command {name!r} is deprecated."
+#~ msgstr ""
+
+#~ msgid "Commands"
+#~ msgstr ""
+
+#~ msgid "Missing command."
+#~ msgstr ""
+
+#~ msgid "No such command {name!r}."
+#~ msgstr ""
+
+#~ msgid "Value must be an iterable."
+#~ msgstr ""
+
+#~ msgid "Takes {nargs} values but 1 was given."
+#~ msgid_plural "Takes {nargs} values but {len} were given."
+#~ msgstr[0] ""
+#~ msgstr[1] ""
+#~ msgstr[2] ""
+
+#~ msgid "env var: {var}"
+#~ msgstr ""
+
+#~ msgid "(dynamic)"
+#~ msgstr ""
+
+#~ msgid "default: {default}"
+#~ msgstr ""
+
+#~ msgid "%(prog)s, version %(version)s"
+#~ msgstr ""
+
+#~ msgid "Show the version and exit."
+#~ msgstr ""
+
+#~ msgid "Show this message and exit."
+#~ msgstr ""
+
+#~ msgid "Error: {message}"
+#~ msgstr ""
+
+#~ msgid "Try '{command} {option}' for help."
+#~ msgstr ""
+
+#~ msgid "Invalid value: {message}"
+#~ msgstr ""
+
+#~ msgid "Invalid value for {param_hint}: {message}"
+#~ msgstr ""
+
+#~ msgid "Missing argument"
+#~ msgstr ""
+
+#~ msgid "Missing option"
+#~ msgstr ""
+
+#~ msgid "Missing parameter"
+#~ msgstr ""
+
+#~ msgid "Missing {param_type}"
+#~ msgstr ""
+
+#~ msgid "Missing parameter: {param_name}"
+#~ msgstr ""
+
+#~ msgid "No such option: {name}"
+#~ msgstr ""
+
+#~ msgid "Did you mean {possibility}?"
+#~ msgid_plural "(Possible options: {possibilities})"
+#~ msgstr[0] ""
+#~ msgstr[1] ""
+#~ msgstr[2] ""
+
+#~ msgid "unknown error"
+#~ msgstr ""
+
+#~ msgid "Could not open file {filename!r}: {message}"
+#~ msgstr ""
+
+#~ msgid "Usage:"
+#~ msgstr "Salvează"
+
+#~ msgid "Argument {name!r} takes {nargs} values."
+#~ msgstr ""
+
+#~ msgid "Option {name!r} does not take a value."
+#~ msgstr ""
+
+#~ msgid "Option {name!r} requires an argument."
+#~ msgid_plural "Option {name!r} requires {nargs} arguments."
+#~ msgstr[0] ""
+#~ msgstr[1] ""
+#~ msgstr[2] ""
+
+#~ msgid "Shell completion is not supported for Bash versions older than 4.4."
+#~ msgstr ""
+
+#~ msgid "Couldn't detect Bash version, shell completion is not supported."
+#~ msgstr ""
+
+#~ msgid "Error: The value you entered was invalid."
+#~ msgstr ""
+
+#~ msgid "Error: {e.message}"
+#~ msgstr ""
+
+#~ msgid "Error: The two entered values do not match."
+#~ msgstr ""
+
+#~ msgid "Error: invalid input"
+#~ msgstr ""
+
+#~ msgid "Press any key to continue..."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Choose from:\n"
+#~ "\t{choices}"
+#~ msgstr ""
+
+#~ msgid "{value!r} is not {choice}."
+#~ msgid_plural "{value!r} is not one of {choices}."
+#~ msgstr[0] ""
+#~ msgstr[1] ""
+#~ msgstr[2] ""
+
+#~ msgid "{value!r} does not match the format {format}."
+#~ msgid_plural "{value!r} does not match the formats {formats}."
+#~ msgstr[0] ""
+#~ msgstr[1] ""
+#~ msgstr[2] ""
+
+#~ msgid "{value!r} is not a valid {number_type}."
+#~ msgstr ""
+
+#~ msgid "{value} is not in the range {range}."
+#~ msgstr ""
+
+#~ msgid "{value!r} is not a valid boolean."
+#~ msgstr ""
+
+#~ msgid "{value!r} is not a valid UUID."
+#~ msgstr ""
+
+#~ msgid "directory"
+#~ msgstr ""
+
+#~ msgid "path"
+#~ msgstr ""
+
+#~ msgid "{name} {filename!r} does not exist."
+#~ msgstr ""
+
+#~ msgid "{name} {filename!r} is a file."
+#~ msgstr ""
+
+#~ msgid "{name} {filename!r} is a directory."
+#~ msgstr ""
+
+#~ msgid "{name} {filename!r} is not readable."
+#~ msgstr ""
+
+#~ msgid "{name} {filename!r} is not writable."
+#~ msgstr ""
+
+#~ msgid "{name} {filename!r} is not executable."
+#~ msgstr ""
+
+#~ msgid "{len_type} values are required, but {len_value} was given."
+#~ msgid_plural "{len_type} values are required, but {len_value} were given."
+#~ msgstr[0] ""
+#~ msgstr[1] ""
+#~ msgstr[2] ""
+
+#~ msgid "Cli: Invalid command."
+#~ msgstr ""
+
+#~ msgid "File required."
+#~ msgstr "necesar"
+
+#~ msgid "Invalid file type."
+#~ msgstr ""
+
+#~ msgid "Invalid name"
+#~ msgstr ""
+
+#~ msgid "File \"%(name)s\" already exists."
+#~ msgstr ""
+
+#~ msgid "Permission denied."
+#~ msgstr ""
+
+#~ msgid "File uploading is disabled."
+#~ msgstr ""
+
+#~ msgid "Successfully saved file: %(name)s"
+#~ msgstr ""
+
+#~ msgid "Failed to save file: %(error)s"
+#~ msgstr ""
+
+#~ msgid "Upload File"
+#~ msgstr "Profil"
+
+#~ msgid "Directory creation is disabled."
+#~ msgstr ""
+
+#~ msgid "Successfully created directory: %(directory)s"
+#~ msgstr ""
+
+#~ msgid "Failed to create directory: %(error)s"
+#~ msgstr ""
+
+#~ msgid "Create Directory"
+#~ msgstr ""
+
+#~ msgid "Deletion is disabled."
+#~ msgstr ""
+
+#~ msgid "Directory deletion is disabled."
+#~ msgstr ""
+
+#~ msgid "Directory \"%(path)s\" was successfully deleted."
+#~ msgstr ""
+
+#~ msgid "Failed to delete directory: %(error)s"
+#~ msgstr ""
+
+#~ msgid "File \"%(name)s\" was successfully deleted."
+#~ msgstr ""
+
+#~ msgid "Failed to delete file: %(name)s"
+#~ msgstr ""
+
+#~ msgid "Renaming is disabled."
+#~ msgstr ""
+
+#~ msgid "Path does not exist."
+#~ msgstr ""
+
+#~ msgid "Successfully renamed \"%(src)s\" to \"%(dst)s\""
+#~ msgstr ""
+
+#~ msgid "Failed to rename: %(error)s"
+#~ msgstr ""
+
+#~ msgid "Rename %(name)s"
+#~ msgstr ""
+
+#~ msgid "Error saving changes to %(name)s."
+#~ msgstr ""
+
+#~ msgid "Changes to %(name)s saved successfully."
+#~ msgstr ""
+
+#~ msgid "Error reading %(name)s."
+#~ msgstr ""
+
+#~ msgid "Unexpected error while reading from %(name)s"
+#~ msgstr ""
+
+#~ msgid "Cannot edit %(name)s."
+#~ msgstr ""
+
+#~ msgid "Editing %(path)s"
+#~ msgstr ""
+
+#~ msgid "File deletion is disabled."
+#~ msgstr ""
+
+#~ msgid "Cannot operate on non empty directories"
+#~ msgstr ""
+
+#~ msgid "Failed to get model. %(error)s"
+#~ msgstr ""
+
+#~ msgid "Failed to create record. %(error)s"
+#~ msgstr ""
+
+#~ msgid "Failed to update record. %(error)s"
+#~ msgstr ""
+
+#~ msgid "Failed to delete record. %(error)s"
+#~ msgstr ""
+
+#~ msgid "Record was successfully deleted."
+#~ msgid_plural "%(count)s records were successfully deleted."
+#~ msgstr[0] ""
+#~ msgstr[1] ""
+#~ msgstr[2] ""
+
+#~ msgid "Failed to delete records. %(error)s"
+#~ msgstr ""
+
+#~ msgid "Not a valid choice"
+#~ msgstr ""
+
+#~ msgid "Already exists."
+#~ msgstr ""
+
+#~ msgid "At least %(num)d item is required"
+#~ msgid_plural "At least %(num)d items are required"
+#~ msgstr[0] ""
+#~ msgstr[1] ""
+#~ msgstr[2] ""
+
+#~ msgid "Not a valid ISO currency code (e.g. USD, EUR, CNY)."
+#~ msgstr ""
+
+#~ msgid "Not a valid color (e.g. \"red\", \"#f00\", \"#ff0000\")."
+#~ msgstr ""
+
+#~ msgid "Integrity error. %(message)s"
+#~ msgstr ""
+
+#~ msgid "Invalid time format"
+#~ msgstr ""
+
+#~ msgid "Invalid Choice: could not coerce"
+#~ msgstr ""
+
+#~ msgid "Invalid JSON"
+#~ msgstr ""
+
+#~ msgid "Invalid file extension"
+#~ msgstr ""
+
+#~ msgid "File \"%s\" already exists."
+#~ msgstr ""
+
+#~ msgid "This field requires at least one item."
+#~ msgstr ""
+
+#~ msgid "There are no items in the table."
+#~ msgstr ""
+
+#~ msgid "Invalid Filter Value: %(value)s"
+#~ msgstr ""
+
+#~ msgid "Record was successfully created."
+#~ msgstr ""
+
+#~ msgid "Record does not exist."
+#~ msgstr ""
+
+#~ msgid "Record was successfully saved."
+#~ msgstr ""
+
+#~ msgid "Tablib dependency not installed."
+#~ msgstr ""
+
+#~ msgid "Export type \"%(type)s not supported."
+#~ msgstr ""
+
+#~ msgid "Edit Record"
+#~ msgstr ""
+
+#~ msgid "Delete Record"
+#~ msgstr "Șterge"
+
+#~ msgid "Please select model"
+#~ msgstr ""
+
+#~ msgid "No"
+#~ msgstr ""
+
+#~ msgid "Yes"
+#~ msgstr ""
+
+#~ msgid "This field is required."
+#~ msgstr ""
+
+#~ msgid "File does not have an approved extension: {extensions}"
+#~ msgstr ""
+
+#~ msgid "File does not have an approved extension."
+#~ msgstr ""
+
+#~ msgid "Invalid field name '%s'."
+#~ msgstr ""
+
+#~ msgid "Field must be equal to %(other_name)s."
+#~ msgstr ""
+
+#~ msgid "Field must be at least %(min)d character long."
+#~ msgid_plural "Field must be at least %(min)d characters long."
+#~ msgstr[0] ""
+#~ msgstr[1] ""
+#~ msgstr[2] ""
+
+#~ msgid "Field cannot be longer than %(max)d character."
+#~ msgid_plural "Field cannot be longer than %(max)d characters."
+#~ msgstr[0] ""
+#~ msgstr[1] ""
+#~ msgstr[2] ""
+
+#~ msgid "Field must be exactly %(max)d character long."
+#~ msgid_plural "Field must be exactly %(max)d characters long."
+#~ msgstr[0] ""
+#~ msgstr[1] ""
+#~ msgstr[2] ""
+
+#~ msgid "Field must be between %(min)d and %(max)d characters long."
+#~ msgstr ""
+
+#~ msgid "Number must be at least %(min)s."
+#~ msgstr ""
+
+#~ msgid "Number must be at most %(max)s."
+#~ msgstr ""
+
+#~ msgid "Number must be between %(min)s and %(max)s."
+#~ msgstr ""
+
+#~ msgid "Invalid input."
+#~ msgstr ""
+
+#~ msgid "Invalid email address."
+#~ msgstr "Email sau parolă invalidă."
+
+#~ msgid "Invalid IP address."
+#~ msgstr ""
+
+#~ msgid "Invalid Mac address."
+#~ msgstr "Email sau parolă invalidă."
+
+#~ msgid "Invalid URL."
+#~ msgstr ""
+
+#~ msgid "Invalid UUID."
+#~ msgstr ""
+
+#~ msgid "Invalid value, must be one of: %(values)s."
+#~ msgstr ""
+
+#~ msgid "Invalid value, can't be any of: %(values)s."
+#~ msgstr ""
+
+#~ msgid "This field cannot be edited."
+#~ msgstr "Această acțiune nu poate fi anulată."
+
+#~ msgid "This field is disabled and cannot have a value."
+#~ msgstr ""
+
+#~ msgid "Invalid CSRF Token."
+#~ msgstr ""
+
+#~ msgid "CSRF token missing."
+#~ msgstr ""
+
+#~ msgid "CSRF failed."
+#~ msgstr ""
+
+#~ msgid "CSRF token expired."
+#~ msgstr ""
+
+#~ msgid "Invalid Choice: could not coerce."
+#~ msgstr ""
+
+#~ msgid "Not a valid choice."
+#~ msgstr ""
+
+#~ msgid "Invalid choice(s): one or more data inputs could not be coerced."
+#~ msgstr ""
+
+#~ msgid "'%(value)s' is not a valid choice for this field."
+#~ msgid_plural "'%(value)s' are not valid choices for this field."
+#~ msgstr[0] ""
+#~ msgstr[1] ""
+#~ msgstr[2] ""
+
+#~ msgid "Not a valid datetime value."
+#~ msgstr ""
+
+#~ msgid "Not a valid date value."
+#~ msgstr ""
+
+#~ msgid "Not a valid time value."
+#~ msgstr ""
+
+#~ msgid "Not a valid week value."
+#~ msgstr ""
+
+#~ msgid "Not a valid integer value."
+#~ msgstr ""
+
+#~ msgid "Not a valid decimal value."
+#~ msgstr ""
+
+#~ msgid "Not a valid float value."
+#~ msgstr ""
+

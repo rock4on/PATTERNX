@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, current_app
+from flask import Blueprint, render_template, current_app, session, redirect,request, url_for
 from flask_login import login_required, current_user
 
 from app.models.survey import Survey
@@ -20,6 +20,14 @@ def index():
         active_surveys_count=active_surveys_count
     )
 
+@main_blueprint.route('/language/<language>')
+def set_language(language):
+    """Set the session language."""
+    if language not in ['en', 'ro']:
+        language = 'ro'
+    session['language'] = language
+    print(language)
+    return redirect(request.referrer)
 
 @main_blueprint.route('/dashboard')
 @login_required
@@ -30,6 +38,7 @@ def dashboard():
     
     # Get points summary
     points_summary = PointsService.get_user_points_summary(current_user.id)
+
     # Get recent points history
     points_history = PointsService.get_user_points_history(current_user.id)[:5]
     

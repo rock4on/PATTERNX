@@ -18,6 +18,10 @@ class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     WTF_CSRF_ENABLED = True
 
+    BABEL_DEFAULT_LOCALE = 'en'
+    BABEL_SUPPORTED_LOCALES = ['en', 'ro']
+    BABEL_TRANSLATION_DIRECTORIES = 'app/translations'
+
     # LimeSurvey settings
     LIMESURVEY_URL = os.environ.get('LIMESURVEY_URL')
     LIMESURVEY_USERNAME = os.environ.get('LIMESURVEY_USERNAME')

@@ -1,14 +1,14 @@
 {% extends "base.html" %}
 
-{% block title %}Survey: {{ survey.title }}{% endblock %}
+{% block title %}{{ _('Survey') }}: {{ survey.title }}{% endblock %}
 
 {% block content %}
 <div class="row justify-content-center">
     <div class="col-md-10">
         <nav aria-label="breadcrumb" class="mb-4">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ url_for('main.dashboard') }}">Dashboard</a></li>
-                <li class="breadcrumb-item"><a href="{{ url_for('surveys.index') }}">Surveys</a></li>
+                <li class="breadcrumb-item"><a href="{{ url_for('main.dashboard') }}">{{ _('Dashboard') }}</a></li>
+                <li class="breadcrumb-item"><a href="{{ url_for('surveys.index') }}">{{ _('Surveys') }}</a></li>
                 <li class="breadcrumb-item active">{{ survey.title }}</li>
             </ol>
         </nav>
@@ -20,21 +20,21 @@
             <div class="card-body p-4">
                 <div class="row mb-4">
                     <div class="col-md-8">
-                        <h5 class="card-title">About this survey</h5>
+                        <h5 class="card-title">{{ _('About this survey') }}</h5>
                         <p class="card-text">{{ survey.description }}</p>
                         
                         {% if survey.end_date %}
                             <p class="text-muted">
-                                <i class="fas fa-calendar-alt me-2"></i> Available until: {{ survey.end_date.strftime('%Y-%m-%d') }}
+                                <i class="fas fa-calendar-alt me-2"></i> {{ _('Available until') }}: {{ format_date_localized(survey.end_date) }}
                             </p>
                         {% endif %}
                     </div>
                     <div class="col-md-4 text-center border-start">
                         <div class="p-3">
-                            <h5>Reward</h5>
+                            <h5>{{ _('Reward') }}</h5>
                             <h2 class="display-4 text-primary">{{ survey.points_value }}</h2>
-                            <p class="text-muted">points</p>
-                            <p class="text-muted small">Estimated time: {{ (survey.points_value // 5) + 2 }} minutes</p>
+                            <p class="text-muted">{{ _('points') }}</p>
+                            <p class="text-muted small">{{ _('Estimated time') }}: {{ (survey.points_value // 5) + 2 }} {{ _('minutes') }}</p>
                         </div>
                     </div>
                 </div>
@@ -42,25 +42,25 @@
                 <hr>
                 
                 <div class="mt-4">
-                    <h5>Instructions</h5>
+                    <h5>{{ _('Instructions') }}</h5>
                     <ol class="list-group list-group-numbered mb-4">
-                        <li class="list-group-item">Click the "Start Survey" button below to open the survey.</li>
-                        <li class="list-group-item">Complete all questions in the survey.</li>
-                        <li class="list-group-item">Submit your responses at the end of the survey.</li>
-                        <li class="list-group-item">Return to this page and click "Mark as Completed" to earn your points.</li>
+                        <li class="list-group-item">{{ _('Click the "Start Survey" button below to open the survey.') }}</li>
+                        <li class="list-group-item">{{ _('Complete all questions in the survey.') }}</li>
+                        <li class="list-group-item">{{ _('Submit your responses at the end of the survey.') }}</li>
+                        <li class="list-group-item">{{ _('Return to this page and click "Mark as Completed" to earn your points.') }}</li>
                     </ol>
                     
                     <div class="alert alert-info">
-                        <i class="fas fa-info-circle me-2"></i> Your responses are important to us. Please answer all questions honestly and completely.
+                        <i class="fas fa-info-circle me-2"></i> {{ _('Your responses are important to us. Please answer all questions honestly and completely.') }}
                     </div>
                     
                     <div class="d-grid gap-3 mt-4">
                         <a href="{{ limesurvey_url }}" target="_blank" class="btn btn-primary btn-lg">
-                            <i class="fas fa-external-link-alt me-2"></i> Start Survey
+                            <i class="fas fa-external-link-alt me-2"></i> {{ _('Start Survey') }}
                         </a>
                         
                         <button type="button" class="btn btn-success btn-lg" data-bs-toggle="modal" data-bs-target="#completionModal">
-                            <i class="fas fa-check-circle me-2"></i> Mark as Completed
+                            <i class="fas fa-check-circle me-2"></i> {{ _('Mark as Completed') }}
                         </button>
                     </div>
                 </div>
@@ -74,12 +74,12 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title" id="completionModalLabel">Confirm Survey Completion</h5>
+                <h5 class="modal-title" id="completionModalLabel">{{ _('Confirm Survey Completion') }}</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p>To confirm that you've completed the survey, please click on this button.</p>
-                <p>Make sure that all the questions are finished</p>
+                <p>{{ _('To confirm that you\'ve completed the survey, please click on this button.') }}</p>
+                <p>{{ _('Make sure that all the questions are finished') }}</p>
                 
                 <form method="POST" action="{{ url_for('surveys.complete', survey_id=survey.id) }}">
                     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
@@ -88,13 +88,13 @@
                     </div>
                     <div class="d-grid">
                         <button type="submit" class="btn btn-success">
-                            <i class="fas fa-check-circle me-2"></i> Confirm Completion
+                            <i class="fas fa-check-circle me-2"></i> {{ _('Confirm Completion') }}
                         </button>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ _('Cancel') }}</button>
             </div>
         </div>
     </div>
