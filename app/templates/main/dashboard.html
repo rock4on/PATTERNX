@@ -1,184 +1,165 @@
 {% extends "base.html" %}
 
-{% block title %}{{ _('Welcome to Survey Platform') }}{% endblock %}
+{% block title %}{{ _('My Dashboard') }}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+{% endblock %}
 
 {% block content %}
-<div class="container py-5">
-    <div class="hero-section mb-5">
-        <div class="row align-items-center">
-            <div class="col-md-8">
-                <h1 class="fw-bold text-white">{{ _('Take Surveys, Earn Rewards') }}</h1>
-                <p class="lead text-white-50">{{ _('Join our platform to complete surveys and earn points that can be redeemed for amazing rewards.') }}</p>
-                <div class="d-flex gap-3">
-                    {% if current_user.is_authenticated %}
-                        <a href="{{ url_for('surveys.index') }}" class="btn btn-primary">
-                            <i class="fas fa-list me-2"></i> {{ _('Available Surveys') }}
-                        </a>
-                        <a href="{{ url_for('rewards.index') }}" class="btn btn-outline-light">
-                            <i class="fas fa-gift me-2"></i> {{ _('View Rewards') }}
-                        </a>
-                    {% else %}
-                        <a href="{{ url_for('auth.register') }}" class="btn btn-primary">
-                            <i class="fas fa-user-plus me-2"></i> {{ _('Get Started') }}
-                        </a>
-                        <a href="{{ url_for('auth.login') }}" class="btn btn-outline-light">
-                            <i class="fas fa-sign-in-alt me-2"></i> {{ _('Login') }}
-                        </a>
-                    {% endif %}
-                </div>
-            </div>
+<div class="dashboard-container py-4">
+    <section class="dashboard-header mb-5 animate-on-load">
+        <div class="d-flex align-items-center mb-2">
+            <i class="fas fa-tachometer-alt fa-2x text-primary me-3 animate-pulse-icon"></i>
+            <h1 class="display-5 fw-bold animate-slide-up mb-0">{{ _('Welcome back,') }} {{ current_user.first_name or current_user.username }}!</h1>
         </div>
-    </div>
+        <p class="lead text-muted animate-slide-up" style="animation-delay: 0.2s;">{{ _('Here’s an overview of your activity and available surveys.') }}</p>
+    </section>
 
-    <div class="row g-4">
-        <div class="col-md-4">
-            <div class="feature-card h-100">
-                <div class="icon">
-                    <i class="fas fa-list-alt"></i>
+    <section class="mb-5">
+        <div class="row g-xl-5 g-lg-4 g-md-4 g-3"> {# Spațiere mai mare pe ecrane mari #}
+            <div class="col-lg-7 col-md-12">
+                <div class="card dashboard-card points-summary-card hero-card h-100 animate-on-scroll shadow-lg">
+                    <div class="card-body p-4 p-lg-5">
+                        <div class="d-flex align-items-start mb-4">
+                            <div class="hero-card-icon bg-white text-primary me-3">
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <div>
+                                <h4 class="card-title mb-1 fw-bolder text-white">{{ _('Your Points Balance') }}</h4>
+                                <p class="text-white-75 mb-0 small">{{_('Track and manage your earnings')}}</p>
+                            </div>
+                        </div>
+                        <div class="row text-center my-4 align-items-baseline">
+                            <div class="col-sm-4 mb-3 mb-sm-0 points-segment">
+                                <p class="text-white-75 mb-1 small text-uppercase fw-medium">{{ _('Available') }}</p>
+                                <h2 class="fw-bolder text-white mb-0 display-4" data-count="{{ points_summary.available_points }}">0</h2>
+                            </div>
+                            <div class="col-sm-4 mb-3 mb-sm-0 points-segment-secondary">
+                                <p class="text-white-75 mb-1 small text-uppercase fw-medium">{{ _('Total Earned') }}</p>
+                                <h3 class="fw-bold text-white-75 mb-0 h1" data-count="{{ points_summary.total_points }}">0</h3>
+                            </div>
+                            <div class="col-sm-4 points-segment-secondary">
+                                <p class="text-white-75 mb-1 small text-uppercase fw-medium">{{ _('Spent') }}</p>
+                                <h3 class="fw-bold text-white-75 mb-0 h1" data-count="{{ points_summary.spent_points }}">0</h3>
+                            </div>
+                        </div>
+                        <div class="mt-4 pt-2 text-center">
+                            <a href="{{ url_for('auth.profile') }}#points-history" class="btn btn-sm btn-light-outline me-2 px-3 py-2"><i class="fas fa-history me-1"></i> {{ _('View History') }}</a>
+                            <a href="{{ url_for('rewards.index') }}" class="btn btn-sm btn-light px-3 py-2"><i class="fas fa-gift me-1"></i> {{ _('Redeem Rewards') }}</a>
+                        </div>
+                    </div>
                 </div>
-                <h4>{{ _('Complete Surveys') }}</h4>
-                <p class="text-muted">{{ _('Browse and complete available surveys on topics that matter to you.') }}</p>
+            </div>
+
+            <div class="col-lg-5 col-md-12">
+                <div class="card dashboard-card quick-actions-card h-100 animate-on-scroll" style="animation-delay: 0.1s;">
+                    <div class="card-body p-4">
+                         <div class="d-flex align-items-center mb-3">
+                            <div class="feature-icon-sm bg-accent text-white me-3">
+                                <i class="fas fa-bolt"></i>
+                            </div>
+                            <h5 class="card-title mb-0 fw-bold">{{ _('Quick Actions') }}</h5>
+                        </div>
+                        <div class="list-group list-group-flush mt-3">
+                            <a href="{{ url_for('surveys.index') }}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center quick-action-item">
+                                <span><i class="fas fa-poll fa-fw me-2 text-primary"></i>{{ _('Browse Available Surveys') }}</span>
+                                <i class="fas fa-arrow-right text-muted small"></i>
+                            </a>
+                            <a href="{{ url_for('rewards.index') }}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center quick-action-item">
+                                <span><i class="fas fa-gift fa-fw me-2 text-success"></i>{{ _('View Rewards Catalog') }}</span>
+                                <i class="fas fa-arrow-right text-muted small"></i>
+                            </a>
+                            <a href="{{ url_for('auth.profile') }}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center quick-action-item">
+                                <span><i class="fas fa-user-cog fa-fw me-2 text-info"></i>{{ _('Update Your Profile') }}</span>
+                                <i class="fas fa-arrow-right text-muted small"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="feature-card h-100">
-                <div class="icon">
-                    <i class="fas fa-coins"></i>
+    </section>
+
+    <section class="available-surveys-section mb-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="fw-bold section-title"><i class="fas fa-tasks me-2 text-primary-dark"></i>{{ _('Available Surveys') }}</h2>
+            {% if available_surveys and available_surveys|length > 3 %}
+            <a href="{{ url_for('surveys.index') }}" class="btn btn-sm btn-outline-primary see-all-link">{{ _('View All') }} <i class="fas fa-arrow-right small"></i></a>
+            {% endif %}
+        </div>
+        {% if available_surveys %}
+            <div class="row g-4">
+                {% for survey in available_surveys[:3] %}
+                <div class="col-lg-4 col-md-6">
+                    <a href="{{ url_for('surveys.detail', survey_id=survey.id) }}" class="text-decoration-none">
+                        <div class="card dashboard-card survey-card-display h-100 animate-on-scroll" style="animation-delay: {{ loop.index0 * 0.1 }}s;">
+                            <div class="card-body d-flex flex-column">
+                                <div class="mb-2">
+                                    <span class="badge bg-primary-soft text-primary-dark rounded-pill px-3 py-2 me-2"><i class="fas fa-star me-1"></i>{{ survey.points_value }} {{ _('pts') }}</span>
+                                    {# <span class="badge bg-info-soft text-info-dark rounded-pill px-3 py-2"><i class="fas fa-clock me-1"></i>{{ (survey.points_value // 5) + 2 }} {{ _('min') }}</span> #}
+                                </div>
+                                <h5 class="card-title fw-bold mb-2 mt-1 text-truncate-multiline" style="-webkit-line-clamp: 2;">{{ survey.title }}</h5>
+                                <p class="card-text small text-muted flex-grow-1 text-truncate-multiline" style="-webkit-line-clamp: 3;">{{ survey.description or _('No description available.') }}</p>
+                                <div class="mt-auto pt-3 survey-card-footer">
+                                    <span class="btn btn-sm btn-primary w-100">{{ _('Take Survey') }} <i class="fas fa-chevron-right small ms-1"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
                 </div>
-                <h4>{{ _('Earn Points') }}</h4>
-                <p class="text-muted">{{ _('Get rewarded with points for every survey you complete successfully.') }}</p>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="card dashboard-card animate-on-scroll shadow-sm">
+                <div class="card-body text-center py-5">
+                    <div class="mb-3">
+                        <i class="fas fa-folder-open fa-4x text-muted-light"></i>
+                    </div>
+                    <h5 class="fw-bold">{{ _('All caught up!') }}</h5>
+                    <p class="text-muted">{{ _('There are no new surveys available for you right now. Check back soon!') }}</p>
+                </div>
+            </div>
+        {% endif %}
+    </section>
+
+    {% if points_history %}
+    <section class="points-history-section">
+         <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="fw-bold section-title"><i class="fas fa-receipt me-2 text-primary-dark"></i>{{ _('Recent Activity') }}</h2>
+             {% if points_history|length > 5 %}
+            <a href="{{ url_for('auth.profile') }}#points-history" class="btn btn-sm btn-outline-primary see-all-link">{{ _('View All') }} <i class="fas fa-arrow-right small"></i></a>
+            {% endif %}
+        </div>
+        <div class="card dashboard-card animate-on-scroll shadow-sm">
+            <div class="card-body p-0">
+                <ul class="list-group list-group-flush">
+                    {% for point in points_history[:5] %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center py-3 px-3 activity-item">
+                        <div class="d-flex align-items-center">
+                            <div class="activity-icon {% if point.amount >= 0 %}bg-success-soft text-success{% else %}bg-danger-soft text-danger{% endif %} me-3">
+                                <i class="fas {% if point.amount >= 0 %}fa-arrow-up{% else %}fa-arrow-down{% endif %}"></i>
+                            </div>
+                            <div>
+                                <span class="fw-bold d-block">{{ point.description or _('Points transaction') }}</span>
+                                <small class="text-muted">{{ format_datetime_localized(point.created_at, format='medium') }} 
+                                    <span class="d-none d-sm-inline badge bg-light text-dark ms-1 fw-normal">{{ point.source|capitalize }}</span>
+                                </small>
+                            </div>
+                        </div>
+                        <span class="fw-bold fs-6 {% if point.amount >= 0 %}text-success-dark{% else %}text-danger-dark{% endif %}">
+                            {% if point.amount >= 0 %}+{% endif %}{{ point.amount }}
+                        </span>
+                    </li>
+                    {% endfor %}
+                </ul>
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="feature-card h-100">
-                <div class="icon">
-                    <i class="fas fa-gift"></i>
-                </div>
-                <h4>{{ _('Redeem Rewards') }}</h4>
-                <p class="text-muted">{{ _('Exchange your earned points for exciting rewards and benefits.') }}</p>
-            </div>
-        </div>
-    </div>
+    </section>
+    {% endif %}
 </div>
 {% endblock %}
 
-{% block extra_css %}
-<style>
-    :root {
-        --color-blue: #2196F3;
-        --color-green: #4CAF50;
-        --color-teal: #009688;
-        --color-yellow: #FFC107;
-        --bg-light: #f4f6f8;
-        --text-dark: #333;
-    }
-
-    body {
-        background-color: var(--bg-light);
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    }
-
-    .hero-section {
-        background: var(--primary-gradient);
-        color: white;
-        border-radius: 16px;
-        padding: 3rem 2rem;
-        box-shadow: 
-            0 15px 30px rgba(78, 115, 223, 0.2), 
-            0 8px 15px rgba(78, 115, 223, 0.15);
-        position: relative;
-        overflow: hidden;
-        margin-bottom: 2rem;
-    }
-
-    .hero-section::before {
-        content: '';
-        position: absolute;
-        top: -50%;
-        left: -50%;
-        width: 200%;
-        height: 200%;
-        background: radial-gradient(
-            circle at center, 
-            rgba(255,255,255,0.1) 0%, 
-            transparent 70%
-        );
-        animation: subtle-shine 5s infinite alternate;
-    }
-
-    @keyframes subtle-shine {
-        0% {
-            transform: rotate(0deg);
-        }
-        100% {
-            transform: rotate(360deg);
-        }
-    }
-
-    .hero-section h1 {
-        margin-bottom: 1rem;
-    }
-
-    .feature-card {
-        background: white;
-        border-radius: 16px;
-        padding: 2rem 1.5rem;
-        text-align: center;
-        box-shadow: 
-            0 10px 25px rgba(0,0,0,0.05), 
-            0 5px 15px rgba(0,0,0,0.03);
-        transition: transform var(--transition-speed), box-shadow var(--transition-speed);
-    }
-
-    .feature-card:hover {
-        transform: translateY(-10px);
-        box-shadow: 
-            0 15px 35px rgba(0,0,0,0.08), 
-            0 8px 20px rgba(0,0,0,0.06);
-    }
-
-    .feature-card .icon {
-        width: 80px;
-        height: 80px;
-        background: var(--secondary-gradient);
-        color: white;
-        border-radius: 16px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0 auto 1.5rem;
-        font-size: 2.5rem;
-        box-shadow: 
-            0 10px 25px rgba(111, 66, 193, 0.2), 
-            0 5px 15px rgba(111, 66, 193, 0.15);
-    }
-
-    .btn-primary {
-        background: var(--primary-gradient);
-        border: none;
-        border-radius: 12px;
-        padding: 0.75rem 1.5rem;
-        font-weight: 600;
-        transition: transform var(--transition-speed);
-    }
-
-    .btn-primary:hover {
-        transform: scale(1.05);
-        background: var(--primary-gradient);
-    }
-
-    .btn-outline-light {
-        border-radius: 12px;
-        border: 2px solid rgba(255,255,255,0.5);
-        color: white;
-        padding: 0.75rem 1.5rem;
-        font-weight: 600;
-        transition: all var(--transition-speed);
-    }
-
-    .btn-outline-light:hover {
-        background: white;
-        color: #4e73df;
-    }
-</style>
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/dashboard-animations.js') }}"></script>
 {% endblock %}

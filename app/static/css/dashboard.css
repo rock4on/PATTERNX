@@ -1,0 +1,251 @@
+/* app/static/css/dashboard.css */
+
+/* General Dashboard Enhancements */
+.dashboard-container {
+    max-width: 1200px; /* Puțin mai lat */
+    margin: auto;
+    padding-top: 2rem; /* Spațiu deasupra */
+    padding-bottom: 3rem; /* Spațiu dedesubt */
+}
+
+.dashboard-header .fa-tachometer-alt {
+    font-size: 2.5rem; /* Iconiță mai mare pentru header */
+}
+
+.section-title {
+    font-size: 1.85rem; /* Mărime uniformă pentru titlurile de secțiune */
+    color: var(--text-color);
+    position: relative;
+    padding-bottom: 0.5rem;
+}
+/* Linie subtilă sub titlurile de secțiune */
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 50px;
+    height: 3px;
+    background-color: var(--primary-color);
+    opacity: 0.6;
+    border-radius: 2px;
+}
+
+.see-all-link {
+    font-weight: 500;
+    color: var(--primary-color);
+    text-decoration: none;
+    border: 1px solid var(--primary-color);
+    padding: 0.3rem 0.8rem;
+    border-radius: 50px; /* Buton rotunjit */
+    transition: all 0.2s ease;
+}
+.see-all-link:hover {
+    background-color: var(--primary-color);
+    color: white;
+}
+.see-all-link i {
+    transition: transform 0.2s ease-in-out;
+}
+.see-all-link:hover i {
+    transform: translateX(4px);
+}
+
+/* Card Styling */
+.dashboard-card {
+    border: 1px solid #e9ecef; /* O bordură mai vizibilă și modernă */
+    border-radius: 1rem; /* Mai rotunjit */
+    transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
+    background-color: #ffffff; /* Fundal alb explicit */
+}
+.dashboard-card:hover {
+    transform: translateY(-8px) scale(1.01); /* Efect de ridicare și mărire ușoară */
+    box-shadow: 0 15px 35px rgba(var(--bs-primary-rgb), 0.1), 0 5px 15px rgba(0,0,0,0.07) !important;
+}
+.shadow-lg { /* Umbra mai puternică pentru cardul principal */
+    box-shadow: 0 1rem 3rem rgba(var(--bs-primary-rgb), 0.175) !important;
+}
+
+
+/* Hero Card / Points Summary Card */
+.hero-card { /* Fostul .gradient-card */
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+    color: #ffffff;
+    position: relative;
+    overflow: hidden; /* Pentru pseudo-elemente */
+}
+/* Efect subtil de pattern pe hero-card */
+.hero-card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-image:
+        radial-gradient(circle at 100% 0%, rgba(255,255,255,0.15) 0%, transparent 30%),
+        radial-gradient(circle at 0% 100%, rgba(255,255,255,0.1) 0%, transparent 25%);
+    opacity: 0.6;
+    pointer-events: none; /* Să nu interfereze cu click-urile */
+}
+
+.hero-card-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 18px; /* Puțin mai puțin rotunjit */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem; /* Ajustat */
+    flex-shrink: 0;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+.hero-card .card-title {
+    font-size: 1.3rem;
+}
+.points-segment .display-4 {
+    font-weight: 700 !important; /* Foarte bold pentru punctele principale */
+    transition: transform 0.3s ease;
+}
+.points-segment:hover .display-4 {
+    transform: scale(1.05);
+}
+.points-segment-secondary .h1 {
+    font-weight: 600 !important;
+    opacity: 0.85;
+}
+.hero-card .btn-light-outline, .hero-card .btn-light {
+    font-size: 0.9rem;
+    border-radius: 50px; /* Butoane rotunjite */
+    font-weight: 500;
+    transition: all 0.25s ease-out;
+}
+.hero-card .btn-light-outline:hover {
+    background-color: rgba(255,255,255,0.2);
+    transform: scale(1.05);
+}
+.hero-card .btn-light:hover {
+    background-color: #ffffff;
+    color: var(--accent-color); /* Sau var(--primary-color) */
+    transform: scale(1.05);
+}
+
+
+/* Quick Actions Card */
+.quick-actions-card .feature-icon-sm {
+    background: var(--accent-gradient) !important;
+}
+.quick-actions-card .list-group-item-action {
+    border-radius: 0.75rem; /* Consistent cu .dashboard-card */
+    margin-bottom: 0.75rem; /* Spațiu mai mare */
+    border: 1px solid #f0f3f6; /* Bordură mai vizibilă */
+    padding: 1rem 1.25rem;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+}
+.quick-actions-card .list-group-item-action:hover {
+    border-left: 4px solid var(--accent-color);
+    padding-left: calc(1.25rem - 4px);
+    background-color: #f7f9ff; /* Fundal mai distinct la hover */
+    color: var(--accent-color);
+    box-shadow: 0 4px 10px rgba(var(--bs-accent-rgb), 0.1); /* bs-accent-rgb nu există, trebuie definit sau folosită o culoare */
+}
+.quick-actions-card .list-group-item-action:hover .fa-arrow-right { /* Schimbat din fa-chevron-right */
+    transform: translateX(5px) scale(1.1);
+    color: var(--accent-color);
+}
+.quick-actions-card .list-group-item-action i.text-muted {
+    transition: color 0.2s ease;
+}
+.quick-actions-card .list-group-item-action:hover i.text-muted {
+    color: var(--accent-color) !important; /* Forțează culoarea pe sageată */
+}
+
+
+/* Survey Card Display */
+.survey-card-display {
+    border-radius: 0.75rem;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+    overflow: hidden; /* Pentru efecte de tranziție și fundal */
+    position: relative;
+}
+.survey-card-display .card-body {
+    padding: 1.25rem;
+}
+.survey-card-display:hover {
+    border-color: var(--primary-color);
+}
+.survey-card-display .card-title {
+    color: var(--bs-gray-800); /* Text mai închis pentru titlu */
+    font-size: 1.15rem;
+    transition: color 0.2s ease;
+}
+.survey-card-display:hover .card-title {
+    color: var(--primary-color);
+}
+.badge.bg-primary-soft { /* Stil deja definit, poate fi ajustat */
+    font-weight: 500;
+}
+.badge.bg-info-soft {
+    background-color: rgba(var(--bs-info-rgb), 0.1);
+}
+.text-info-dark {
+    color: #087990;
+}
+.survey-card-footer .btn { /* Butonul din cardul de sondaj */
+    width: 100%;
+    font-weight: 500;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+.survey-card-display:hover .survey-card-footer .btn {
+    background-color: var(--hover-color); /* Culoare hover din css.css */
+    transform: scale(1.03);
+}
+
+/* Text truncate (rămâne la fel, dar asigură-te că var(--webkit-line-clamp) este definit sau folosește un număr fix) */
+.text-truncate-multiline {
+    -webkit-line-clamp: var(--lines, 2); /* Poți seta --lines prin style="--lines: 3;" în HTML */
+    /* ... restul stilului ... */
+}
+
+
+/* Recent Activity / Points History Section */
+.points-history-section .activity-item {
+    border-bottom: 1px solid #f3f4f7;
+    padding: 1rem 1.25rem;
+}
+.points-history-section .activity-item:last-child {
+    border-bottom: none;
+}
+.points-history-section .activity-item:hover {
+    background-color: #fbfcfe; /* Fundal foarte subtil la hover */
+}
+.activity-icon {
+    width: 42px; /* Puțin mai mare */
+    height: 42px;
+    border-radius: 12px; /* Mai puțin rotunjit */
+    font-size: 1.2rem;
+}
+.activity-icon .fa-arrow-up, .activity-icon .fa-arrow-down {
+    font-weight: 900; /* Săgeți mai groase */
+}
+.points-history-section .badge.fs-6 { /* Punctele */
+    font-size: 0.95rem !important; /* Puțin mai mare */
+    padding: 0.45em 0.8em;
+}
+.points-history-section .badge.bg-light { /* Badge-ul pentru sursă */
+    font-size: 0.75rem;
+    padding: 0.25em 0.5em;
+}
+
+/* Animație pulse pentru iconiță dashboard header */
+.animate-pulse-icon {
+    animation: pulse 2.5s infinite ease-in-out;
+}
+@keyframes pulse {
+    0% { transform: scale(1); opacity: 0.8; }
+    50% { transform: scale(1.15); opacity: 1; }
+    100% { transform: scale(1); opacity: 0.8; }
+}
+
+/* General card animation (dacă nu e deja global) */
+/* .animate-on-scroll și .is-visible ar trebui să fie în css.css global */

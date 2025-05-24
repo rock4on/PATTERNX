@@ -1,8 +1,25 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField
-from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, DateField, SelectField
+from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError, Optional
 from app.models.user import User
 
+# Define Romanian counties for registration choices
+ROMANIAN_COUNTIES_REGISTRATION = [
+    ('', 'Select County'),
+    ('Alba', 'Alba'), ('Arad', 'Arad'), ('Argeș', 'Argeș'), ('Bacău', 'Bacău'),
+    ('Bihor', 'Bihor'), ('Bistrița-Năsăud', 'Bistrița-Năsăud'), ('Botoșani', 'Botoșani'),
+    ('Brașov', 'Brașov'), ('Brăila', 'Brăila'), ('București', 'București'),
+    ('Buzău', 'Buzău'), ('Caraș-Severin', 'Caraș-Severin'), ('Călărași', 'Călărași'),
+    ('Cluj', 'Cluj'), ('Constanța', 'Constanța'), ('Covasna', 'Covasna'),
+    ('Dâmbovița', 'Dâmbovița'), ('Dolj', 'Dolj'), ('Galați', 'Galați'),
+    ('Giurgiu', 'Giurgiu'), ('Gorj', 'Gorj'), ('Harghita', 'Harghita'),
+    ('Hunedoara', 'Hunedoara'), ('Ialomița', 'Ialomița'), ('Iași', 'Iași'),
+    ('Ilfov', 'Ilfov'), ('Maramureș', 'Maramureș'), ('Mehedinți', 'Mehedinți'),
+    ('Mureș', 'Mureș'), ('Neamț', 'Neamț'), ('Olt', 'Olt'), ('Prahova', 'Prahova'),
+    ('Satu Mare', 'Satu Mare'), ('Sălaj', 'Sălaj'), ('Sibiu', 'Sibiu'),
+    ('Suceava', 'Suceava'), ('Teleorman', 'Teleorman'), ('Timiș', 'Timiș'),
+    ('Tulcea', 'Tulcea'), ('Vaslui', 'Vaslui'), ('Vâlcea', 'Vâlcea'), ('Vrancea', 'Vrancea')
+]
 
 class LoginForm(FlaskForm):
     """Form for user login."""
@@ -43,14 +60,43 @@ class RegistrationForm(FlaskForm):
         DataRequired(),
         EqualTo('password', message='Passwords must match.')
     ])
-    submit = SubmitField('Register')
+
+    date_of_birth = DateField('Date of Birth (YYYY-MM-DD)', format='%Y-%m-%d', validators=[Optional()])
+    gender = SelectField('Gender', choices=[
+        ('', 'Select Gender'),
+        ('Male', 'Male'),
+        ('Female', 'Female'),
+        ('Other', 'Other'),
+        ('Prefer not to say', 'Prefer not to say')
+    ], validators=[Optional()])
     
+    county = SelectField('County', choices=ROMANIAN_COUNTIES_REGISTRATION, validators=[Optional()])
+    city = StringField('City / Locality', validators=[Optional(), Length(max=100)]) # Changed back to StringField
+    
+    education_level = SelectField('Education Level', choices=[
+        ('', 'Select Education Level'),
+        ('Gymnasium', 'Gymnasium'),
+        ('High School', 'High School'),
+        ('Vocational School', 'Vocational School'),
+        ('Post-high School', 'Post-high School'),
+        ('Bachelor Degree', 'Bachelor Degree'),
+        ('Master Degree', 'Master Degree'),
+        ('PhD Degree', 'PhD Degree')
+    ], validators=[Optional()])
+    residence_environment = SelectField('Residence Environment', choices=[
+        ('', 'Select Residence Environment'),
+        ('Urban', 'Urban'),
+        ('Rural', 'Rural')
+    ], validators=[Optional()])
+
+    submit = SubmitField('Register')
+
     def validate_username(self, username):
         """Validate that the username is unique."""
         user = User.query.filter_by(username=username.data).first()
         if user:
             raise ValidationError('Username already in use. Please choose a different one.')
-    
+
     def validate_email(self, email):
         """Validate that the email is unique."""
         user = User.query.filter_by(email=email.data).first()

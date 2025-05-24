@@ -108,6 +108,29 @@
                             <div class="form-text">Optional end date (format: YYYY-MM-DD HH:MM:SS)</div>
                         </div>
                     </div>
+
+                           {# Target Segments - Using Select2 #}
+<div class="mb-3">
+    {{ form.target_segments.label(class="form-label") }}
+    {{ form.target_segments(class="form-select select2-multiple" + (" is-invalid" if form.target_segments.errors else ""), multiple="multiple") }}
+    <div class="form-text">Select one or more user segments. If none, survey is available to all eligible.</div>
+    {% if form.target_segments.errors %}
+        <div class="invalid-feedback d-block">
+            {% for error in form.target_segments.errors %}
+                <span>{{ error }}</span><br>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
+        
+
+
+
+    <div class="form-text">Select one or more user segments to target this survey to. If no segments are selected, the survey will be available to all eligible users.</div>
+    {% for error in form.target_segments.errors %}
+        <div class="invalid-feedback d-block">{{ error }}</div>
+    {% endfor %}
+</div>
                     
                     <div class="d-grid gap-2">
                         {{ form.submit(class="btn btn-primary btn-lg") }}
@@ -161,6 +184,9 @@
                 </a>
             </div>
         </div>
+
+
+
         
         <!-- Survey Preview Card -->
         <div class="card shadow-sm">

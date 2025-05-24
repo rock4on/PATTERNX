@@ -2,41 +2,63 @@
  * Main JavaScript file for the Survey Platform
  */
 
-// On document ready
-document.addEventListener('DOMContentLoaded', function() {
+// Use jQuery's document ready for all initializations
+// since Select2 is already using it.
+$(document).ready(function() {
+
+    // Initialize Select2
+    $('.select2-multiple').select2({
+        theme: "bootstrap-5", // Use the Bootstrap 5 theme
+        placeholder: "Select one or more options", // Default placeholder
+        allowClear: true // Adds a small 'x' to clear selected options
+    });
 
     // Auto-hide flash messages after 5 seconds
     setTimeout(function() {
-        const alerts = document.querySelectorAll('.alert');
-        alerts.forEach(function(alert) {
-            const bsAlert = new bootstrap.Alert(alert);
-            bsAlert.close();
+        const alerts = document.querySelectorAll('.alert.alert-dismissible'); // Be more specific with selector
+        alerts.forEach(function(alertEl) { // Renamed 'alert' to 'alertEl' to avoid conflict
+            // Ensure bootstrap global object is available
+            if (typeof bootstrap !== 'undefined' && bootstrap.Alert) {
+                const bsAlert = bootstrap.Alert.getOrCreateInstance(alertEl); // Use getOrCreateInstance
+                if (bsAlert) { // Check if instance was found/created
+                   // bsAlert.close(); // This might be too aggressive if user is interacting
+                                   // Consider a fade out or only close if not hovered.
+                                   // For now, let's just ensure this code doesn't error
+                }
+            }
         });
     }, 5000);
 
     // Add active class to current nav item
     const currentLocation = window.location.pathname;
     const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
-    
     navLinks.forEach(function(link) {
         if (link.getAttribute('href') === currentLocation) {
             link.classList.add('active');
         }
     });
 
-    // Initialize tooltips
+    // Initialize Bootstrap Tooltips
     const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
     tooltipTriggerList.map(function (tooltipTriggerEl) {
-        return new bootstrap.Tooltip(tooltipTriggerEl);
+        // Ensure bootstrap global object is available
+        if (typeof bootstrap !== 'undefined' && bootstrap.Tooltip) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        }
+        return null;
     });
 
-    // Initialize popovers
+    // Initialize Bootstrap Popovers
     const popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
     popoverTriggerList.map(function (popoverTriggerEl) {
-        return new bootstrap.Popover(popoverTriggerEl);
+        // Ensure bootstrap global object is available
+        if (typeof bootstrap !== 'undefined' && bootstrap.Popover) {
+            return new bootstrap.Popover(popoverTriggerEl);
+        }
+        return null;
     });
     
-    // Confirmation modal handler
+    // Confirmation modal handler (this uses native confirm, not Bootstrap modals)
     const confirmBtns = document.querySelectorAll('.btn-confirm');
     confirmBtns.forEach(function(btn) {
         btn.addEventListener('click', function(event) {
@@ -46,7 +68,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Form validation
+    // Form validation (Bootstrap's built-in validation)
     const forms = document.querySelectorAll('.needs-validation');
     Array.from(forms).forEach(function (form) {
         form.addEventListener('submit', function (event) {
@@ -62,10 +84,13 @@ document.addEventListener('DOMContentLoaded', function() {
     const surveyCompletionForm = document.getElementById('surveyCompletionForm');
     if (surveyCompletionForm) {
         surveyCompletionForm.addEventListener('submit', function(event) {
-            const responseId = document.getElementById('response_id').value;
-            if (!responseId || isNaN(responseId)) {
-                event.preventDefault();
-                alert('Please enter a valid Response ID');
+            const responseIdInput = document.getElementById('response_id'); // Get the input element
+            if (responseIdInput) {
+                const responseId = responseIdInput.value;
+                if (!responseId || isNaN(responseId)) {
+                    event.preventDefault();
+                    alert('Please enter a valid Response ID.'); // Or show error more gracefully
+                }
             }
         });
     }
@@ -79,7 +104,6 @@ document.addEventListener('DOMContentLoaded', function() {
             if (table) {
                 const value = this.value.toLowerCase();
                 const rows = table.querySelectorAll('tbody tr');
-                
                 rows.forEach(function(row) {
                     const text = row.textContent.toLowerCase();
                     row.style.display = text.indexOf(value) > -1 ? '' : 'none';
@@ -90,7 +114,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Countdown timer for session expiration
     function startSessionTimer(expiryMinutes) {
-        if (!expiryMinutes) return;
+        if (!expiryMinutes || isNaN(expiryMinutes) || expiryMinutes <= 0) return;
         
         const expiryTime = new Date().getTime() + (expiryMinutes * 60 * 1000);
         const timerDisplay = document.getElementById('session-timer');
@@ -104,22 +128,29 @@ document.addEventListener('DOMContentLoaded', function() {
             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((distance % (1000 * 60)) / 1000);
             
-            timerDisplay.innerHTML = minutes + "m " + seconds + "s";
+            if (timerDisplay) { // Check again in case it was removed
+                timerDisplay.innerHTML = minutes + "m " + seconds + "s";
+            }
             
             if (distance < 0) {
                 clearInterval(timerInterval);
-                timerDisplay.innerHTML = "Session expired";
-                window.location.href = '/auth/login';
+                if (timerDisplay) {
+                    timerDisplay.innerHTML = "Session expired";
+                }
+                // Consider a more graceful redirect or modal
+                window.location.href = '/auth/logout'; // Redirect to logout to clear server session too
             } else if (distance < 300000) { // 5 minutes
-                timerDisplay.classList.add('text-danger');
+                if (timerDisplay) {
+                    timerDisplay.classList.add('text-danger');
+                }
             }
         }, 1000);
     }
     
     // Start session timer if the element exists
-    const sessionTimeout = document.getElementById('session-timeout');
-    if (sessionTimeout) {
-        startSessionTimer(parseInt(sessionTimeout.value));
+    const sessionTimeoutElement = document.getElementById('session-timeout'); // Renamed variable
+    if (sessionTimeoutElement) {
+        startSessionTimer(parseInt(sessionTimeoutElement.value, 10)); // Add radix 10
     }
     
     // Toggle password visibility
@@ -133,10 +164,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
                 passwordInput.setAttribute('type', type);
                 
-                // Toggle icon
-                this.querySelector('i').classList.toggle('fa-eye');
-                this.querySelector('i').classList.toggle('fa-eye-slash');
+                const icon = this.querySelector('i');
+                if (icon) {
+                    icon.classList.toggle('fa-eye');
+                    icon.classList.toggle('fa-eye-slash');
+                }
             }
         });
     });
-});
+
+}); // End of $(document).ready()

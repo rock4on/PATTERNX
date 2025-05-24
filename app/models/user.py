@@ -23,7 +23,10 @@ class User(UserMixin, db.Model):
     points = db.relationship('Point', backref='user', lazy='dynamic')
     completions = db.relationship('SurveyCompletion', backref='user', lazy='dynamic')
     rewards = db.relationship('UserReward', backref='user', lazy='dynamic')
-    
+    profile = db.relationship('UserProfile', backref=db.backref('user', lazy='joined'), uselist=False, cascade="all, delete-orphan")
+
+
+
     @property
     def password(self):
         """Prevent password from being accessed."""

@@ -1,0 +1,195 @@
+{% extends "base.html" %}
+
+{% block title %}{{ _('My Profile') }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12 mb-4">
+        <h2 class="fw-bold"><i class="fas fa-user-circle me-2 text-primary"></i> {{ _('My Profile') }}</h2>
+        <p class="text-muted">{{ _('View your account details and activity history.') }}</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4 mb-4">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><i class="fas fa-id-card me-2"></i> {{ _('Account Information') }}</h5>
+            </div>
+            <div class="card-body">
+                <div class="text-center mb-3">
+                    <i class="fas fa-user-circle fa-5x text-primary"></i>
+                    <h4 class="mt-2 mb-0">{{ user.full_name }}</h4>
+                    <p class="text-muted">{{ user.username }}</p>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><strong>{{ _('Email') }}:</strong> {{ user.email }}</li>
+                    <li class="list-group-item"><strong>{{ _('Joined') }}:</strong> {{ user.created_at.strftime('%d %B %Y') }}</li>
+                    <li class="list-group-item">
+                        <strong>{{ _('Points Available') }}:</strong>
+                        <span class="badge bg-success rounded-pill">{{ points_summary.available_points }}</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        {% if user.profile %}
+        <div class="card shadow-sm mt-4">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><i class="fas fa-address-book me-2"></i> {{ _('Demographic Information') }}</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><strong>{{ _('Date of Birth') }}:</strong> {{ user.profile.date_of_birth.strftime('%d %B %Y') if user.profile.date_of_birth else 'N/A' }}</li>
+                    <li class="list-group-item"><strong>{{ _('Age') }}:</strong> {{ user.profile.age if user.profile.age is not none else 'N/A' }}</li>
+                    <li class="list-group-item"><strong>{{ _('Gender') }}:</strong> {{ user.profile.gender or 'N/A' }}</li>
+                    <li class="list-group-item"><strong>{{ _('County') }}:</strong> {{ user.profile.county or 'N/A' }}</li>
+                    <li class="list-group-item"><strong>{{ _('City') }}:</strong> {{ user.profile.city or 'N/A' }}</li>
+                    <li class="list-group-item"><strong>{{ _('Education Level') }}:</strong> {{ user.profile.education_level or 'N/A' }}</li>
+                    <li class="list-group-item"><strong>{{ _('Residence') }}:</strong> {{ user.profile.residence_environment or 'N/A' }}</li>
+                </ul>
+                 </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="col-md-8">
+        <div class="card shadow-sm">
+            <div class="card-header">
+                <ul class="nav nav-tabs card-header-tabs" id="profileTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="survey-history-tab" data-bs-toggle="tab" data-bs-target="#survey-history" type="button" role="tab" aria-controls="survey-history" aria-selected="true"><i class="fas fa-poll me-1"></i> {{ _('Survey History') }}</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="points-history-tab" data-bs-toggle="tab" data-bs-target="#points-history" type="button" role="tab" aria-controls="points-history" aria-selected="false"><i class="fas fa-coins me-1"></i> {{ _('Points History') }}</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="rewards-history-tab" data-bs-toggle="tab" data-bs-target="#rewards-history" type="button" role="tab" aria-controls="rewards-history" aria-selected="false"><i class="fas fa-gift me-1"></i> {{ _('Reward History') }}</button>
+                    </li>
+                </ul>
+            </div>
+            <div class="card-body">
+                <div class="tab-content" id="profileTabsContent">
+                    <div class="tab-pane fade show active" id="survey-history" role="tabpanel" aria-labelledby="survey-history-tab">
+                        <h5 class="mb-3">{{ _('Surveys Completed') }}</h5>
+                        {% if survey_completions %}
+                            <div class="table-responsive">
+                                <table class="table table-hover table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>{{ _('Date') }}</th>
+                                            <th>{{ _('Survey Title') }}</th>
+                                            <th>{{ _('Points Awarded') }}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for completion in survey_completions %}
+                                        <tr>
+                                            <td>{{ completion.completed_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                                            <td>{{ completion.survey.title }}</td>
+                                            <td><span class="badge bg-success">+{{ completion.points_awarded }}</span></td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        {% else %}
+                            <p class="text-muted">{{ _('You have not completed any surveys yet.') }}</p>
+                            <a href="{{ url_for('surveys.index') }}" class="btn btn-primary btn-sm"><i class="fas fa-poll me-1"></i> {{ _('Find Surveys') }}</a>
+                        {% endif %}
+                    </div>
+
+                    <div class="tab-pane fade" id="points-history" role="tabpanel" aria-labelledby="points-history-tab">
+                        <h5 class="mb-3">{{ _('Points Transactions') }}</h5>
+                        {% if points_history %}
+                            <div class="table-responsive">
+                                <table class="table table-hover table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>{{ _('Date') }}</th>
+                                            <th>{{ _('Description') }}</th>
+                                            <th>{{ _('Source') }}</th>
+                                            <th>{{ _('Amount') }}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for point in points_history %}
+                                        <tr>
+                                            <td>{{ point.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                                            <td>{{ point.description or 'N/A' }}</td>
+                                            <td>
+                                                {% if point.source == 'survey' %}
+                                                    <span class="badge bg-info text-dark">{{ _('Survey') }}</span>
+                                                {% elif point.source == 'reward' %}
+                                                    <span class="badge bg-warning text-dark">{{ _('Reward Redemption') }}</span>
+                                                {% elif point.source == 'bonus' %}
+                                                    <span class="badge bg-primary">{{ _('Bonus') }}</span>
+                                                {% else %}
+                                                    <span class="badge bg-secondary">{{ point.source }}</span>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                {% if point.amount > 0 %}
+                                                    <span class="badge bg-success">+{{ point.amount }}</span>
+                                                {% elif point.amount < 0 %}
+                                                    <span class="badge bg-danger">{{ point.amount }}</span>
+                                                {% else %}
+                                                    <span>{{ point.amount }}</span>
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        {% else %}
+                            <p class="text-muted">{{ _('No points transactions recorded.') }}</p>
+                        {% endif %}
+                    </div>
+
+                    <div class="tab-pane fade" id="rewards-history" role="tabpanel" aria-labelledby="rewards-history-tab">
+                        <h5 class="mb-3">{{ _('Rewards Redeemed') }}</h5>
+                        {% if user_rewards %}
+                            <div class="table-responsive">
+                                <table class="table table-hover table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>{{ _('Date') }}</th>
+                                            <th>{{ _('Reward') }}</th>
+                                            <th>{{ _('Points Spent') }}</th>
+                                            <th>{{ _('Status') }}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for ur in user_rewards %}
+                                        <tr>
+                                            <td>{{ ur.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                                            <td>{{ ur.reward.name }}</td>
+                                            <td><span class="badge bg-danger">{{ ur.points_spent }}</span></td>
+                                            <td>
+                                                {% if ur.status == 'pending' %}
+                                                    <span class="badge bg-warning text-dark">{{ _('Pending') }}</span>
+                                                {% elif ur.status == 'completed' %}
+                                                    <span class="badge bg-success">{{ _('Completed') }}</span>
+                                                {% elif ur.status == 'cancelled' %}
+                                                    <span class="badge bg-danger">{{ _('Cancelled') }}</span>
+                                                {% else %}
+                                                    <span class="badge bg-secondary">{{ ur.status }}</span>
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        {% else %}
+                            <p class="text-muted">{{ _('You have not redeemed any rewards yet.') }}</p>
+                            <a href="{{ url_for('rewards.index') }}" class="btn btn-primary btn-sm"><i class="fas fa-gift me-1"></i> {{ _('Browse Rewards') }}</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

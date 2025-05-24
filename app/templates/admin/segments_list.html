@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block title %}Admin - Segments{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12 mb-4">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ url_for('admin.index') }}">Admin</a></li>
+                <li class="breadcrumb-item active">Segments</li>
+            </ol>
+        </nav>
+        <div class="d-flex justify-content-between align-items-center">
+            <h2><i class="fas fa-users-cog me-2"></i> User Segments Management</h2>
+            <a href="{{ url_for('admin.new_segment') }}" class="btn btn-primary">
+                <i class="fas fa-plus me-2"></i> Add New Segment
+            </a>
+        </div>
+        <p class="lead">Create and manage user segments for targeted surveys.</p>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-12">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">All Segments</h5>
+                <span class="badge bg-light text-primary">Total: {{ segments|length }}</span>
+            </div>
+            <div class="card-body">
+                {% if segments %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th>Criteria (JSON)</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for segment in segments %}
+                                <tr>
+                                    <td>{{ segment.id }}</td>
+                                    <td>{{ segment.name }}</td>
+                                    <td>{{ segment.description|truncate(80) }}</td>
+                                    <td><pre style="max-height: 100px; overflow-y: auto; font-size: 0.8em;">{{ segment.criteria|tojson(indent=2) }}</pre></td>
+                                    <td>
+                                        <a href="{{ url_for('admin.edit_segment', segment_id=segment.id) }}" class="btn btn-sm btn-primary">
+                                            <i class="fas fa-edit"></i> Edit
+                                        </a>
+                                        <form action="{{ url_for('admin.delete_segment', segment_id=segment.id) }}" method="POST" class="d-inline ms-1">
+                                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this segment?');">
+                                                <i class="fas fa-trash"></i> Delete
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <p class="text-center text-muted">No segments created yet. <a href="{{ url_for('admin.new_segment') }}">Add one now!</a></p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

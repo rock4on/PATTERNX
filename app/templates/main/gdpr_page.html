@@ -1,0 +1,333 @@
+{% extends "base.html" %}
+
+{% block title %}{{ _('Privacy Policy') }} – {{ platform_name }}{% endblock %}
+
+{% block content %}
+<div class="container py-5 legal-page">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    {# TODO: Asigură-te că platform_name este corect setat și reflectă "Platforma PATTERNX" dacă așa dorești să apară #}
+                    <h1 class="h3 mb-0"><i class="fas fa-shield-alt me-2"></i> {{ _('Privacy Policy – Platforma PATTERNX') }}</h1>
+                </div>
+                <div class="card-body p-4 p-md-5">
+                    <p class="text-muted">{{ _('Version') }} 1.1 – {{ _('Last updated') }}: 23 Mai 2025</p>
+
+                    <h2 class="h4 mt-4 mb-3" id="s1">1. {{ _('Introduction') }}</h2>
+                    <p>{{ _('Welcome to Platforma PATTERNX ("Platform", "we", "us", or "our"). We are committed to protecting your privacy and handling your personal data in an open, transparent, and lawful manner. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our Platform to participate in surveys and earn rewards.') }}</p>
+                    <p>{{ _('This Policy is drafted in accordance with the General Data Protection Regulation (GDPR) (EU) 2016/679 as applicable in Romania and throughout the European Economic Area (EEA).') }}</p>
+
+                    <h2 class="h4 mt-5 mb-3" id="s2">2. {{ _('Document Scope & Definitions') }}</h2>
+                    <p>{{ _('This Policy applies to the PATTERNX public website, any native or progressive web-app, and related APIs or services used to deliver surveys and rewards.') }}</p>
+                    {# Arhitectura curentă este o aplicație web. Aserțiunea despre "native or progressive web-app" este OK dacă e în plan. #}
+                    <p>{{ _('Unless otherwise defined here, the terms "personal data", "processing", "controller", and "processor" have the meanings given in Article 4 GDPR.') }}</p>
+
+                    <h2 class="h4 mt-5 mb-3" id="s3">3. {{ _('Controller & DPO Information') }}</h2>
+                    <p><strong>{{ _('Controller') }}:</strong> PatternX SRL</p> {# TODO: Verifică dacă acesta este numele legal corect. #}
+                    <p><strong>{{ _('Registered office') }}:</strong> Str. … nr. …, 077025 Bragadiru, Ilfov, Romania {# TODO: Completează adresa exactă. #} </p>
+                    <p><strong>{{ _('Trade Registry No.') }}:</strong> J23/ [fill‑in] /2024 {# TODO: Completează numărul de înregistrare. #}</p>
+                    <p><strong>{{ _('Tax ID (CUI/CIF)') }}:</strong> RO [fill‑in] {# TODO: Completează CUI/CIF. #}</p>
+                    <p><strong>{{ _('Email') }}:</strong> privacy@patternx.example.com {# TODO: Folosește o adresă de email reală. Poți folosi variabila contact_email_gdpr dacă e setată în config. #}</p>
+                    <p><strong>{{ _('Telephone') }}:</strong> +40 (0) 31 [fill‑in] {# TODO: Completează numărul de telefon. #}</p>
+                    <p><strong>{{ _('Data-Protection Officer (DPO)') }}:</strong> {{ _('We have assessed the criteria in Article 37 GDPR and concluded that PATTERNX is not required to appoint a DPO at this time. A dedicated privacy team nonetheless monitors compliance and can be reached via the email above.') }}</p> {# Aceasta este o evaluare legală pe care trebuie să o faci. #}
+
+                    <h2 class="h4 mt-5 mb-3" id="s4">4. {{ _('Personal Data We Collect') }}</h2>
+                    <p>{{ _('We collect the following categories of personal data:') }}</p>
+                    <h3 class="h5 mt-3 mb-2">4.1 {{ _('Account Registration Data') }}</h3>
+                    <ul>
+                        <li>{{ _('First name, last name, username') }}</li>
+                        <li>{{ _('Email address') }}</li>
+                        <li>{{ _('Hashed password (using bcrypt algorithm)') }}</li>
+                    </ul>
+
+                    <h3 class="h5 mt-3 mb-2">4.2 {{ _('Optional Profile & Demographic Data') }}</h3>
+                    <p>{{ _('When you choose to provide it, we collect:') }}</p>
+                    <ul>
+                        <li>{{ _('Date of birth (from which age is derived and may be displayed), gender, county (județ), city, education level, and residence environment (urban/rural).') }}</li>
+                    </ul>
+
+                    <h3 class="h5 mt-3 mb-2">4.3 {{ _('Survey Participation Data') }}</h3>
+                    <ul>
+                        <li>{{ _('Identification of the LimeSurvey survey taken (LimeSurvey Survey ID) and your specific LimeSurvey Response ID.') }}</li>
+                        <li>{{ _('Timestamp of when you marked a survey as completed on our Platform.') }}</li>
+                        <li>{{ _('Points awarded for the completion.') }}</li>
+                        <li>{{ _('Your PATTERNX Platform user ID is passed as a parameter to the LimeSurvey system when you start a survey. This allows us to link your survey session in LimeSurvey back to your Platform account for tracking completion and awarding points. The actual survey answers are submitted by you directly within the LimeSurvey environment.') }}</li>
+                    </ul>
+
+                    <h3 class="h5 mt-3 mb-2">4.4 {{ _('Platform Engagement Data') }}</h3>
+                    <ul>
+                        <li>{{ _('History of points earned and spent, including source, amount, and date.') }}</li>
+                        <li>{{ _('History of rewards redeemed, including points spent, status, and date.') }}</li>
+                    </ul>
+
+                    <h3 class="h5 mt-3 mb-2">4.5 {{ _('Technical & Analytics Data') }}</h3>
+                    <ul>
+                        <li>{{ _('IP address and browser user-agent string (collected for security, session management, and logging purposes).') }}</li>
+                        <li>{{ _('Server-side request metadata (e.g., timestamp of request, referring page), primarily for operational logging and diagnostics.') }}</li>
+                        <li>{{ _('Essential cookies as detailed in Section 11.') }}</li>
+                    </ul>
+                    <p>{{ _('We do not collect special-category personal data (as defined in Art. 9 GDPR), nor do we perform facial recognition, continuous precise geolocation tracking, or similar forms of intrusive monitoring through our Platform.') }}</p> {# Bazat pe arhitectura curentă, aceasta este o afirmație corectă. #}
+
+                    <h3 class="h5 mt-3 mb-2">4.6 {{ _('Automated Decision-Making & Profiling') }}</h3>
+                    <p>{{ _('PATTERNX does not use your personal data for automated decision-making that produces legal effects concerning you or similarly significantly affects you.') }}</p>
+                    <p>{{ _('We use the optional demographic data you provide to filter and present surveys that are likely to be relevant to your profile (profiling for survey targeting purposes). This filtering is intended to enhance your user experience by reducing irrelevant survey invitations. You can view and modify your demographic data via your user profile, which influences future survey targeting. This does not have legal or similarly significant effects on you.') }}</p> {# Aplicația curentă colectează datele, dar funcționalitatea de filtrare/direcționare a sondajelor nu este explicit implementată în codul partajat. Aceasta este o declarație de intenție. Pagina de profil pentru editare nu e completă. #}
+
+                    <h2 class="h4 mt-5 mb-3" id="s5">5. {{ _('Purposes & Legal Bases for Processing') }}</h2>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>#</th>
+                                    <th>{{ _('Purpose') }}</th>
+                                    <th>{{ _('Data categories involved (see §4)') }}</th>
+                                    <th>{{ _('Legal basis (GDPR Art. 6(1))') }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>{{ _('Provide and manage your user account') }}</td>
+                                    <td>4.1</td>
+                                    <td>(b) – {{ _('Contract performance') }}</td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>{{ _('Enable survey participation & award points') }}</td>
+                                    <td>4.1, 4.3</td>
+                                    <td>(b) – {{ _('Contract performance') }}; {{ _('for the act of taking each survey:') }} (a) – {{ _('Consent') }}</td>
+                                tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td>{{ _('Target relevant surveys based on your profile') }}</td>
+                                    <td>4.2 ({{ _('optional data') }})</td>
+                                    <td>(a) – {{ _('Consent (for providing demographics)') }}; (f) – {{ _('Legitimate interest (our interest in efficient survey matching, your interest in relevant surveys)') }}</td>
+                                </tr>
+                                <tr>
+                                    <td>4</td>
+                                    <td>{{ _('Manage rewards catalogue & redemption process') }}</td>
+                                    <td>4.1, 4.4</td>
+                                    <td>(b) – {{ _('Contract performance') }}</td>
+                                </tr>
+                                {# TODO: Dacă recompensele sunt fizice și necesită livrare, va trebui să adaugi colectarea datelor de livrare (nume, adresă, telefon) la secțiunea 4 și aici, cu baza legală (b) - Contract. Arhitectura curentă NU colectează aceste date. Voi presupune că recompensele sunt digitale sau nu necesită date suplimentare de livrare. Dacă se schimbă, actualizează. #}
+                                <tr>
+                                    <td>5</td>
+                                    <td>{{ _('Communicate service notices & respond to your enquiries') }}</td>
+                                    <td>4.1</td>
+                                    <td>(f) – {{ _('Legitimate interest (communication with users)') }}; (b) – {{ _('Contract (where enquiry concerns your contract with us)') }}</td>
+                                </tr>
+                                <tr>
+                                    <td>6</td>
+                                    <td>{{ _('Improve Platform functionality and user experience (using aggregated/anonymized analytics)') }}</td>
+                                    <td>4.5 ({{ _('in aggregated/anonymized form') }})</td>
+                                    <td>(f) – {{ _('Legitimate interest (service optimisation)') }}</td>
+                                </tr>
+                                <tr>
+                                    <td>7</td>
+                                    <td>{{ _('Ensure Platform security & prevent fraud') }}</td>
+                                    <td>4.1, 4.3, 4.5</td>
+                                    <td>(f) – {{ _('Legitimate interest (protecting our Platform and users)') }}; (c) – {{ _('Legal obligation (if applicable for certain security incidents)') }}</td>
+                                </tr>
+                                <tr>
+                                    <td>8</td>
+                                    <td>{{ _('Comply with legal obligations (e.g., tax, accounting)') }}</td>
+                                    <td>4.1, 4.4</td>
+                                    <td>(c) – {{ _('Legal obligation') }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="mt-2 small">{{ _('Where we rely on legitimate interest, we have performed a balancing test to ensure that our interests do not override your fundamental rights and freedoms. You can request more information about this balancing test.') }}</p>
+
+                    <h2 class="h4 mt-5 mb-3" id="s6">6. {{ _('Data Retention') }}</h2>
+                    <table class="table table-bordered">
+                        <thead class="table-light">
+                            <tr><th>{{_('Data set')}}</th><th>{{_('Retention rule')}}</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>{{_('Account & Profile Data (4.1, 4.2)')}}</td><td>{{_('Retained as long as your account is active. If you request account deletion, data will be deleted or fully anonymized within 90 days, subject to any overriding legal retention obligations.')}}</td></tr>
+                            {# TODO: Implementează funcționalitatea de ștergere a contului. #}
+                            <tr><td>{{_('Survey Completion Metadata (Platform-side) (4.3)')}}</td><td>{{_('Retained as long as your account is active to maintain your participation and points history; purged or anonymized upon account deletion according to the same 90-day rule.')}}</td></tr>
+                            <tr><td>{{_('Full Survey Responses (in LimeSurvey)')}}</td><td>{{_('Stored within the LimeSurvey system. Retention is determined by the configuration of each specific LimeSurvey project, typically managed by the survey creator (which may be us or a third party). Our default aim is [e.g., 3 years], unless otherwise specified for a survey or required by the survey creator.')}}</td></tr>
+                            {# TODO: Definește politica de retenție default în LimeSurvey dacă o controlezi tu. #}
+                            <tr><td>{{_('Points & Rewards Ledger (4.4)')}}</td><td>{{_('Data related to financial transactions (e.g., value of points for rewards) may be kept for up to 5 years after the last transaction, in accordance with Romanian accounting and tax laws (e.g., Law 82/1991). Non-financial aspects are linked to account retention.')}}</td></tr>
+                            <tr><td>{{_('Technical & Security Logs (4.5)')}}</td><td>{{_('Generally retained for up to 12 months for security analysis and troubleshooting, unless a longer period is necessary due to an ongoing security incident or legal investigation. This is an operational policy for log file management.')}}</td></tr>
+                            {# TODO: Elimină "Enquiry tickets" dacă nu ai un sistem de ticketing.
+                            <tr><td>Enquiry tickets</td><td>24 months after case closed</td></tr>
+                            #}
+                        </tbody>
+                    </table>
+                    <p class="mt-2 small">{{_('Backup copies of our database are maintained on a [e.g., 35-day] rolling basis and are automatically overwritten. Data deleted from the live system will persist in backups until the backup cycle overwrites it.')}}</p> {# TODO: Verifică și specifică politica ta reală de backup. #}
+
+
+                    <h2 class="h4 mt-5 mb-3" id="s7">7. {{ _('Sharing Your Personal Data') }}</h2>
+                    <h3 class="h5 mt-3 mb-2">7.1 {{ _('Processors & Sub-processors') }}</h3>
+                    <p>{{_('We use trusted third-party service providers (processors) to help us operate our Platform. We have Data Processing Agreements (DPAs) in place where required.')}}</p>
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead class="table-light">
+                                <tr><th>{{_('Supplier')}}</th><th>{{_('Service')}}</th><th>{{_('Location (Primary Data Centre)')}}</th><th>{{_('Safeguard for International Transfer (if applicable)')}}</th></tr>
+                            </thead>
+                            <tbody>
+                                {# TODO: Completează cu furnizorii tăi REALI. Acestea sunt exemple. #}
+                                <tr><td>DigitalOcean, LLC</td><td>{{_('Web hosting & Database')}}</td><td>{{_('Netherlands (EU)')}}</td><td>{{_('Intra-EEA – Adequacy')}}</td></tr>
+                                <tr><td>Mailgun Technologies, Inc.</td><td>{{_('Transactional email (e.g., registration, password reset)')}}</td><td>{{_('USA')}}</td><td>{{_('Standard Contractual Clauses (2021) + DPA')}}</td></tr>
+                                {# Aplicația curentă nu are funcționalitate de email explicită, dar e comună. Dacă nu o ai, elimină. #}
+                                <tr><td>Cloudflare, Inc.</td><td>{{_('DDoS Protection / CDN')}}</td><td>{{_('Global (primary EU edge servers)')}}</td><td>{{_('Standard Contractual Clauses (2021) + DPA')}}</td></tr>
+                                <tr><td>LimeSurvey GmbH</td><td>{{_('Survey Platform Software Provider (if using their hosted solution)')}}</td><td>{{_('Germany (EU)')}}</td><td>{{_('Intra-EEA – Adequacy')}}</td></tr>
+                                {# Sau dacă LimeSurvey este self-hosted pe serverele tale DigitalOcean: #}
+                                </tbody>
+                        </table>
+                    </div>
+                    <p class="small mt-2">{{_('A current list of our key processors can be requested via our contact email.')}}</p>
+
+                    <h3 class="h5 mt-3 mb-2">7.2 {{ _('Survey Creators') }}</h3>
+                    <p>{{_('When you participate in surveys, the primary recipients of your anonymized or pseudonymized survey responses (processed through LimeSurvey) are the entities that commissioned or created those surveys ("Survey Creators").')}}</p>
+                    <p>{{_('Our Platform uses your optional demographic data to help match you with relevant surveys. We do not share your directly identifiable personal data (like email, full name) or your specific demographic profile from our Platform with Survey Creators by default. Survey Creators typically receive aggregated statistical reports or pseudonymized response datasets from the surveys conducted via LimeSurvey. If a specific survey requires sharing identifiable data with the Survey Creator, this will be clearly indicated, and your explicit consent will be sought before you participate.')}}</p>
+
+                    <h3 class="h5 mt-3 mb-2">7.3 {{ _('Legal Disclosures') }}</h3>
+                    <p>{{_('We may disclose your personal data if required by law, subpoena, or other legal process, or if we have a good faith belief that disclosure is reasonably necessary to (a) investigate, prevent, or take action regarding suspected or actual illegal activities or to assist government enforcement agencies; (b) enforce our agreements with you; (c) investigate and defend ourselves against any third-party claims or allegations; (d) protect the security or integrity of our Platform; or (e) exercise or protect the rights and safety of our users, personnel, or others.')}}</p>
+
+                    <h2 class="h4 mt-5 mb-3" id="s8">8. {{ _('International Data Transfers') }}</h2>
+                    <p>{{_('Your personal data may be processed in countries outside of your country of residence, including outside the European Economic Area (EEA), by us or our third-party service providers (as listed in §7.1). When we transfer personal data out of the EEA, we ensure an adequate level of protection is afforded to it by ensuring at least one of the following safeguards is implemented:')}}</p>
+                    <ul>
+                        <li>{{_('The country has been deemed to provide an adequate level of protection for personal data by the European Commission (GDPR Art. 45).')}}</li>
+                        <li>{{_('We use specific contracts approved by the European Commission which give personal data the same protection it has in Europe (Standard Contractual Clauses - GDPR Art. 46).')}}</li>
+                        <li>{{_('In specific situations, other lawful derogations under Art. 49 GDPR may apply.')}}</li>
+                    </ul>
+                    <p>{{_('You can request further information about the safeguards we use for international transfers by contacting us at %(email)s.', email='privacy@patternx.example.com')}}</p> {# TODO: Folosește email-ul corect #}
+
+                    <h2 class="h4 mt-5 mb-3" id="s9">9. {{ _('Your Data Protection Rights') }}</h2>
+                    <p>{{_('Under the GDPR, you have the following rights. You may exercise these rights by contacting us via the details provided in Section 15. We will respond to your request within one month, though this can be extended for complex requests.')}}</p>
+                    <ul>
+                        <li><strong>{{_('Right to be informed:')}}</strong> {{_('About the collection and use of your personal data (which this Policy aims to fulfill).')}}</li>
+                        <li><strong>{{_('Right of access:')}}</strong> {{_('To obtain a copy of your personal data.')}}</li>
+                        <li><strong>{{_('Right to rectification:')}}</strong> {{_('To correct inaccurate personal data.')}}</li>
+                        <li><strong>{{_('Right to erasure ("right to be forgotten"):')}}</strong> {{_('To have your personal data deleted under certain conditions.')}}</li>
+                        <li><strong>{{_('Right to restriction of processing:')}}</strong> {{_('To limit how we process your data.')}}</li>
+                        <li><strong>{{_('Right to data portability:')}}</strong> {{_('To receive your data in a portable format or have it transferred to another controller.')}}</li>
+                        <li><strong>{{_('Right to object:')}}</strong> {{_('To object to processing based on legitimate interests or for direct marketing.')}}</li>
+                        <li><strong>{{_('Rights related to automated decision-making and profiling:')}}</strong> {{_('As stated in §4.6, we do not engage in automated decision-making with legal or similarly significant effects based solely on automated processing.')}}</li>
+                        <li><strong>{{_('Right to withdraw consent:')}}</strong> {{_('Where processing is based on your consent, you can withdraw it at any time.')}}</li>
+                        <li><strong>{{_('Right to lodge a complaint:')}}</strong> {{_('With the Romanian National Supervisory Authority for Personal Data Processing (ANSPDCP) – Address: Bd. G-ral Gheorghe Magheru 28-30, Sector 1, 010336 București, Romania; Phone: +40 318 059 211; Website: www.dataprotection.ro.')}}</li>
+                    </ul>
+
+                    <h2 class="h4 mt-5 mb-3" id="s10">10. {{ _('Data Security & Breach Notification') }}</h2>
+                    <p>{{_('We implement and maintain appropriate industry-standard technical and organizational security measures to protect your personal data from unauthorized access, use, disclosure, alteration, or destruction. These measures include, but are not limited to:')}}</p>
+                    <ul>
+                        <li>{{_('Password Hashing: User passwords are not stored in plaintext but are hashed using the bcrypt algorithm.')}}</li>
+                        <li>{{_('Data Transmission: Use of Transport Layer Security (TLS 1.3 where supported) and HTTP Strict Transport Security (HSTS) for data in transit over public networks.')}}</li>
+                        <li>{{_('Session Security: Secure, HttpOnly cookies with the SameSite=Lax attribute for session management.')}} </li>
+                        <li>{{_('CSRF Protection: Implementation of Cross-Site Request Forgery (CSRF) tokens to protect against malicious requests.')}}</li>
+                        <li>{{_('Access Controls: Role-based access controls (RBAC) and the principle of least privilege for administrative access to systems and data.')}}</li>
+                        <li>{{_('Security Practices: We conduct regular security reviews of our platform. ()')}}</li>
+                        <li>{{_('Logging & Monitoring: Continuous logging of system and application events for security monitoring and anomaly detection.')}}</li>
+                    </ul>
+                    <p><strong>{{_('Personal Data Breach Notification:')}}</strong> {{_('In the event of a personal data breach that is likely to result in a risk to your rights and freedoms, we will:')}}</p>
+                    <ul>
+                        <li>{{_('Take immediate steps to mitigate the impact and secure the data.')}}</li>
+                        <li>{{_('Notify the ANSPDCP without undue delay, and where feasible, not later than 72 hours after having become aware of it, as required by GDPR Article 33 (unless the breach is unlikely to result in a risk).')}}</li>
+                        <li>{{_('Communicate the breach to you, the affected data subject, without undue delay if the breach is likely to result in a high risk to your rights and freedoms, as required by GDPR Article 34.')}}</li>
+                    </ul>
+
+                    <h2 class="h4 mt-5 mb-3" id="s11">11. {{ _('Cookies & Similar Technologies') }}</h2>
+                    <h3 class="h5 mt-3 mb-2">11.1 {{ _('Cookie Usage') }}</h3>
+                    <p>{{_('We use cookies that are essential for the operation of our Platform. These are first-party cookies and do not track your activity across other websites.')}}</p>
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                             <thead class="table-light">
+                                <tr><th>{{_('Name (Typical)')}}</th><th>{{_('Type')}}</th><th>{{_('Purpose')}}</th><th>{{_('Expiry')}}</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td><code>session</code></td><td>{{_('First-party, Essential')}}</td><td>{{_('Maintains your authenticated user session and stores temporary information like flashed messages and language preference.')}}</td><td>{{_('Expires when your browser session ends, or after permanent session lifetime (currently set to 1 hour of inactivity).')}}</td></tr>
+                                <tr><td><code>csrftoken</code> (or similar, e.g., <code>csrf_token</code>)</td><td>{{_('First-party, Essential')}}</td><td>{{_('Protects web forms from Cross-Site Request Forgery (CSRF) attacks.')}}</td><td>{{_('Typically aligns with the session or a configured token lifetime (currently set to 1 hour).')}}</td></tr>
+                                {# TODO: Confirm if `lang` is a separate cookie or part of the Flask session cookie. Din cod, `session['language']` este setat, deci e parte din cookie-ul de sesiune. #}
+                            </tbody>
+                        </table>
+                    </div>
+                    <p>{{_('We do not currently use analytics, advertising, or other non-essential third-party cookies. You can control or delete cookies at any time via your browser settings. However, blocking the essential cookies listed above may prevent you from logging in or using certain features of the Platform.')}}</p>
+
+                    <h3 class="h5 mt-3 mb-2">11.2 {{ _('Future Changes to Cookie Use') }}</h3>
+                    <p>{{_('Should we decide to introduce non-essential cookies (e.g., for analytics or enhanced functionality) in the future, we will update this section and implement a cookie consent banner compliant with EU ePrivacy Directive and GDPR requirements, to obtain your consent before any such cookies are set.')}}</p>
+
+                    <h2 class="h4 mt-5 mb-3" id="s12">12. {{ _('Children’s Privacy') }}</h2>
+                    <p>{{_('The Platform is not intended for use by children under the age of 16 years without verified parental consent. We do not knowingly collect personal data directly from children under 16. If you are a parent or guardian and you are aware that your child has provided us with personal data without your consent, please contact us. If we become aware that we have collected personal data from a child under 16 without verification of parental consent, we will take steps to remove that information from our servers.')}}</p> {# Vârsta de 16 ani este un prag comun GDPR, dar poate fi ajustată de legislația națională pentru anumite servicii. #}
+
+                    <h2 class="h4 mt-5 mb-3" id="s13">13. {{ _('Your Obligations as a User') }}</h2>
+                    <p>{{_('To help us protect your data and ensure the integrity of our Platform, you agree to:')}}</p>
+                    <ul>
+                        <li>{{_('Provide accurate and up-to-date information during registration and in your profile.')}}</li>
+                        <li>{{_('Keep your account credentials (username and password) confidential and not share them with others.')}}</li>
+                        <li>{{_('Use the Platform responsibly, respect survey rules, and avoid submitting fraudulent or misleading responses.')}}</li>
+                        <li>{{_('Inform us promptly of any suspected unauthorized use of your account or any data breach you become aware of that might affect you or the Platform.')}}</li>
+                    </ul>
+
+                    <h2 class="h4 mt-5 mb-3" id="s14">14. {{ _('Changes to This Privacy Policy') }}</h2>
+                    <p>{{_('We may update or modify this Privacy Policy from time to time to reflect changes in our data processing practices, legal or regulatory requirements, or technical or business developments. When we make material changes, we will notify registered users by email (to the address associated with your account) at least [e.g., 15-30] days before the changes take effect, and/or by posting a prominent notice on our Platform. The "Last updated" date at the top of this Policy indicates when the latest revisions became effective. We encourage you to review this Policy periodically.')}}</p> {# TODO: Decide asupra perioadei de notificare. #}
+
+                    <h2 class="h4 mt-5 mb-3" id="s15">15. {{ _('Contact Information') }}</h2>
+                    <p>{{_('If you have any questions, concerns, or complaints about this Privacy Policy, our data handling practices, or if you wish to exercise any ofyour data protection rights, please contact us at:')}}</p>
+                    <p><strong>PatternX SRL</strong><br>
+                       {{ _('Registered office: Str. … nr. …, 077025 Bragadiru, Ilfov, Romania') }} {# TODO: Completează adresa. #}<br>
+                       {{ _('Email') }}: <a href="mailto:privacy@patternx.example.com">privacy@patternx.example.com</a> {# TODO: Folosește emailul corect. #}<br>
+                       {{ _('Telephone') }}: +40 (0) 31 [fill‑in] {# TODO: Completează telefonul. #}
+                    </p>
+                    <p>{{_('We are committed to working with you to obtain a fair resolution of any complaint or concern about privacy. We aim to respond to all legitimate requests within one calendar month, as required by GDPR Article 12(3).')}}</p>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .legal-page h1.h3 {
+        font-weight: 600;
+    }
+    .legal-page h2.h4 {
+        color: var(--primary-color);
+        border-bottom: 2px solid var(--primary-gradient, var(--primary-color));
+        padding-bottom: 0.6rem;
+        margin-top: 2.8rem !important;
+        margin-bottom: 1.5rem !important;
+        font-weight: 600;
+    }
+    .legal-page h2.h4:first-of-type {
+         margin-top: 1.5rem !important;
+    }
+    .legal-page h3.h5 {
+        color: var(--bs-gray-700); /* Un gri mai închis pentru H3 */
+        font-weight: 600;
+        margin-top: 1.8rem;
+        margin-bottom: 0.8rem;
+    }
+    .legal-page p, .legal-page li {
+        line-height: 1.75;
+        color: #343a40;
+        font-size: 0.98rem;
+    }
+    .legal-page ul {
+        padding-left: 1.8rem;
+        list-style-type: disc; /* Stil implicit, dar explicit */
+    }
+    .legal-page ul li {
+        margin-bottom: 0.6rem;
+    }
+    .legal-page ul li strong {
+        color: #212529;
+    }
+    .legal-page .card-body {
+        font-size: 0.95rem;
+    }
+    .legal-page .text-muted {
+        font-size: 0.9rem;
+    }
+    .legal-page table {
+        font-size: 0.9rem;
+    }
+    .legal-page table th {
+        font-weight: 600;
+        background-color: #f8f9fa !important; /* Suprascrie Bootstrap pentru consistență */
+    }
+</style>
+{% endblock %}

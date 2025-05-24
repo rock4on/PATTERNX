@@ -1,16 +1,21 @@
-/* Apple-Inspired Modern CSS for Survey Platform */
+/* === Combined and Enhanced CSS for Survey Platform === */
 
+/* :root Variables & Base Styles
+-------------------------------------------------- */
 :root {
     --primary-color: #007aff;
+    --primary-rgb: 0, 122, 255; /* RGB version for rgba() */
     --primary-gradient: linear-gradient(135deg, #007aff, #0064ff);
     --background-color: #f2f2f7;
     --text-color: #1d1d1f;
     --card-background: #ffffff;
     --card-gradient: linear-gradient(to bottom right, #ffffff, #f9f9f9);
     --accent-color: #5856d6;
+    --accent-rgb: 88, 86, 214; /* RGB version for rgba() */
     --accent-gradient: linear-gradient(135deg, #5856d6, #6e5bdb);
-    --hover-color: #0056b3;
+    --hover-color: #0056b3; /* Used for specific hovers */
     --transition-speed: 0.3s;
+    --bs-gray-600: #6c757d; /* Bootstrap gray for meta text */
 }
 
 * {
@@ -28,7 +33,27 @@ body {
     padding: 0;
 }
 
-/* Navigation */
+/* Typography Refinements
+-------------------------------------------------- */
+h1, .h1, .display-1, .display-2, .display-3, .display-4, .display-5, .display-6 {
+    font-weight: 600;
+    letter-spacing: -0.015em;
+}
+
+h2, .h2 {
+    font-weight: 600;
+    letter-spacing: -0.01em;
+}
+
+/* Meta Text for secondary/less important information */
+.text-meta {
+    font-size: 0.875em;
+    color: var(--bs-gray-600);
+    font-weight: 400;
+}
+
+/* Navigation
+-------------------------------------------------- */
 .navbar {
     background-color: rgba(255, 255, 255, 0.8) !important;
     backdrop-filter: saturate(180%) blur(20px);
@@ -39,7 +64,7 @@ body {
 .navbar-brand {
     font-weight: 600;
     color: var(--text-color) !important;
-    transition: opacity var(--transition-speed);
+    transition: opacity var(--transition-speed) ease-out;
 }
 
 .navbar-brand:hover {
@@ -49,26 +74,29 @@ body {
 .nav-link {
     color: var(--text-color) !important;
     font-weight: 500;
-    transition: color var(--transition-speed);
+    transition: color var(--transition-speed) ease-out;
 }
 
-.nav-link:hover {
+.nav-link:hover,
+.nav-link.active { /* Style for active nav link */
     color: var(--primary-color) !important;
 }
 
-/* Cards */
+/* General Card Styling - Refined Shadows
+-------------------------------------------------- */
 .card {
     background: var(--card-gradient);
     border: none;
-    border-radius: 16px;
-    box-shadow: 
-        0 4px 6px rgba(0, 0, 0, 0.04), 
-        0 1px 3px rgba(0, 0, 0, 0.06);
-    transition: all var(--transition-speed);
+    border-radius: 16px; /* Consistent rounded corners */
+    box-shadow: 0 1px 2px rgba(0,0,0,0.03), /* Ambient */
+                0 4px 8px rgba(0,0,0,0.04), /* Main */
+                0 10px 20px rgba(0,0,0,0.03); /* Deeper */
+    transition: all var(--transition-speed) ease-out;
     margin-bottom: 1.5rem;
-    overflow: hidden;
+    overflow: hidden; /* Important for ::before pseudo-element */
 }
 
+/* Optional: Top gradient line for cards */
 .card::before {
     content: '';
     position: absolute;
@@ -81,105 +109,114 @@ body {
 }
 
 .card:hover {
-    transform: translateY(-4px);
-    box-shadow: 
-        0 6px 12px rgba(0, 0, 0, 0.06), 
-        0 2px 4px rgba(0, 0, 0, 0.08);
+    transform: translateY(-6px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.04),
+                0 8px 16px rgba(0,0,0,0.06),
+                0 15px 30px rgba(0,0,0,0.05);
 }
 
 .card-header {
-    background-color: rgba(0, 0, 0, 0.02);
+    background-color: rgba(0, 0, 0, 0.02); /* Very subtle header background */
     border-bottom: 1px solid rgba(0, 0, 0, 0.08);
     font-weight: 600;
     padding: 0.75rem 1.25rem;
 }
 
-/* Buttons */
+/* Buttons
+-------------------------------------------------- */
 .btn {
     border-radius: 12px;
     font-weight: 500;
-    text-transform: none;
+    text-transform: none; /* Common in modern UI */
     border: none;
-    transition: all var(--transition-speed);
+    transition: all var(--transition-speed) ease-out;
     padding: 0.5rem 1rem;
-    position: relative;
+    position: relative; /* For pseudo-elements like ripple */
     overflow: hidden;
 }
 
 .btn-primary {
     background: var(--primary-gradient);
     color: white;
-    position: relative;
 }
 
+/* Subtle sheen on primary button hover */
 .btn-primary::before {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    top: 0; left: 0; right: 0; bottom: 0;
     background: rgba(255, 255, 255, 0.2);
     opacity: 0;
-    transition: opacity var(--transition-speed);
+    transition: opacity var(--transition-speed) ease-out;
 }
 
 .btn-primary:hover::before {
     opacity: 1;
 }
 
-.btn-primary:active {
-    transform: scale(0.98);
+.btn-primary:active,
+.btn-outline-primary:active {
+    transform: scale(0.98); /* Click feedback */
 }
 
 .btn-outline-primary {
     border: 2px solid var(--primary-color);
     color: var(--primary-color);
     background-color: transparent;
-    transition: all var(--transition-speed);
 }
 
 .btn-outline-primary:hover {
     background: var(--primary-gradient);
     color: white;
-    border-color: transparent;
+    border-color: transparent; /* Hide border when background fills */
 }
 
-/* Badge Styles */
-.badge {
+/* Badges
+-------------------------------------------------- */
+.badge { /* General badge styling */
     border-radius: 8px;
     font-weight: 500;
     padding: 0.35em 0.65em;
-    background: var(--primary-gradient);
+    color: white; /* Default text color for badges */
 }
 
+/* Specific background for Bootstrap's .bg-* classes on badges */
+.badge.bg-primary {
+    background: var(--primary-gradient) !important; /* Override Bootstrap if needed */
+}
 .badge.bg-warning {
-    background: linear-gradient(135deg, #ffcc00, #ffdf00);
-    color: #000;
+    background: linear-gradient(135deg, #ffcc00, #ffdf00) !important;
+    color: #000 !important; /* Ensure text color for warning */
 }
-
 .badge.bg-success {
-    background: linear-gradient(135deg, #34c759, #30d158);
+    background: linear-gradient(135deg, #34c759, #30d158) !important;
 }
-
 .badge.bg-secondary {
-    background: linear-gradient(135deg, #8e8e93, #aeaeb2);
+    background: linear-gradient(135deg, #8e8e93, #aeaeb2) !important;
+}
+.badge.bg-info { /* Added for consistency if used */
+    background: linear-gradient(135deg, #5ac8fa, #34aadc) !important;
+}
+.badge.bg-danger { /* Added for consistency if used */
+    background: linear-gradient(135deg, #ff3b30, #ff453a) !important;
 }
 
-/* Forms */
+/* Forms
+-------------------------------------------------- */
 .form-control {
     border-radius: 8px;
     border: 1px solid rgba(0, 0, 0, 0.15);
     padding: 0.75rem 1rem;
-    transition: all var(--transition-speed);
+    transition: all var(--transition-speed) ease-out;
 }
 
 .form-control:focus {
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+    box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.1); /* Using RGB variable */
 }
 
-/* Alerts */
+/* Alerts
+-------------------------------------------------- */
 .alert {
     border-radius: 8px;
     border: none;
@@ -187,88 +224,561 @@ body {
 }
 
 .alert-success {
-    background-color: rgba(48, 209, 88, 0.1);
-    color: #007a3b;
+    background-color: rgba(48, 209, 88, 0.1); /* Soft success background */
+    color: #007a3b; /* Darker success text */
 }
 
 .alert-danger {
-    background-color: rgba(255, 59, 48, 0.1);
-    color: #d70015;
+    background-color: rgba(255, 59, 48, 0.1); /* Soft danger background */
+    color: #d70015; /* Darker danger text */
+}
+.alert-info { /* Added for consistency */
+    background-color: rgba(var(--primary-rgb), 0.1);
+    color: var(--primary-color);
+}
+.alert-warning { /* Added for consistency */
+    background-color: rgba(255, 204, 0, 0.15);
+    color: #b17d00;
 }
 
-/* Tables */
+/* Tables
+-------------------------------------------------- */
 .table {
-    border-radius: 12px;
-    overflow: hidden;
+    border-radius: 12px; /* Apply to table wrapper if possible, or table itself */
+    overflow: hidden; /* For rounded corners to apply to tbody */
 }
 
 .table thead {
-    background-color: rgba(0, 0, 0, 0.03);
+    background-color: rgba(0, 0, 0, 0.03); /* Very light header */
 }
 
 .table th {
     font-weight: 600;
     color: var(--text-color);
-    border: none;
+    border: none; /* Clean look */
 }
 
 .table-hover tbody tr:hover {
-    background-color: rgba(0, 122, 255, 0.05);
+    background-color: rgba(var(--primary-rgb), 0.05); /* Using RGB variable */
 }
 
-/* Badges */
-.badge {
-    border-radius: 6px;
-    font-weight: 500;
-    padding: 0.35em 0.65em;
-}
-
-.badge-primary {
-    background-color: var(--primary-color);
-}
-
-/* Footer */
+/* Footer
+-------------------------------------------------- */
 footer {
-    background-color: var(--card-background) !important;
+    background-color: var(--card-background) !important; /* Light footer */
     border-top: 1px solid rgba(0, 0, 0, 0.08);
     padding: 1.5rem 0;
 }
 
-/* Responsive Adjustments */
-@media (max-width: 768px) {
-    .card {
-        margin-bottom: 1rem;
-    }
-    
-    .btn {
-        width: 100%;
-    }
-}
-
-/* Animations */
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-.animate-fade-in {
-    animation: fadeIn var(--transition-speed) ease-out;
-}
-
-/* Scrollbar */
+/* Scrollbar Styling
+-------------------------------------------------- */
 ::-webkit-scrollbar {
     width: 8px;
+    height: 8px;
 }
-
 ::-webkit-scrollbar-track {
     background: rgba(0, 0, 0, 0.05);
 }
-
 ::-webkit-scrollbar-thumb {
     background-color: rgba(0, 0, 0, 0.2);
     border-radius: 4px;
 }
-
 ::-webkit-scrollbar-thumb:hover {
     background-color: rgba(0, 0, 0, 0.3);
+}
+
+/* === Main Page Specific Styles (formerly in css.css for index.html) === */
+
+/* Hero Section Styles
+-------------------------------------------------- */
+.hero-section {
+    background: var(--primary-gradient);
+    padding: 6rem 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: -75%; left: -75%;
+    width: 250%; height: 250%;
+    background: radial-gradient(circle at center, rgba(255,255,255,0.12) 0%, transparent 65%);
+    animation: subtle-shine 8s infinite linear alternate;
+}
+
+@keyframes subtle-shine {
+    0% { transform: rotate(0deg) scale(1); }
+    100% { transform: rotate(360deg) scale(1.05); }
+}
+
+.hero-content {
+    position: relative;
+    z-index: 1;
+}
+
+.hero-section h1 { /* Already covered by global h1 */
+    font-size: 3.0rem; /* Can be more specific if needed */
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.hero-section .lead {
+    font-size: 1.3rem;
+    max-width: 700px;
+    margin-left: auto; margin-right: auto;
+    color: rgba(255,255,255,0.85);
+}
+
+.hero-btn { /* Specific for hero section buttons */
+    padding: 0.8rem 2rem;
+    font-size: 1.1rem;
+    border-radius: 50px; /* Pill shape */
+    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+}
+
+.hero-btn:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+.btn-primary.hero-btn { /* Inverted primary for hero */
+    background: white;
+    color: var(--primary-color);
+    border: 2px solid white;
+}
+.btn-primary.hero-btn:hover {
+    background: rgba(255,255,255,0.9);
+    color: var(--hover-color);
+}
+
+.btn-outline-light.hero-btn {
+    border-width: 2px;
+}
+.btn-outline-light.hero-btn:hover {
+    background: white;
+    color: var(--primary-color);
+}
+
+/* Features Section Styles (main page)
+-------------------------------------------------- */
+.features-section {
+    padding: 3rem 0;
+}
+
+.feature-card { /* Inherits from .card, can add specifics */
+    padding: 2.5rem 2rem;
+    border: 1px solid rgba(0,0,0,0.05); /* Slight border for feature cards */
+}
+
+.feature-card:hover {
+    transform: translateY(-12px); /* More pronounced lift */
+}
+
+.feature-icon {
+    width: 70px; height: 70px;
+    background: var(--accent-gradient);
+    color: white;
+    border-radius: 20px;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 1.5rem;
+    font-size: 1.8rem;
+    box-shadow: 0 8px 15px rgba(var(--accent-rgb), 0.2); /* Using RGB var */
+}
+.feature-card .card-title { /* Already styled by global h* */
+    color: var(--text-color);
+}
+
+/* Stats Section Styles (main page)
+-------------------------------------------------- */
+.stats-section {
+    padding: 3rem 1.5rem;
+}
+.stats-section h2 {
+    color: var(--text-color);
+}
+
+.stats-box { /* Specific styling for stats boxes */
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 2rem 1.5rem;
+    transition: transform var(--transition-speed) ease-out, box-shadow var(--transition-speed) ease-out;
+    border: 1px solid #e9ecef;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.03),
+                0 3px 7px rgba(0,0,0,0.04),
+                0 6px 15px rgba(0,0,0,0.03);
+}
+
+.stats-box:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.04),
+                0 7px 14px rgba(0,0,0,0.06),
+                0 12px 25px rgba(0,0,0,0.05);
+}
+.stats-box i {
+    opacity: 0.7;
+}
+.stats-box h3 {
+    font-size: 2.8rem;
+}
+.stats-box p {
+    font-size: 1.1rem;
+}
+
+/* === Dashboard Specific Styles (formerly in dashboard.css) === */
+
+.dashboard-container {
+    max-width: 1200px;
+    margin: auto;
+    padding-top: 2rem;
+    padding-bottom: 3rem;
+}
+
+.dashboard-header .fa-tachometer-alt {
+    font-size: 2.5rem;
+}
+
+.section-title { /* This might be a general utility now */
+    font-size: 1.85rem;
+    color: var(--text-color);
+    position: relative;
+    padding-bottom: 0.5rem;
+    /* letter-spacing already handled by global h* */
+}
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 50px; height: 3px;
+    background-color: var(--primary-color);
+    opacity: 0.6;
+    border-radius: 2px;
+}
+
+.see-all-link {
+    font-weight: 500;
+    color: var(--primary-color);
+    text-decoration: none;
+    border: 1px solid var(--primary-color);
+    padding: 0.3rem 0.8rem;
+    border-radius: 50px;
+    transition: all 0.2s ease-out;
+}
+.see-all-link:hover {
+    background-color: var(--primary-color);
+    color: white;
+}
+.see-all-link i {
+    transition: transform 0.2s ease-in-out;
+}
+.see-all-link:hover i {
+    transform: translateX(4px);
+}
+
+/* Dashboard Card Styling - Refined Shadows */
+.dashboard-card { /* This will enhance the base .card style for dashboard context */
+    border: 1px solid #e9ecef; /* Slightly more defined border for dashboard cards */
+    border-radius: 1rem; /* Can be different from global .card if desired */
+    background-color: #ffffff; /* Explicit white background */
+    box-shadow: 0 1px 3px rgba(0,0,0,0.03),
+                0 4px 8px rgba(0,0,0,0.04),
+                0 8px 16px rgba(0,0,0,0.02); /* Softer base for dashboard cards */
+    /* transition already in .card, ensure it's ease-out */
+}
+.dashboard-card:hover {
+    transform: translateY(-8px) scale(1.01);
+    box-shadow: 0 2px 6px rgba(var(--primary-rgb), 0.05), /* Light primary glow */
+                0 8px 16px rgba(var(--primary-rgb), 0.07),
+                0 12px 24px rgba(0,0,0,0.06); /* Deeper hover shadow */
+}
+.shadow-lg.hero-card { /* Specific for the main hero card on dashboard */
+    box-shadow: 0 1rem 3rem rgba(var(--primary-rgb), 0.175) !important; /* Kept if very specific override is needed */
+}
+
+
+/* Hero Card / Points Summary Card (Dashboard) */
+.hero-card { /* Styles for the prominent points card */
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+    color: #ffffff;
+    position: relative;
+    overflow: hidden;
+}
+.hero-card::before { /* Decorative pattern/sheen */
+    content: "";
+    position: absolute; top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-image:
+        radial-gradient(circle at 100% 0%, rgba(255,255,255,0.15) 0%, transparent 30%),
+        radial-gradient(circle at 0% 100%, rgba(255,255,255,0.1) 0%, transparent 25%);
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.hero-card-icon {
+    width: 60px; height: 60px;
+    border-radius: 18px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.8rem;
+    flex-shrink: 0;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+.hero-card .card-title { /* Title within the hero card */
+    font-size: 1.3rem;
+    color: white; /* Ensure white text */
+}
+.points-segment .display-4 {
+    font-weight: 700 !important;
+    transition: transform 0.3s ease-out;
+}
+.points-segment:hover .display-4 {
+    transform: scale(1.05);
+}
+.points-segment-secondary .h1 {
+    font-weight: 600 !important;
+    opacity: 0.85;
+}
+.hero-card .btn-light-outline, .hero-card .btn-light {
+    font-size: 0.9rem;
+    border-radius: 50px;
+    font-weight: 500;
+    transition: all 0.25s ease-out;
+}
+.hero-card .btn-light-outline { /* Button style within hero card */
+    border-color: rgba(255,255,255,0.5);
+    color: white;
+}
+.hero-card .btn-light-outline:hover {
+    background-color: rgba(255,255,255,0.2);
+    border-color: rgba(255,255,255,0.8);
+    transform: scale(1.05);
+}
+.hero-card .btn-light { /* Button style within hero card */
+    background-color: rgba(255,255,255,0.9);
+    color: var(--accent-color);
+}
+.hero-card .btn-light:hover {
+    background-color: #ffffff;
+    color: var(--accent-color); /* Or primary */
+    transform: scale(1.05);
+}
+
+
+/* Quick Actions Card (Dashboard) */
+.quick-actions-card .feature-icon-sm { /* Icon in quick actions */
+    background: var(--accent-gradient) !important; /* From original CSS */
+}
+.quick-actions-card .list-group-item-action {
+    border-radius: 0.75rem;
+    margin-bottom: 0.75rem;
+    border: 1px solid #f0f3f6;
+    padding: 1rem 1.25rem;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+    transition: all 0.25s ease-out;
+}
+.quick-actions-card .list-group-item-action:hover {
+    border-left: 4px solid var(--accent-color);
+    padding-left: calc(1.25rem - 3px); /* Adjust based on border difference */
+    background-color: #f7f9ff;
+    color: var(--accent-color);
+    box-shadow: 0 4px 10px rgba(var(--accent-rgb), 0.1);
+    transform: translateX(3px);
+}
+.quick-actions-card .list-group-item-action:hover i.fa-arrow-right {
+    transform: translateX(5px) scale(1.1);
+    color: var(--accent-color) !important;
+}
+.quick-actions-card .list-group-item-action i.text-muted {
+    transition: color 0.2s ease-out, transform 0.2s ease-out;
+}
+
+
+/* Survey Card Display (Dashboard) */
+.survey-card-display { /* Specific for survey cards on dashboard */
+    border-radius: 0.75rem; /* Consistent with other dashboard cards */
+    box-shadow: 0 5px 15px rgba(0,0,0,0.04); /* Softer shadow for lists */
+    overflow: hidden;
+    position: relative;
+}
+.survey-card-display .card-body {
+    padding: 1.25rem;
+}
+.survey-card-display:hover {
+    border-color: var(--primary-color); /* Highlight on hover */
+    box-shadow: 0 8px 20px rgba(var(--primary-rgb),0.08); /* Slightly more prominent shadow on hover */
+}
+.survey-card-display .card-title {
+    color: var(--text-color); /* Use global text color */
+    font-size: 1.15rem;
+    transition: color 0.2s ease-out;
+    /* Multi-line truncation handled in HTML/JS or specific classes */
+}
+.survey-card-display:hover .card-title {
+    color: var(--primary-color);
+}
+
+/* Badges inside survey cards */
+.badge.bg-primary-soft {
+    background-color: rgba(var(--primary-rgb), 0.1);
+    color: var(--primary-color);
+    font-weight: 500;
+}
+.badge.bg-info-soft {
+    background-color: rgba(var(--bs-info-rgb, 23, 162, 184), 0.1); /* Define --bs-info-rgb or use direct */
+    color: #087990; /* text-info-dark from original */
+    font-weight: 500;
+}
+
+.survey-card-footer .btn {
+    width: 100%;
+    font-weight: 500;
+    padding-top: 0.5rem; padding-bottom: 0.5rem;
+    transition: background-color 0.2s ease-out, transform 0.2s ease-out;
+}
+.survey-card-display:hover .survey-card-footer .btn {
+    background-color: var(--hover-color); /* Use defined hover color */
+    transform: scale(1.03);
+}
+
+/* Text truncate helper (ensure this works with your content) */
+.text-truncate-multiline {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    /* -webkit-line-clamp is already set via style="--lines: N;" in HTML or default to 2 */
+}
+
+
+/* Recent Activity / Points History Section (Dashboard) */
+.points-history-section .activity-item {
+    border-bottom: 1px solid #f3f4f7; /* Lighter separator */
+    padding: 1rem 1.25rem;
+}
+.points-history-section .activity-item:last-child {
+    border-bottom: none;
+}
+.points-history-section .activity-item:hover {
+    background-color: #fbfcfe; /* Very subtle hover */
+}
+.activity-icon { /* For up/down arrows in activity */
+    width: 42px; height: 42px;
+    border-radius: 12px;
+    font-size: 1.2rem;
+    display: flex; align-items: center; justify-content: center; /* Ensure icon is centered */
+}
+.activity-icon .fa-arrow-up, .activity-icon .fa-arrow-down {
+    font-weight: 900; /* Bolder arrows */
+}
+.points-history-section .badge.fs-6 { /* Points amount badge */
+    font-size: 0.95rem !important;
+    padding: 0.45em 0.8em;
+}
+.points-history-section .badge.bg-light { /* Source badge */
+    font-size: 0.75rem;
+    padding: 0.25em 0.5em;
+    color: var(--bs-gray-600); /* Darker text for light badge */
+    background-color: #f0f3f6 !important; /* Slightly darker light bg */
+}
+
+/* Animations (Ensure keyframes are defined, usually in global section)
+-------------------------------------------------- */
+@keyframes fadeIn { /* Already in global from css.css */
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in { /* General fade-in animation */
+    animation: fadeIn var(--transition-speed) ease-out forwards;
+}
+
+@keyframes fadeInUp { /* Already in global from css.css */
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.animate-on-load { /* For elements animating on page load */
+    opacity: 0;
+    animation: fadeInUp 0.8s 0.2s ease-out forwards;
+}
+.animate-slide-up { /* Specific for hero elements */
+    opacity: 0;
+    transform: translateY(40px);
+    animation: fadeInUp 0.7s ease-out forwards;
+}
+
+/* Scroll Animations (JS dependent) */
+.animate-on-scroll {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+.animate-on-scroll.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Pulse animation for dashboard icon */
+.animate-pulse-icon {
+    animation: pulse 2.5s infinite ease-in-out;
+}
+@keyframes pulse {
+    0% { transform: scale(1); opacity: 0.8; }
+    50% { transform: scale(1.15); opacity: 1; }
+    100% { transform: scale(1); opacity: 0.8; }
+}
+
+
+/* Responsive Adjustments (Consolidated)
+-------------------------------------------------- */
+@media (max-width: 768px) {
+    .card, .dashboard-card { /* General card adjustments */
+        margin-bottom: 1rem;
+    }
+    
+    .btn:not(.hero-btn):not(.btn-sm):not(.btn-icon) { /* Avoid affecting all buttons like small modal buttons or icon-only buttons */
+        /* width: 100%; /* This can be too aggressive. Apply specifically where needed. */
+        /* display: block; /* If full width */
+        /* margin-bottom: 0.5rem; /* If full width and stacked */
+    }
+
+    /* Hero Section on main page */
+    .hero-section h1 {
+        font-size: 2.2rem;
+    }
+    .hero-section .lead {
+        font-size: 1.1rem;
+    }
+    .hero-btn { /* Hero buttons on main page become block */
+        padding: 0.6rem 1.5rem;
+        font-size: 1rem;
+        display: block;
+        margin-bottom: 0.5rem;
+    }
+    .hero-btn.me-2 { /* Remove margin if stacked */
+        margin-right: 0 !important;
+    }
+
+    .feature-card, .stats-box { /* Cards on main page */
+        padding: 1.5rem;
+    }
+    .stats-box h3 {
+        font-size: 2.2rem;
+    }
+    .stats-box p {
+        font-size: 1rem;
+    }
+
+    /* Dashboard specific responsive adjustments */
+    .dashboard-header h1, .dashboard-header .display-5 {
+        font-size: 1.8rem; /* Adjust dashboard title size */
+    }
+    .points-segment .display-4 {
+        font-size: 2.5rem; /* Adjust points display on mobile */
+    }
+    .points-segment-secondary .h1 {
+        font-size: 1.5rem;
+    }
+    .quick-actions-card .list-group-item-action {
+        padding: 0.8rem 1rem; /* Adjust padding for quick actions */
+    }
+    .section-title {
+        font-size: 1.5rem; /* Smaller section titles on mobile */
+    }
 }

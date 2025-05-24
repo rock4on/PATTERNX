@@ -28,6 +28,41 @@
                     <i class="fas fa-user-circle fa-5x text-primary mb-3"></i>
                     <h4>{{ user.full_name }}</h4>
                     <p class="text-muted mb-0">{{ user.username }}</p>
+                    
+                    <hr>
+                <h5>Demographic Information</h5>
+                {% if user.profile %}
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span><i class="fas fa-birthday-cake me-2"></i> Date of Birth:</span>
+                        <span>{{ user.profile.date_of_birth.strftime('%Y-%m-%d') if user.profile.date_of_birth else 'N/A' }} (Age: {{user.profile.age if user.profile.age is not none else 'N/A' }})</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span><i class="fas fa-venus-mars me-2"></i> Gender:</span>
+                        <span>{{ user.profile.gender or 'N/A' }}</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span><i class="fas fa-map-marker-alt me-2"></i> County:</span>
+                        <span>{{ user.profile.county or 'N/A' }}</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span><i class="fas fa-city me-2"></i> City:</span>
+                        <span>{{ user.profile.city or 'N/A' }}</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span><i class="fas fa-graduation-cap me-2"></i> Education:</span>
+                        <span>{{ user.profile.education_level or 'N/A' }}</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span><i class="fas fa-home me-2"></i> Residence:</span>
+                        <span>{{ user.profile.residence_environment or 'N/A' }}</span>
+                    </li>
+                </ul>
+                {% else %}
+                <p class="text-muted">No demographic information available.</p>
+                {% endif %}
+                <hr>
+
                 </div>
                 
                 <hr>

@@ -3,7 +3,9 @@ from app.extensions import db
 from app.models.survey import Survey, SurveyCompletion
 from app.models.point import Point
 from app.services.limesurvey import LimeSurveyAPI
+from app.services.segment_service import SegmentService
 from config import Config
+from sqlalchemy import or_
 
 class SurveyService:
     """Service for survey-related operations."""
@@ -136,38 +138,48 @@ class SurveyService:
     @staticmethod
     def get_available_surveys(user_id):
         """
-        Get available surveys for a user.
-        
-        Args:
-            user_id: ID of the user
-            
-        Returns:
-            list: Available surveys
+        Get available surveys for a user, considering segments.
         """
-        # Get surveys that are active and within date range
-        surveys = Survey.query.filter_by(is_active=True).all()
+        # Base query for active surveys within date range
         now = datetime.utcnow()
-        
-        # Filter by dates
+        base_query = Survey.query.filter(Survey.is_active == True)\
+                                .filter(
+                                    or_(Survey.start_date == None, Survey.start_date <= now)
+                                )\
+                                .filter(
+                                    or_(Survey.end_date == None, Survey.end_date >= now)
+                                )
+
+        potential_surveys = base_query.all()
         available_surveys = []
-        for survey in surveys:
-            if survey.start_date and now < survey.start_date:
-                continue
-            if survey.end_date and now > survey.end_date:
-                continue
-                
-            # Check if user has already completed this survey
-            completion = SurveyCompletion.query.filter_by(
-                user_id=user_id,
-                survey_id=survey.id
-            ).first()
-            
-            if completion:
-                # Skip if already completed
-                continue
-                
-            available_surveys.append(survey)
-        
+
+        # Get IDs of surveys already completed by the user
+        completed_survey_ids = {
+            comp.survey_id for comp in SurveyCompletion.query.filter_by(user_id=user_id).with_entities(SurveyCompletion.survey_id).all()
+        }
+
+        for survey in potential_surveys:
+            if survey.id in completed_survey_ids:
+                continue # Skip if already completed
+
+            # Segmentation Logic
+            target_segments_for_survey = survey.target_segments.all() # Get Segment objects
+
+            if target_segments_for_survey: # If the survey is targeted
+                user_is_eligible_for_segmented_survey = False
+                for segment in target_segments_for_survey:
+                    if SegmentService.evaluate_user_for_segment(user_id, segment.id): #
+                        user_is_eligible_for_segmented_survey = True
+                        break # User matches at least one segment, so they are eligible
+
+                if not user_is_eligible_for_segmented_survey:
+                    continue # Skip survey if user doesn't match any target segment (hide from UI)
+   
+  #          else:
+  #              continue        
+            # If survey is not segmented OR user matches at least one of its target segments
+            available_surveys.append(survey) #
+
         return available_surveys
     
     @staticmethod
@@ -227,3 +239,4 @@ class SurveyService:
         )
         
         return True, f"Survey completed! You earned {survey.points_value} points.", completion
+    

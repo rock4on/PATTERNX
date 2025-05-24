@@ -48,3 +48,13 @@ def dashboard():
         points_summary=points_summary,
         points_history=points_history
     )
+
+
+@main_blueprint.route('/gdpr')
+@main_blueprint.route('/privacy-policy') # Poți avea mai multe alias-uri
+def gdpr_page():
+    """Render the GDPR/Privacy Policy page."""
+    # Poți prelua numele companiei/platformei din configurație dacă e necesar
+    platform_name = current_app.config.get('PLATFORM_NAME', 'Platforma PATTERNX') # Presupunând că ai PLATFORM_NAME în config
+    contact_email_gdpr = current_app.config.get('GDPR_CONTACT_EMAIL', 'privacy@patternx.example.com') # Exemplu
+    return render_template('main/gdpr_page.html', platform_name=platform_name, contact_email_gdpr=contact_email_gdpr)

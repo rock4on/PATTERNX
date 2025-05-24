@@ -6,6 +6,13 @@ class Survey(db.Model):
     """Survey model for storing survey information."""
     
     __tablename__ = 'surveys'
+
+    target_segments = db.relationship(
+        'Segment',
+        secondary='survey_segment_association',
+        backref=db.backref('surveys', lazy='dynamic'), # Surveys belonging to a segment
+        lazy='dynamic' # Segments a survey is targeted to
+    )
     
     id = db.Column(db.Integer, primary_key=True)
     limesurvey_id = db.Column(db.Integer, nullable=False, unique=True)

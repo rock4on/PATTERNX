@@ -1,0 +1,219 @@
+{% extends "base.html" %}
+
+{% block title %}Admin - User Demographics{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+     crossorigin=""/>
+<style>
+    #romaniaMap { height: 500px; width: 100%; border: 1px solid #ccc; margin-bottom: 20px; cursor: pointer;}
+    .chart-container {
+        margin-bottom: 30px;
+        padding:15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background-color: #fff;
+        height: 400px; 
+        position: relative; 
+    }
+    .chart-container canvas {
+        max-width: 100%;
+        max-height: 100%;
+    }
+    .info { padding: 6px 8px; font: 14px/16px Arial, Helvetica, sans-serif; background: white; background: rgba(255,255,255,0.8); box-shadow: 0 0 15px rgba(0,0,0,0.2); border-radius: 5px; }
+    .info h4 { margin: 0 0 5px; color: #777; }
+    .legend { text-align: left; line-height: 18px; color: #555; }
+    .legend i { width: 18px; height: 18px; float: left; margin-right: 8px; opacity: 0.7; }
+    .filters-card { margin-bottom: 20px; }
+    #drilldownModal .modal-body { min-height: 450px; }
+    #drilldownModal .modal-dialog { max-width: 800px; }
+    .drilldown-chart-container { height: 350px; margin-bottom:15px; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12 mb-4">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ url_for('admin.index') }}">Admin</a></li>
+                <li class="breadcrumb-item active">User Demographics</li>
+            </ol>
+        </nav>
+        <h2><i class="fas fa-chart-pie me-2"></i> User Demographics</h2>
+        <p class="lead">Visual overview of user demographic data.</p>
+    </div>
+</div>
+
+<div class="card shadow-sm filters-card">
+    <div class="card-header">
+        <h5 class="mb-0"><i class="fas fa-filter me-2"></i> Filters</h5>
+    </div>
+    <div class="card-body">
+        <form id="demographicsFilterForm" method="GET" action="{{ url_for('admin.demographics_dashboard') }}">
+            <div class="row g-3 align-items-end">
+                <div class="col-md-3">
+                    <label for="startDateFilter" class="form-label">Registration Start Date:</label>
+                    <input type="date" class="form-control form-control-sm" id="startDateFilter" name="start_date" value="{{ start_date or '' }}">
+                </div>
+                <div class="col-md-3">
+                    <label for="endDateFilter" class="form-label">Registration End Date:</label>
+                    <input type="date" class="form-control form-control-sm" id="endDateFilter" name="end_date" value="{{ end_date or '' }}">
+                </div>
+                <div class="col-md-4">
+                    <label for="segmentFilter" class="form-label">Segment:</label>
+                    <select class="form-select form-select-sm" id="segmentFilter" name="segment_id">
+                        <option value="">All Users</option>
+                        {% for segment in segments %}
+                            <option value="{{ segment.id }}" {% if segment.id == selected_segment_id %}selected{% endif %}>
+                                {{ segment.name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary btn-sm w-100">
+                        <i class="fas fa-check me-1"></i> Apply Filters
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">User Distribution in Romania (Click on a county for details)</h5>
+            </div>
+            <div class="card-body">
+                <div id="romaniaMap"></div>
+                 <div id="mapSpinner" class="text-center py-5" style="display:none;">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading map...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<hr class="my-5">
+<h3 class="text-center mb-4">Demographic Charts (Filtered)</h3>
+<div id="chartsContainer">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="chart-container">
+                <h5 class="text-center small text-muted">County Distribution (Top 20)</h5>
+                <canvas id="countyChart"></canvas>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="chart-container">
+                <h5 class="text-center small text-muted">Age Distribution</h5>
+                <canvas id="ageChart"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="chart-container">
+                <h5 class="text-center small text-muted">Gender Distribution</h5>
+                <canvas id="genderChart"></canvas>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="chart-container">
+                <h5 class="text-center small text-muted">Education Level Distribution</h5>
+                <canvas id="educationChart"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+         <div class="col-md-6 offset-md-3">
+            <div class="chart-container">
+                <h5 class="text-center small text-muted">Residence Environment</h5>
+                <canvas id="residenceChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="noDataMessage" class="alert alert-warning text-center mt-4" role="alert" style="display:none;">
+  No data available for the selected filters.
+</div>
+
+
+<div class="modal fade" id="drilldownModal" tabindex="-1" aria-labelledby="drilldownModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="drilldownModalLabel">Detailed Demographics for <span id="drilldownCountyName"></span></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div id="drilldownSpinner" class="text-center py-5">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading details...</span>
+            </div>
+        </div>
+        <div id="drilldownContent" style="display:none;">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="drilldown-chart-container">
+                        <h6 class="text-center text-muted">Age Distribution in <span class="drilldownCountyNameText"></span></h6>
+                        <canvas id="drilldownAgeChart"></canvas>
+                    </div>
+                </div>
+            </div>
+             <div class="row">
+                <div class="col-md-12">
+                    <div class="drilldown-chart-container">
+                        <h6 class="text-center text-muted">Education Levels in <span class="drilldownCountyNameText"></span></h6>
+                        <canvas id="drilldownEducationChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                     <div class="drilldown-chart-container">
+                        <h6 class="text-center text-muted">Top Cities/Localities in <span class="drilldownCountyNameText"></span></h6>
+                        <canvas id="drilldownCityChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div id="noDrilldownDataMessage" class="alert alert-sm alert-info" style="display:none;">No detailed data available for this specific selection.</div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+     crossorigin=""></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+<script>
+    // Initial data passed from Flask for the first page load
+    const initialChartData = JSON.parse('{{ chart_data_json | safe }}');
+    const initialCountyDataForMap = JSON.parse('{{ county_data_json | safe }}');
+    const geoJsonPath = "{{ url_for('static', filename='data/romania_judete.geojson') }}";
+    // Current filter values (passed from Flask to pre-fill and for JS)
+    const currentFilters = {
+        start_date: "{{ start_date or '' }}",
+        end_date: "{{ end_date or '' }}",
+        segment_id: "{{ selected_segment_id or '' }}"
+    };
+    const demographicsDataApiUrl = "{{ url_for('admin.demographics_data_api') }}";
+</script>
+
+<script src="{{ url_for('static', filename='js/demographics_charts.js') }}"></script>
+{% endblock %}
