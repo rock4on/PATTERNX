@@ -2,7 +2,7 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useTheme } from 'react-native-paper';
-import { Platform } from 'react-native';
+import { Platform, Dimensions } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { PointsHistoryScreen } from '../screens/profile/PointsHistoryScreen';
 
@@ -44,6 +44,18 @@ const ProfileNavigator: React.FC = () => {
 
 export const MainNavigator: React.FC = () => {
   const theme = useTheme();
+  const { width } = Dimensions.get('window');
+  
+  // Calculate responsive dimensions
+  const getTabBarWidth = () => {
+    if (width < 400) return Math.min(width * 0.85, 320); // Small screens
+    if (width < 768) return Math.min(width * 0.75, 350); // Medium screens
+    return Math.min(width * 0.4, 400); // Large screens
+  };
+  
+  const tabBarWidth = getTabBarWidth();
+  const tabBarHeight = width < 400 ? 55 : 60;
+  const borderRadius = tabBarHeight / 2;
 
   return (
     <Tab.Navigator
@@ -53,36 +65,31 @@ export const MainNavigator: React.FC = () => {
           backgroundColor: Platform.OS === 'web' 
             ? 'rgba(0, 0, 0, 0.2)' 
             : 'rgba(28, 28, 30, 0.9)',
-          elevation: 0,
-          shadowOpacity: 0,
-          position: 'absolute',
-          bottom: 0,
-          left: 0,
-          right: 0,
+          position: 'fixed',
+          bottom: 30,
+          left: '50%',
+          right: 'auto',
+          width: tabBarWidth,
+          height: tabBarHeight,
+          borderRadius: borderRadius,
+          marginLeft: -tabBarWidth / 2,
+          zIndex: 1000,
           // Web-specific glassmorphism
           ...(isWeb && {
-            height: 60,
-            paddingBottom: 8,
-            paddingTop: 8,
+            paddingBottom: tabBarHeight < 60 ? 6 : 8,
+            paddingTop: tabBarHeight < 60 ? 6 : 8,
             backdropFilter: 'blur(50px)',
             WebkitBackdropFilter: 'blur(50px)',
-            boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.18)',
-            borderRadius: '20px 20px 0 0',
+            boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.3)',
             border: '1px solid rgba(255, 255, 255, 0.15)',
-            borderTop: '1px solid rgba(255, 255, 255, 0.25)',
-            borderLeft: '1px solid rgba(255, 255, 255, 0.25)',
-            borderRight: '1px solid rgba(255, 255, 255, 0.25)',
-            margin: '0 20px 20px 20px',
-            borderBottom: 'none',
           }),
           // Native iOS blur effect simulation
           ...(!isWeb && {
-            borderTopWidth: 1,
-            borderTopColor: 'rgba(255, 255, 255, 0.1)',
+            elevation: 8,
             shadowColor: '#000000',
-            shadowOffset: { width: 0, height: -2 },
-            shadowOpacity: 0.1,
-            shadowRadius: 8,
+            shadowOffset: { width: 0, height: 4 },
+            shadowOpacity: 0.3,
+            shadowRadius: 12,
           }),
         },
         tabBarActiveTintColor: '#6366F1',

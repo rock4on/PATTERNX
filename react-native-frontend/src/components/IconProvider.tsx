@@ -1,6 +1,7 @@
 import React from 'react';
 import { Platform } from 'react-native';
 import { configureFonts } from 'react-native-paper';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 // Web icon component that uses CSS classes
 const WebIcon: React.FC<{ name: string; size?: number; color?: string }> = ({ 
@@ -186,9 +187,8 @@ export const Icon: React.FC<{ name: string; size?: number; color?: string }> = (
     return <WebIcon {...props} />;
   }
   
-  // For native platforms, you would use react-native-vector-icons here
-  // This is a fallback for web-only development
-  return null;
+  // For native platforms, use MaterialCommunityIcons
+  return <MaterialCommunityIcons {...props} />;
 };
 
 export default configureIcons;

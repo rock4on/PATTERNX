@@ -270,59 +270,61 @@ export const PatternxLoader: React.FC<PatternxLoaderProps> = ({
       <FloatingParticles />
       
       <View style={styles.content}>
-        <AnimatedPatternxLogo size={120} />
-        
-        <Text
-          variant="displaySmall"
-          style={[
-            styles.brandName,
-            {
-              color: theme.colors.primary,
-              marginTop: 24,
-              marginBottom: 8,
-            },
-          ]}
-        >
-          Patternx
-        </Text>
-        
-        <Text
-          variant="titleMedium"
-          style={[
-            styles.tagline,
-            {
-              color: theme.colors.onSurfaceVariant,
-              marginBottom: 48,
-            },
-          ]}
-        >
-          Survey Platform
-        </Text>
-        
-        <View style={styles.loadingSection}>
-          <ActivityIndicator
-            size="large"
-            color={theme.colors.primary}
-            style={styles.spinner}
-          />
+        <View style={styles.loadingCard}>
+          <AnimatedPatternxLogo size={100} />
+          
           <Text
-            variant="bodyLarge"
+            variant="displaySmall"
             style={[
-              styles.loadingText,
+              styles.brandName,
               {
-                color: theme.colors.onSurfaceVariant,
-                marginTop: 16,
+                color: '#fff',
+                marginTop: 20,
+                marginBottom: 8,
               },
             ]}
           >
-            {message}
+            Patternx
           </Text>
-        </View>
-        
-        <View style={styles.dots}>
-          {[0, 1, 2].map((i) => (
-            <LoadingDot key={i} delay={i * 200} />
-          ))}
+          
+          <Text
+            variant="titleMedium"
+            style={[
+              styles.tagline,
+              {
+                color: 'rgba(255,255,255,0.7)',
+                marginBottom: 32,
+              },
+            ]}
+          >
+            Survey Platform
+          </Text>
+          
+          <View style={styles.loadingSection}>
+            <ActivityIndicator
+              size="large"
+              color="#6366F1"
+              style={styles.spinner}
+            />
+            <Text
+              variant="bodyLarge"
+              style={[
+                styles.loadingText,
+                {
+                  color: 'rgba(255,255,255,0.8)',
+                  marginTop: 16,
+                },
+              ]}
+            >
+              {message}
+            </Text>
+          </View>
+          
+          <View style={styles.dots}>
+            {[0, 1, 2].map((i) => (
+              <LoadingDot key={i} delay={i * 200} />
+            ))}
+          </View>
         </View>
       </View>
     </Animated.View>
@@ -377,6 +379,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#0A0A0A',
     zIndex: 9999,
   },
   particlesContainer: {
@@ -396,6 +399,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     zIndex: 1,
+  },
+  loadingCard: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    borderRadius: 32,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.2)',
+    padding: 40,
+    margin: 20,
+    ...(Platform.OS === 'web' && {
+      backdropFilter: 'blur(40px)',
+      WebkitBackdropFilter: 'blur(40px)',
+      boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.3)',
+    }),
   },
   logoContainer: {
     alignItems: 'center',

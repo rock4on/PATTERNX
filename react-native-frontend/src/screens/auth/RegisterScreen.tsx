@@ -16,8 +16,8 @@ import {
   Snackbar,
   useTheme,
   ProgressBar,
-  Icon as PaperIcon,
 } from 'react-native-paper';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useAuth } from '../../contexts/AuthContext';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import type { AuthStackParamList } from '../../navigation/types';
@@ -131,7 +131,7 @@ export const RegisterScreen: React.FC<Props> = ({ navigation }) => {
 
                 <View style={styles.inputContainer}>
                     <TextInput placeholder="Password" placeholderTextColor="rgba(255,255,255,0.4)" value={formData.password} onChangeText={(val) => setFormData(p => ({...p, password: val}))} secureTextEntry={!showPassword} style={styles.input} />
-                    <Pressable onPress={() => setShowPassword(!showPassword)}><PaperIcon source={showPassword ? "eye-off-outline" : "eye-outline"} size={20} color="rgba(255,255,255,0.4)" /></Pressable>
+                    <Pressable onPress={() => setShowPassword(!showPassword)}><Icon name={showPassword ? "eye-off-outline" : "eye-outline"} size={20} color="rgba(255,255,255,0.4)" /></Pressable>
                 </View>
                 {formData.password.length > 0 && (
                   <ProgressBar progress={passwordStrength} color={getPasswordStrengthColor()} style={styles.strengthBar} />
@@ -139,7 +139,7 @@ export const RegisterScreen: React.FC<Props> = ({ navigation }) => {
 
                 <View style={styles.inputContainer}>
                     <TextInput placeholder="Confirm Password" placeholderTextColor="rgba(255,255,255,0.4)" value={formData.confirmPassword} onChangeText={(val) => setFormData(p => ({...p, confirmPassword: val}))} secureTextEntry={!showConfirmPassword} style={styles.input} />
-                    <Pressable onPress={() => setShowConfirmPassword(!showConfirmPassword)}><PaperIcon source={showConfirmPassword ? "eye-off-outline" : "eye-outline"} size={20} color="rgba(255,255,255,0.4)" /></Pressable>
+                    <Pressable onPress={() => setShowConfirmPassword(!showConfirmPassword)}><Icon name={showConfirmPassword ? "eye-off-outline" : "eye-outline"} size={20} color="rgba(255,255,255,0.4)" /></Pressable>
                 </View>
 
                 <Pressable style={({ pressed }) => [styles.button, pressed && styles.buttonPressed]} onPress={handleRegister} disabled={isLoading}>

@@ -8,15 +8,18 @@ import {
   ViewStyle,
   Easing,
   Animated,
+  RefreshControl,
 } from 'react-native';
 import {
   Text,
   useTheme,
   Avatar,
-  Icon as PaperIcon,
   Divider,
+  ActivityIndicator,
 } from 'react-native-paper';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useAuth } from '../../contexts/AuthContext';
+import { api } from '../../services/apiService';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import type { MainTabParamList } from '../../navigation/types';
 
@@ -108,43 +111,159 @@ const GradientCard: React.FC<{style?: ViewStyle, children: React.ReactNode, colo
 const ListItem: React.FC<{label: string, icon: string, onPress: () => void}> = ({ label, icon, onPress }) => (
     <Pressable style={styles.listItem} onPress={onPress}>
         <View style={styles.listItemIconContainer}>
-            <PaperIcon source={icon} size={20} color="rgba(255,255,255,0.7)" />
+            <Icon name={icon} size={20} color="rgba(255,255,255,0.7)" />
         </View>
         <Text style={styles.listItemLabel}>{label}</Text>
-        <PaperIcon source="chevron-right" size={22} color="rgba(255,255,255,0.5)" />
+        <Icon name="chevron-right" size={22} color="rgba(255,255,255,0.5)" />
     </Pressable>
 );
 
 export const ProfileScreen: React.FC<Props> = ({ navigation }) => {
   const { user, logout, loading } = useAuth();
   const theme = useTheme();
+  
+  // API state management
+  const [profileData, setProfileData] = useState<any>(null);
+  const [pointsData, setPointsData] = useState<any>(null);
+  const [dashboardData, setDashboardData] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+
+  // Fetch profile data from API
+  const fetchProfileData = async () => {
+    try {
+      console.log('Fetching profile data from API...');
+      
+      const [profileResponse, pointsResponse, dashboardResponse] = await Promise.all([
+        api.get('/user/profile'),
+        api.get('/user/points'),
+        api.get('/dashboard')
+      ]);
+      
+      console.log('Profile API responses:', {
+        profile: profileResponse,
+        points: pointsResponse,
+        dashboard: dashboardResponse
+      });
+      
+      if (profileResponse.success) {
+        setProfileData(profileResponse.data);
+        console.log('Profile data set:', profileResponse.data);
+      }
+      
+      if (pointsResponse.success) {
+        setPointsData(pointsResponse.data);
+        console.log('Points data set:', pointsResponse.data);
+      }
+      
+      if (dashboardResponse.success) {
+        setDashboardData(dashboardResponse.data);
+        console.log('Dashboard data set:', dashboardResponse.data);
+      }
+      
+    } catch (error) {
+      console.error('Failed to fetch profile data:', error);
+    } finally {
+      setIsLoading(false);
+      setRefreshing(false);
+    }
+  };
+
+  // Fetch data on component mount
+  useEffect(() => {
+    fetchProfileData();
+  }, []);
+
+  // Pull to refresh handler
+  const onRefresh = () => {
+    setRefreshing(true);
+    fetchProfileData();
+  };
+
+  // Calculate stats from API data
+  const getStats = () => {
+    // Try to get total points from multiple sources
+    let totalPoints = 0;
+    if (pointsData?.summary?.total_points !== undefined) {
+      totalPoints = pointsData.summary.total_points;
+    } else if (dashboardData?.user?.total_points !== undefined) {
+      totalPoints = dashboardData.user.total_points;
+    } else if (user?.total_points !== undefined) {
+      totalPoints = user.total_points;
+    }
+    
+    // Try to get completed surveys from multiple sources
+    let completedSurveys = 0;
+    if (dashboardData?.stats?.completed_surveys !== undefined) {
+      completedSurveys = dashboardData.stats.completed_surveys;
+    }
+    
+    console.log('Calculated stats:', { totalPoints, completedSurveys });
+    
+    return {
+      totalPoints,
+      completedSurveys
+    };
+  };
+
+  const stats = getStats();
+
+  // Show loading spinner while fetching data
+  if (isLoading) {
+    return (
+      <View style={styles.container}>
+        <ProfileBackground />
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color="#A78BFA" />
+          <Text style={styles.loadingText}>Loading profile...</Text>
+        </View>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
       <ProfileBackground />
-      <ScrollView contentContainerStyle={styles.scrollContent}>
+      <ScrollView 
+        contentContainerStyle={styles.scrollContent}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor="#fff" />
+        }
+      >
         {/* Profile Header */}
         <View style={styles.profileHeader}>
           <Avatar.Text
             size={80}
-            label={user?.first_name ? user.first_name.charAt(0).toUpperCase() : 'A'}
+            label={
+              (profileData?.user?.first_name || user?.first_name) 
+                ? (profileData?.user?.first_name || user?.first_name).charAt(0).toUpperCase() 
+                : 'A'
+            }
             style={styles.avatar}
             color="#fff"
           />
-          <Text style={styles.userName}>{user?.first_name} {user?.last_name}</Text>
-          <Text style={styles.userEmail}>{user?.email}</Text>
+          <Text style={styles.userName}>
+            {profileData?.user?.first_name || user?.first_name} {profileData?.user?.last_name || user?.last_name}
+          </Text>
+          <Text style={styles.userEmail}>
+            {profileData?.user?.email || user?.email}
+          </Text>
         </View>
 
         {/* Stats Section */}
         <View style={styles.row}>
             <GradientCard style={styles.statCard} colors={['#2A2834', '#1C1B23']}>
-                <PaperIcon source="star-four-points-outline" size={24} color="#A78BFA" />
-                <Text style={styles.statValue}>12,450</Text>
+                <Icon name="star-four-points-outline" size={24} color="#A78BFA" />
+                <Text style={styles.statValue}>
+                  {stats.totalPoints.toLocaleString()}
+                </Text>
                 <Text style={styles.statLabel}>Total Points</Text>
             </GradientCard>
             <GradientCard style={styles.statCard} colors={['#1F2F29', '#15201C']}>
-                <PaperIcon source="check-circle-outline" size={24} color="#4ADE80" />
-                <Text style={styles.statValue}>32</Text>
+                <Icon name="check-circle-outline" size={24} color="#4ADE80" />
+                <Text style={styles.statValue}>
+                  {stats.completedSurveys}
+                </Text>
                 <Text style={styles.statLabel}>Surveys Completed</Text>
             </GradientCard>
         </View>
@@ -168,7 +287,7 @@ export const ProfileScreen: React.FC<Props> = ({ navigation }) => {
             disabled={loading}
         >
             <Text style={styles.logoutButtonText}>{loading ? 'Logging out...' : 'Logout'}</Text>
-            <PaperIcon source="logout" size={20} color="#FF453A" />
+            <Icon name="logout" size={20} color="#FF453A" />
         </Pressable>
 
       </ScrollView>
@@ -180,6 +299,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#121212',
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: 100,
+  },
+  loadingText: {
+    marginTop: 16,
+    color: 'rgba(255,255,255,0.8)',
+    fontSize: 16,
   },
   backgroundContainer: {
     position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: '#121212', overflow: 'hidden',

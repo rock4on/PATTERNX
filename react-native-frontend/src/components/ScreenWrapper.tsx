@@ -28,12 +28,12 @@ export const ScreenWrapper: React.FC<ScreenWrapperProps> = ({ children }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#121212', // Base background color for all screens
+    backgroundColor: '#0A0A0A', // Base background color matching dashboard
     paddingTop: Platform.OS === 'android' ? 24 : 0,
   },
   scrollContent: {
     paddingHorizontal: 16,
     paddingTop: 24, // Spacing from the top of the safe area
-    paddingBottom: 120, // Crucial padding so content isn't hidden by the fixed bottom nav bar
+    paddingBottom: 100, // Adjusted padding for disconnected control bar
   },
 });

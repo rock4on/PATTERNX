@@ -18,8 +18,8 @@ import {
   useTheme,
   ActivityIndicator,
   ProgressBar,
-  Icon as PaperIcon,
 } from 'react-native-paper';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useAuth } from '../../contexts/AuthContext';
 import { api } from '../../services/apiService';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -182,7 +182,7 @@ const SurveyPreviewCard: React.FC<{ survey: Survey; onPress: () => void }> = ({ 
         <Pressable onPress={onPress} style={styles.surveyPreviewPressable}>
             <View style={styles.surveyPreviewCard}>
                 <View style={[styles.statIconContainer, { backgroundColor: 'rgba(99, 102, 241, 0.2)'}]}>
-                    <PaperIcon source="clipboard-text-outline" size={24} color={theme.colors.primary} />
+                    <Icon name="clipboard-text-outline" size={24} color={theme.colors.primary} />
                 </View>
                 <View style={styles.surveyPreviewTextContainer}>
                     <Text style={styles.surveyPreviewTitle} numberOfLines={1}>{survey.title}</Text>
@@ -190,7 +190,7 @@ const SurveyPreviewCard: React.FC<{ survey: Survey; onPress: () => void }> = ({ 
                         +{survey.points_value} Points  ·  {survey.estimated_time || '?'} min
                     </Text>
                 </View>
-                <PaperIcon source="chevron-right" size={24} color="rgba(255,255,255,0.7)" />
+                <Icon name="chevron-right" size={24} color="rgba(255,255,255,0.7)" />
             </View>
         </Pressable>
     );
@@ -286,25 +286,21 @@ export const DashboardScreen: React.FC<Props> = ({ navigation }) => {
                     <Text style={styles.headerName}>{dashboardData.user.first_name} ✨</Text>
                 </View>
                 <Pressable style={styles.notificationButton}>
-                    <PaperIcon source="bell-outline" size={24} color="#fff" />
+                    <Icon name="bell-outline" size={24} color="#fff" />
                 </Pressable>
             </View>
 
             <View style={styles.gridContainer}>
                 <View style={[styles.gridItem, styles.pointsCard]}>
-                    <PaperIcon source="wallet-giftcard" size={32} color="rgba(255,255,255,0.8)" />
+                    <Icon name="wallet-giftcard" size={32} color="rgba(255,255,255,0.8)" />
                     <Text style={styles.pointsLabel}>Available Points</Text>
                     <AnimatedCounter value={dashboardData.user.available_points} />
-                    <View style={styles.progressWrapper}>
-                        <Text style={styles.progressLabel}>of {dashboardData.user.total_points.toLocaleString()} total</Text>
-                        <ProgressBar progress={dashboardData.user.available_points / dashboardData.user.total_points} color="#fff" style={styles.progressBar} />
-                    </View>
                 </View>
 
                 <View style={[styles.gridItem, styles.statCard]}>
                     <View style={styles.statHeader}>
                         <View style={[styles.statIconContainer, {backgroundColor: 'rgba(48, 209, 88, 0.2)'}]}>
-                            <PaperIcon source="text-box-check-outline" size={20} color="#30D158" />
+                            <Icon name="text-box-check-outline" size={20} color="#30D158" />
                         </View>
                         <Text style={styles.statValue}>{dashboardData.stats.available_surveys}</Text>
                     </View>
@@ -314,7 +310,7 @@ export const DashboardScreen: React.FC<Props> = ({ navigation }) => {
                 <View style={[styles.gridItem, styles.statCard]}>
                     <View style={styles.statHeader}>
                         <View style={[styles.statIconContainer, {backgroundColor: 'rgba(99, 102, 241, 0.2)'}]}>
-                            <PaperIcon source="check-circle-outline" size={20} color="#6366F1" />
+                            <Icon name="check-circle-outline" size={20} color="#6366F1" />
                         </View>
                         <Text style={styles.statValue}>{dashboardData.stats.completed_surveys}</Text>
                     </View>
@@ -324,7 +320,7 @@ export const DashboardScreen: React.FC<Props> = ({ navigation }) => {
                 <View style={[styles.gridItem, styles.statCard]}>
                     <View style={styles.statHeader}>
                         <View style={[styles.statIconContainer, {backgroundColor: 'rgba(245, 158, 11, 0.2)'}]}>
-                            <PaperIcon source="trophy-outline" size={20} color="#F59E0B" />
+                            <Icon name="trophy-outline" size={20} color="#F59E0B" />
                         </View>
                         <Text style={styles.statValue}>{dashboardData.stats.total_rewards}</Text>
                     </View>
@@ -333,29 +329,15 @@ export const DashboardScreen: React.FC<Props> = ({ navigation }) => {
 
                 <Pressable style={[styles.gridItem, styles.actionCard]} onPress={() => navigation.navigate('Surveys')}>
                     <Text style={styles.actionLabel}>Browse Surveys</Text>
-                    <PaperIcon source="arrow-right" size={20} color="#fff" />
+                    <Icon name="arrow-right" size={20} color="#fff" />
                 </Pressable>
 
                 <Pressable style={[styles.gridItem, styles.actionCard]} onPress={() => navigation.navigate('Rewards')}>
                     <Text style={styles.actionLabel}>View Rewards</Text>
-                    <PaperIcon source="arrow-right" size={20} color="#fff" />
+                    <Icon name="arrow-right" size={20} color="#fff" />
                 </Pressable>
             </View>
 
-            {surveyPreviews.length > 0 && (
-                <>
-                    <Text style={styles.sectionTitle}>Jump Back In</Text>
-                    <View style={styles.surveyPreviewList}>
-                        {surveyPreviews.map((survey) => (
-                            <SurveyPreviewCard 
-                                key={survey.id} 
-                                survey={survey} 
-                                onPress={() => navigation.navigate('Surveys')} 
-                            />
-                        ))}
-                    </View>
-                </>
-            )}
         </Animated.View>
       </ScrollView>
     </View>
@@ -384,9 +366,6 @@ const styles = StyleSheet.create({
   pointsCard: { width: '100%', gap: 8 },
   pointsLabel: { fontSize: 16, color: 'rgba(255,255,255,0.8)', fontWeight: '500' },
   pointsValue: { fontSize: 40, fontWeight: 'bold', color: '#fff' },
-  progressWrapper: { marginTop: 16 },
-  progressLabel: { fontSize: 12, color: 'rgba(255,255,255,0.6)', marginBottom: 4 },
-  progressBar: { height: 6, borderRadius: 3, backgroundColor: 'rgba(255,255,255,0.1)' },
   statCard: { flexGrow: 1, width: '25%', gap: 12 },
   statHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   statIconContainer: { width: 36, height: 36, borderRadius: 18, justifyContent: 'center', alignItems: 'center' },

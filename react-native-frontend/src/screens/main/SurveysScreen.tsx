@@ -150,8 +150,46 @@ export const SurveysScreen: React.FC<Props> = ({ navigation }) => {
             <SegmentedButtons
                 value={activeFilter}
                 onValueChange={setActiveFilter}
-                buttons={[ { value: 'all', label: 'All' }, { value: 'available', label: 'Available' }, { value: 'completed', label: 'Done' } ]}
+                buttons={[
+                    { 
+                        value: 'all', 
+                        label: 'All',
+                        icon: ({ size, color }) => <Icon name="format-list-bulleted" size={size} color={color} />,
+                        labelStyle: { color: activeFilter === 'all' ? '#fff' : 'rgba(255,255,255,0.7)', fontWeight: '600' },
+                        style: { 
+                            backgroundColor: activeFilter === 'all' ? '#F59E0B' : 'transparent',
+                            borderColor: 'transparent',
+                        },
+                    }, 
+                    { 
+                        value: 'available', 
+                        label: 'Available',
+                        icon: ({ size, color }) => <Icon name="clipboard-list" size={size} color={color} />,
+                        labelStyle: { color: activeFilter === 'available' ? '#fff' : 'rgba(255,255,255,0.7)', fontWeight: '600' },
+                        style: { 
+                            backgroundColor: activeFilter === 'available' ? '#F59E0B' : 'transparent',
+                            borderColor: 'transparent',
+                        },
+                    }, 
+                    { 
+                        value: 'completed', 
+                        label: 'Done',
+                        icon: ({ size, color }) => <Icon name="check-circle" size={size} color={color} />,
+                        labelStyle: { color: activeFilter === 'completed' ? '#fff' : 'rgba(255,255,255,0.7)', fontWeight: '600' },
+                        style: { 
+                            backgroundColor: activeFilter === 'completed' ? '#F59E0B' : 'transparent',
+                            borderColor: 'transparent',
+                        },
+                    }
+                ]}
                 style={styles.segmentedButtons}
+                theme={{
+                    colors: {
+                        onSurface: '#fff',
+                        outline: 'transparent',
+                        onSurfaceVariant: 'rgba(255,255,255,0.7)',
+                    },
+                }}
             />
         </GradientCard>
 
@@ -218,7 +256,17 @@ const styles = StyleSheet.create({
     outlineStyle: 'none',
     borderWidth: 0,
   },
-  segmentedButtons: { },
+  segmentedButtons: {
+    marginHorizontal: 0,
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.2)',
+    ...(Platform.OS === 'web' && { 
+      backdropFilter: 'blur(40px)', 
+      WebkitBackdropFilter: 'blur(40px)' 
+    }),
+  },
   surveyCard: { backgroundColor: '#1C1C1E', borderRadius: 16, padding: 20, marginBottom: 16, borderWidth: 1, borderColor: 'rgba(255,255,255,0.05)', borderTopColor: 'rgba(255,255,255,0.1)', gap: 16 },
   surveyHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', gap: 12 },
   surveyTitle: { flex: 1, fontSize: 18, fontWeight: 'bold', color: '#fff' },

@@ -168,18 +168,37 @@ export const apiService = new ApiService();
 export const api = {
   get: async (url: string) => {
     try {
+      console.log(`Making GET request to ${url}`);
       const response = await apiService['api'].get(url);
+      console.log(`GET response from ${url}:`, response.data);
       return { success: true, data: response.data };
     } catch (error: any) {
-      return { success: false, error: error.message, data: null };
+      console.error(`GET error for ${url}:`, error);
+      const errorMessage = error.response?.data?.error || error.response?.data?.message || error.message;
+      return { 
+        success: false, 
+        error: errorMessage, 
+        data: null,
+        status: error.response?.status 
+      };
     }
   },
   post: async (url: string, data?: any) => {
     try {
+      console.log(`Making POST request to ${url}`, data);
       const response = await apiService['api'].post(url, data);
-      return { success: true, data: response.data };
+      console.log(`POST response from ${url}:`, response.data);
+      return { success: true, data: response.data, message: response.data?.message };
     } catch (error: any) {
-      return { success: false, error: error.message, data: null };
+      console.error(`POST error for ${url}:`, error);
+      const errorMessage = error.response?.data?.error || error.response?.data?.message || error.message;
+      return { 
+        success: false, 
+        error: errorMessage, 
+        message: errorMessage,
+        data: null,
+        status: error.response?.status 
+      };
     }
   },
   put: async (url: string, data?: any) => {

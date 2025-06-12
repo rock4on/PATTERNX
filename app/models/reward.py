@@ -89,7 +89,7 @@ class UserReward(db.Model):
             user_id=user_id,
             reward_id=reward_id,
             points_spent=reward.points_cost,
-            status='pending'
+            status='pending'  # Stays pending until admin fulfills the request
         )
         db.session.add(redemption)
         

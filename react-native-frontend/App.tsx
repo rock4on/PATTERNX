@@ -56,7 +56,7 @@ const App: React.FC = () => {
               dark: true,
               colors: {
                 primary: '#6366F1',
-                background: '#121212', // Set the base background color here
+                background: '#0A0A0A', // Set the base background color to match dashboard
                 card: '#1C1C1E',
                 text: '#FFFFFF',
                 border: 'rgba(255, 255, 255, 0.15)',
