@@ -1,5 +1,5 @@
 # app/utils/security_utils.py
-from flask import Flask, request, g, session, redirect, url_for,current_app, flash
+from flask import Flask, request, g, session, redirect, url_for, current_app, flash
 from functools import wraps
 import time
 import secrets
@@ -98,53 +98,87 @@ def configure_security_headers(app):
     # Add session protection
     @app.before_request
     def protect_session():
-        # Folosește current_app.logger pentru consistență și pentru a te asigura că e logger-ul aplicației
-        current_app.logger.info(f"PROTECT_SESSION: path '{request.path}'")
+        # Set protection flag to prevent locale loop
+        g._protecting_session = True
+        
+        # Skip protection for static resources to prevent unnecessary processing
+        static_paths = ['/static/', '/css/', '/js/', '/img/', '/favicon.ico', '/robots.txt']
+        if any(request.path.startswith(path) for path in static_paths):
+            g._protecting_session = False
+            return
+        
+        # Skip protection for auth endpoints to prevent redirect loops
+        if (request.endpoint in ['auth.login', 'auth.register'] or 
+            request.path.startswith('/auth/login') or 
+            request.path.startswith('/auth/register')):
+            g._protecting_session = False
+            return
+        
+        # Loop detection - prevent infinite protection cycles
+        if not hasattr(g, '_protection_count'):
+            g._protection_count = 0
+        g._protection_count += 1
+        
+        if g._protection_count > 3:
+            current_app.logger.error(f"PROTECT_SESSION: Loop detected, count: {g._protection_count}, path: {request.path}")
+            g._protecting_session = False
+            return
+        
+        current_app.logger.info(f"PROTECT_SESSION: path '{request.path}', count: {g._protection_count}")
 
-        # Folosește cheia setată de Flask-Login pentru verificarea principală a existenței utilizatorului în sesiune
-        user_id_in_session = session.get('_user_id') # Verifică cheia Flask-Login
+        # Use Flask-Login's standard user ID key
+        user_id_in_session = session.get('_user_id')
 
         if user_id_in_session:
-            current_app.logger.info(f"PROTECT_SESSION: Found '_user_id' {user_id_in_session} in session. Full session: {dict(session)}")
+            current_app.logger.info(f"PROTECT_SESSION: Found '_user_id' {user_id_in_session} in session")
 
-            # Verifică dacă 'created_at' există în sesiune; acest câmp este setat de set_secure_session
-            if 'created_at' not in session: #
+            # Check if 'created_at' exists in session
+            if 'created_at' not in session:
                 current_app.logger.warning(f"PROTECT_SESSION: Session for user {user_id_in_session} missing 'created_at'. Clearing session. IP: {request.remote_addr}")
-                session.clear() #
+                session.clear()
+                g._protecting_session = False
                 flash('Your session was invalid, please log in again.', 'warning')
-                return redirect(url_for('auth.login')) #
+                return redirect(url_for('auth.login'))
 
-            # Verifică vârsta sesiunii
-            session_age = time.time() - session['created_at'] #
-            max_age = current_app.config.get('PERMANENT_SESSION_LIFETIME', 3600) #
+            # Check session age
+            session_age = time.time() - session['created_at']
+            max_age = current_app.config.get('PERMANENT_SESSION_LIFETIME', 3600)
             current_app.logger.info(f"PROTECT_SESSION: Session age: {session_age:.2f}s, Max age: {max_age}s for user {user_id_in_session}")
 
-            if session_age > max_age: #
+            if session_age > max_age:
                 current_app.logger.info(f"PROTECT_SESSION: Session expired for user {user_id_in_session}. Clearing session. IP: {request.remote_addr}")
-                session.clear() #
+                session.clear()
+                g._protecting_session = False
                 flash('Your session has expired, please log in again.', 'info')
-                return redirect(url_for('auth.login')) #
+                return redirect(url_for('auth.login'))
 
-            # Verifică schimbarea IP-ului
-            # Compară cu atenție, request.remote_addr poate fi None în anumite contexte (deși rar)
-            session_ip = session.get('ip') #
+            # Check IP change
+            session_ip = session.get('ip')
             request_ip = request.remote_addr
-            if session_ip and request_ip and session_ip != request_ip: #
+            if session_ip and request_ip and session_ip != request_ip:
                 current_app.logger.warning(f"PROTECT_SESSION: IP change detected for user {user_id_in_session}. Session IP: {session_ip}, Request IP: {request_ip}. Clearing session.")
-                session.clear() #
+                session.clear()
+                g._protecting_session = False
                 flash('Session IP changed, please log in again for security.', 'warning')
-                return redirect(url_for('auth.login')) #
+                return redirect(url_for('auth.login'))
 
-            # Verifică schimbarea User-Agent-ului
-            session_ua = session.get('user_agent') #
+            # Check User-Agent change
+            session_ua = session.get('user_agent')
             request_ua = request.user_agent.string if request.user_agent else ""
-            if session_ua and request_ua and session_ua != request_ua: #
+            if session_ua and request_ua and session_ua != request_ua:
                 current_app.logger.warning(f"PROTECT_SESSION: User-agent change detected for user {user_id_in_session}. Session UA: '{session_ua}', Request UA: '{request_ua}'. Clearing session.")
-                session.clear() #
+                session.clear()
+                g._protecting_session = False
                 flash('Session user agent changed, please log in again for security.', 'warning')
-                return redirect(url_for('auth.login')) #
+                return redirect(url_for('auth.login'))
+                
+            # Reset protection count on successful validation
+            g._protection_count = 0
         else:
             current_app.logger.info("PROTECT_SESSION: No '_user_id' in session prior to accessing protected route.")
+        
+        # Clear protection flag after processing
+        g._protecting_session = False
 
 
 
@@ -152,23 +186,21 @@ def configure_security_headers(app):
 
     return app
 
-def set_secure_session(session_obj, user_id_from_signal): # Am redenumit 'session' pentru a evita conflictul cu 'session' importat
-    current_app.logger.info(f"SET_SECURE_SESSION: Modifying session for user_id {user_id_from_signal}.")
-    current_app.logger.info(f"SET_SECURE_SESSION: Session *before* adding custom attributes: {dict(session_obj)}")
+def set_secure_session(session_obj, user_id_from_signal):
+    """Set secure session attributes for user authentication."""
+    current_app.logger.info(f"SET_SECURE_SESSION: Setting up session for user_id {user_id_from_signal}")
+    current_app.logger.info(f"SET_SECURE_SESSION: Session before adding security attributes: {dict(session_obj)}")
 
-    # NU șterge sesiunea: session_obj.clear() <--- Comentează sau șterge această linie
-
-    # Adaugă atributele custom necesare pentru protect_session
-    # Flask-Login a setat deja session_obj['_user_id'] și session_obj['_fresh']
+    # Don't clear the session - Flask-Login has already set '_user_id' and '_fresh'
+    # Just add our security attributes needed for protect_session validation
+    
     session_obj['created_at'] = time.time()
-    session_obj['ip'] = request.remote_addr # Asigură-te că 'request' este disponibil (importă from flask import request)
+    session_obj['ip'] = request.remote_addr
     session_obj['user_agent'] = request.user_agent.string if request.user_agent else ""
-    session_obj['custom_session_id'] = secrets.token_hex(16) # O cheie custom, dacă e necesară
-
-    # Verifică dacă protect_session se bazează pe 'user_id' sau '_user_id'.
-    # Logul tău arăta că protect_session căuta 'user_id'.
-    # Pentru a menține compatibilitatea cu protect_session existent, poți adăuga și 'user_id'.
-    # Ideal ar fi ca protect_session să folosească '_user_id'.
-    session_obj['user_id_for_protect_session'] = str(user_id_from_signal) # Cheie distinctă pentru claritate
-
-    current_app.logger.info(f"SET_SECURE_SESSION: Session *after* adding custom attributes: {dict(session_obj)}")
+    session_obj['custom_session_id'] = secrets.token_hex(16)
+    
+    # Remove any redundant user ID keys - use only Flask-Login's standard '_user_id'
+    # Clean up any legacy keys that might cause confusion
+    session_obj.pop('user_id_for_protect_session', None)
+    
+    current_app.logger.info(f"SET_SECURE_SESSION: Session after adding security attributes: {dict(session_obj)}")

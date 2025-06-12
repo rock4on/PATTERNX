@@ -1,8 +1,8 @@
 # app/__init__.py
 import os
-from flask import Flask, request,session
+from flask import Flask, request, session, g
 
-from .extensions import db, migrate, login_manager, bcrypt, csrf,babel
+from .extensions import db, migrate, login_manager, bcrypt, csrf, babel, cors
 from config import config
 import pymysql
 pymysql.install_as_MySQLdb()
@@ -65,14 +65,45 @@ def register_extensions(app):
     migrate.init_app(app, db)
     login_manager.init_app(app)
     bcrypt.init_app(app)
+    
+    # Configure CORS for API endpoints
+    cors.init_app(app, resources={
+        r"/api/*": {
+            "origins": ["http://localhost:3000", "http://127.0.0.1:3000", "http://localhost:3001","*"],
+            "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+            "allow_headers": ["Content-Type", "Authorization", "X-Requested-With"],
+            "supports_credentials": True
+        }
+    })
+    
+    # Initialize CSRF protection with configuration
     csrf.init_app(app)
+    
+    # Configure CSRF settings
+    app.config['WTF_CSRF_ENABLED'] = True
+    app.config['WTF_CSRF_CHECK_DEFAULT'] = True
+    
+    # Override CSRF protection to skip API routes
+    original_protect = csrf.protect
+    
+    def protect_with_api_exemption():
+        # Skip CSRF protection for API routes
+        if request.endpoint and request.endpoint.startswith('api.'):
+            return
+        return original_protect()
+    
+    csrf.protect = protect_with_api_exemption
 
     def get_locale():
-
+        # Prevent session modification during session protection checks to avoid loops
+        if hasattr(g, '_protecting_session') and g._protecting_session:
+            return session.get('language', 'ro')
+        
         if session.get('language'):
-            lang=session['language']
+            return session['language']
         else:
-            session['language']='ro'
+            # Only set language if not in protection mode
+            session['language'] = 'ro'
         return session['language']
     # Configure the login manager
     from .models.user import User
@@ -106,12 +137,16 @@ def register_blueprints(app):
     from .views.admin import admin_blueprint
     from .views.surveys import surveys_blueprint
     from .views.rewards import rewards_blueprint
+    from .api.api import api
 
     app.register_blueprint(main_blueprint)
     app.register_blueprint(auth_blueprint, url_prefix='/auth')
     app.register_blueprint(admin_blueprint, url_prefix='/admin')
     app.register_blueprint(surveys_blueprint, url_prefix='/surveys')
     app.register_blueprint(rewards_blueprint, url_prefix='/rewards')
+    app.register_blueprint(api)
+    
+    # API routes will be handled without CSRF tokens
 
     return None
 

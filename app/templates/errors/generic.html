@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}Error - Survey App{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-danger text-white">
+                    <h4 class="mb-0">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        Error {{ error.code }}
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">{{ error.title }}</h5>
+                    <p class="card-text">{{ error.description }}</p>
+                    
+                    {% if error.details %}
+                    <div class="alert alert-info">
+                        <strong>Details:</strong> {{ error.details }}
+                    </div>
+                    {% endif %}
+                    
+                    <div class="mt-4">
+                        <a href="{{ url_for('main.index') }}" class="btn btn-primary">
+                            <i class="fas fa-home me-2"></i>
+                            Return to Home
+                        </a>
+                        <button onclick="history.back()" class="btn btn-secondary ms-2">
+                            <i class="fas fa-arrow-left me-2"></i>
+                            Go Back
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

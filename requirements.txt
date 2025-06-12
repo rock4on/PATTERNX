@@ -5,6 +5,7 @@ flask-wtf
 flask-login
 flask-admin
 flask-bcrypt
+flask-cors
 email-validator
 python-dotenv
 pymysql==1.1.0
@@ -12,3 +13,4 @@ requests
 wtforms
 gunicorn
 pytest
+PyJWT>=2.4.0
