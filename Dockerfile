@@ -42,14 +42,4 @@ ENV PYTHONUNBUFFERED=1
 EXPOSE 8080
 
 # Run with gunicorn for production
-CMD ["gunicorn",
-     "--bind", "0.0.0.0:8080",
-     "--workers", "4",
-     "--timeout", "120",
-     "--keep-alive", "2",
-     "--max-requests", "1000",
-     "--max-requests-jitter", "100",
-     "--log-level", "debug",                 # capture Flask’s debug/info logs
-     "--access-logfile", "-",               # stream access logs (werkzeug) to stdout
-     "--error-logfile", "-",                # stream error logs to stderr
-     "run:app"]
+CMD ["gunicorn","--bind","0.0.0.0:8080","--workers","4","--timeout","120","--keep-alive","2","--max-requests","1000","--max-requests-jitter","100","--log-level","debug","--access-logfile","-","--error-logfile","-","run:app"]
