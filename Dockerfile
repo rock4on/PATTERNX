@@ -39,7 +39,7 @@ ENV PYTHONUNBUFFERED=1
 
 
 # Expose port
-EXPOSE 80
+EXPOSE 8080
 
 # Run with gunicorn for production
-CMD ["gunicorn", "--bind", "0.0.0.0:80", "--workers", "4", "--timeout", "120", "--keep-alive", "2", "--max-requests", "1000", "--max-requests-jitter", "100", "run:app"]
+CMD ["gunicorn", "--bind", "0.0.0.0:8080", "--workers", "4", "--timeout", "120", "--keep-alive", "2", "--max-requests", "1000", "--max-requests-jitter", "100", "run:app"]
