@@ -4,11 +4,11 @@ import pymysql
 
 # Create database connection
 conn = pymysql.connect(
-    host='localhost',
+    host='35.242.237.146',
     port=3306,
     user='limeuser',
-    password='limepassword',
-    database='survey_platform'
+    password='Admin123!',
+    database='limesurvey'
 )
 cursor = conn.cursor()
 

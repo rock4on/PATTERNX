@@ -57,7 +57,7 @@ class LimeSurveyAPI:
             
             response = requests.post(self.url, json=request_data)
             response.raise_for_status()
-            
+            print(response.text)
             result = response.json()
             
             if 'result' in result:
