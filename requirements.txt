@@ -1,4 +1,7 @@
 flask
+pandas
+cryptography
+flask_babel
 flask-sqlalchemy
 flask-migrate
 flask-wtf
