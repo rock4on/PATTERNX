@@ -32,6 +32,7 @@ class Config:
     MIN_POINTS_FOR_REWARD = 100  # Minimum points needed for a reward
 
 
+
 class DevelopmentConfig(Config):
     """Development configuration."""
     ENV = 'development'
