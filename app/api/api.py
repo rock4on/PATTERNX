@@ -290,57 +290,29 @@ def complete_survey(current_user_id, survey_id):
             data = {}
         current_app.logger.info(f"DEBUG: Request data: {data}")
         
-        # For completion, we can accept either limesurvey_response_id or just mark as complete
-        # This allows for flexibility in how the frontend handles survey completion
+        # Get limesurvey_response_id from request data (optional)
         limesurvey_response_id = data.get('limesurvey_response_id') if data else None
-        current_app.logger.info(f"DEBUG: limesurvey_response_id: {limesurvey_response_id}")
+        current_app.logger.info(f"DEBUG: limesurvey_response_id from request: {limesurvey_response_id}")
         
-        current_app.logger.info(f"DEBUG: Querying survey with id={survey_id}")
-        survey = Survey.query.get_or_404(survey_id)
-        current_app.logger.info(f"DEBUG: Found survey: {survey.title}, points_value: {survey.points_value}")
+        current_app.logger.info(f"DEBUG: Using SurveyService.record_completion")
         
-        # Check if already completed
-        current_app.logger.info(f"DEBUG: Checking for existing completion")
-        existing_completion = SurveyCompletion.query.filter_by(
-            user_id=current_user_id,
-            survey_id=survey_id
-        ).first()
-        
-        if existing_completion:
-            current_app.logger.info(f"DEBUG: Survey already completed, returning error")
-            return jsonify({'error': 'Survey already completed'}), 400
-        
-        current_app.logger.info(f"DEBUG: No existing completion found, creating new completion record")
-        
-        # Create completion record
-        completion = SurveyCompletion(
+        # Use the same service as Flask UI for consistent validation and logic
+        # The service will automatically fetch the response_id from LimeSurvey based on user_id
+        success, message, completion = SurveyService.record_completion(
             user_id=current_user_id,
             survey_id=survey_id,
-            limesurvey_response_id=limesurvey_response_id,
-            points_awarded=survey.points_value
+            limesurvey_response_id=limesurvey_response_id  # Can be None, service will fetch it
         )
-        current_app.logger.info(f"DEBUG: Created completion object")
         
-        db.session.add(completion)
-        current_app.logger.info(f"DEBUG: Added completion to session")
+        current_app.logger.info(f"DEBUG: SurveyService.record_completion result: success={success}, message={message}")
         
-        db.session.flush()
-        current_app.logger.info(f"DEBUG: Flushed session, completion.id: {completion.id}")
-        
-        # Award points
-        current_app.logger.info(f"DEBUG: About to award points")
-        Point.award_points_for_survey(
-            user_id=current_user_id,
-            survey_completion_id=completion.id,
-            survey_id=survey_id,
-            points_amount=survey.points_value
-        )
-        current_app.logger.info(f"DEBUG: Points awarded successfully")
+        if not success:
+            return jsonify({'error': message}), 400
         
         current_app.logger.info(f"DEBUG: Returning success response")
         return jsonify({
-            'message': 'Survey completed successfully',
-            'points_awarded': survey.points_value
+            'message': message,
+            'points_awarded': completion.points_awarded if completion else 0
         })
         
     except Exception as e:

@@ -204,7 +204,7 @@ class SurveyService:
             return False, "Survey not found", None
         
         # Check if user is actually in this survey
-        is_in_survey, response_id= SurveyService.is_user_in_survey(survey.limesurvey_id, user_id)
+        is_in_survey, response_id = SurveyService.is_user_in_survey(survey.limesurvey_id, user_id)
         if not is_in_survey:
             return False, "User is not a participant in this survey", None
 
@@ -218,11 +218,11 @@ class SurveyService:
             return False, "You have already completed this survey", None
         
         
-        # Record completion
+        # Record completion using the automatically retrieved response_id
         completion = SurveyCompletion(
             user_id=user_id,
             survey_id=survey_id,
-            limesurvey_response_id=limesurvey_response_id,
+            limesurvey_response_id=response_id,  # Use the auto-retrieved response_id
             points_awarded=survey.points_value
         )
         
