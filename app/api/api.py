@@ -6,6 +6,7 @@ from app.models.user_profile import UserProfile
 from app.models.survey import Survey, SurveyCompletion
 from app.models.reward import Reward, UserReward
 from app.models.point import Point
+from app.models.notification import Notification
 from app.extensions import db
 from app.api.auth import token_required, generate_token
 from app.services.points_service import PointsService
@@ -74,6 +75,9 @@ def register():
         
         db.session.add(user)
         db.session.commit()
+        
+        # Create welcome notification for new user
+        Notification.create_welcome_notification(user.id)
         
         token = generate_token(user.id)
         
@@ -309,6 +313,16 @@ def complete_survey(current_user_id, survey_id):
         if not success:
             return jsonify({'error': message}), 400
         
+        # Create notification for survey completion
+        if success and completion:
+            survey = Survey.query.get(survey_id)
+            Notification.create_survey_completion_notification(
+                user_id=current_user_id,
+                survey_title=survey.title,
+                points_earned=completion.points_awarded
+            )
+            current_app.logger.info(f"DEBUG: Created completion notification")
+        
         current_app.logger.info(f"DEBUG: Returning success response")
         return jsonify({
             'message': message,
@@ -352,6 +366,14 @@ def redeem_reward(current_user_id, reward_id):
     
     if not success:
         return jsonify({'error': message}), 400
+    
+    # Create notification for reward redemption
+    if success and redemption:
+        Notification.create_reward_redemption_notification(
+            user_id=current_user_id,
+            reward_name=redemption.reward.name,
+            points_spent=redemption.points_spent
+        )
     
     return jsonify({
         'message': message,
@@ -447,4 +469,81 @@ def get_dashboard_data(current_user_id):
             'total_rewards': UserReward.query.filter_by(user_id=current_user_id).count()
         },
         'recent_activity': activity_list
+    })
+
+# Notification endpoints
+@api.route('/notifications', methods=['GET'])
+@token_required
+def get_notifications(current_user_id):
+    """Get user's notifications."""
+    # Get query parameters
+    limit = request.args.get('limit', 50, type=int)
+    offset = request.args.get('offset', 0, type=int)
+    unread_only = request.args.get('unread_only', 'false').lower() == 'true'
+    
+    # Build query
+    query = Notification.query.filter_by(user_id=current_user_id)
+    
+    if unread_only:
+        query = query.filter_by(is_read=False)
+    
+    # Get total count
+    total_count = query.count()
+    unread_count = Notification.query.filter_by(user_id=current_user_id, is_read=False).count()
+    
+    # Get notifications with pagination
+    notifications = query.order_by(Notification.created_at.desc()).offset(offset).limit(limit).all()
+    
+    notification_list = []
+    for notification in notifications:
+        notification_list.append(notification.to_dict())
+    
+    return jsonify({
+        'notifications': notification_list,
+        'total_count': total_count,
+        'unread_count': unread_count,
+        'has_more': (offset + limit) < total_count
+    })
+
+@api.route('/notifications/<int:notification_id>/read', methods=['POST'])
+@token_required
+def mark_notification_read(current_user_id, notification_id):
+    """Mark a specific notification as read."""
+    notification = Notification.query.filter_by(
+        id=notification_id, 
+        user_id=current_user_id
+    ).first()
+    
+    if not notification:
+        return jsonify({'error': 'Notification not found'}), 404
+    
+    notification.mark_as_read()
+    
+    return jsonify({
+        'message': 'Notification marked as read',
+        'notification': notification.to_dict()
+    })
+
+@api.route('/notifications/mark-all-read', methods=['POST'])
+@token_required
+def mark_all_notifications_read(current_user_id):
+    """Mark all notifications as read for the user."""
+    marked_count = Notification.mark_all_as_read_for_user(current_user_id)
+    
+    return jsonify({
+        'message': f'Marked {marked_count} notifications as read',
+        'marked_count': marked_count
+    })
+
+@api.route('/notifications/unread-count', methods=['GET'])
+@token_required
+def get_unread_count(current_user_id):
+    """Get unread notification count for the user."""
+    unread_count = Notification.query.filter_by(
+        user_id=current_user_id, 
+        is_read=False
+    ).count()
+    
+    return jsonify({
+        'unread_count': unread_count
     })
