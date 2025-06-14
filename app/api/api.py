@@ -278,45 +278,71 @@ def start_survey(current_user_id, survey_id):
 @token_required
 def complete_survey(current_user_id, survey_id):
     """Mark survey as completed."""
-    data = request.get_json()
+    from flask import current_app
     
-    # For completion, we can accept either limesurvey_response_id or just mark as complete
-    # This allows for flexibility in how the frontend handles survey completion
-    limesurvey_response_id = data.get('limesurvey_response_id') if data else None
+    current_app.logger.info(f"DEBUG: Starting complete_survey for user_id={current_user_id}, survey_id={survey_id}")
     
-    survey = Survey.query.get_or_404(survey_id)
-    
-    # Check if already completed
-    existing_completion = SurveyCompletion.query.filter_by(
-        user_id=current_user_id,
-        survey_id=survey_id
-    ).first()
-    
-    if existing_completion:
-        return jsonify({'error': 'Survey already completed'}), 400
-    
-    # Create completion record
-    completion = SurveyCompletion(
-        user_id=current_user_id,
-        survey_id=survey_id,
-        limesurvey_response_id=limesurvey_response_id,
-        points_awarded=survey.points_value
-    )
-    db.session.add(completion)
-    db.session.flush()
-    
-    # Award points
-    Point.award_points_for_survey(
-        user_id=current_user_id,
-        survey_completion_id=completion.id,
-        survey_id=survey_id,
-        points_amount=survey.points_value
-    )
-    
-    return jsonify({
-        'message': 'Survey completed successfully',
-        'points_awarded': survey.points_value
-    })
+    try:
+        data = request.get_json()
+        current_app.logger.info(f"DEBUG: Request data: {data}")
+        
+        # For completion, we can accept either limesurvey_response_id or just mark as complete
+        # This allows for flexibility in how the frontend handles survey completion
+        limesurvey_response_id = data.get('limesurvey_response_id') if data else None
+        current_app.logger.info(f"DEBUG: limesurvey_response_id: {limesurvey_response_id}")
+        
+        current_app.logger.info(f"DEBUG: Querying survey with id={survey_id}")
+        survey = Survey.query.get_or_404(survey_id)
+        current_app.logger.info(f"DEBUG: Found survey: {survey.title}, points_value: {survey.points_value}")
+        
+        # Check if already completed
+        current_app.logger.info(f"DEBUG: Checking for existing completion")
+        existing_completion = SurveyCompletion.query.filter_by(
+            user_id=current_user_id,
+            survey_id=survey_id
+        ).first()
+        
+        if existing_completion:
+            current_app.logger.info(f"DEBUG: Survey already completed, returning error")
+            return jsonify({'error': 'Survey already completed'}), 400
+        
+        current_app.logger.info(f"DEBUG: No existing completion found, creating new completion record")
+        
+        # Create completion record
+        completion = SurveyCompletion(
+            user_id=current_user_id,
+            survey_id=survey_id,
+            limesurvey_response_id=limesurvey_response_id,
+            points_awarded=survey.points_value
+        )
+        current_app.logger.info(f"DEBUG: Created completion object")
+        
+        db.session.add(completion)
+        current_app.logger.info(f"DEBUG: Added completion to session")
+        
+        db.session.flush()
+        current_app.logger.info(f"DEBUG: Flushed session, completion.id: {completion.id}")
+        
+        # Award points
+        current_app.logger.info(f"DEBUG: About to award points")
+        Point.award_points_for_survey(
+            user_id=current_user_id,
+            survey_completion_id=completion.id,
+            survey_id=survey_id,
+            points_amount=survey.points_value
+        )
+        current_app.logger.info(f"DEBUG: Points awarded successfully")
+        
+        current_app.logger.info(f"DEBUG: Returning success response")
+        return jsonify({
+            'message': 'Survey completed successfully',
+            'points_awarded': survey.points_value
+        })
+        
+    except Exception as e:
+        current_app.logger.error(f"DEBUG: Exception in complete_survey: {type(e).__name__}: {str(e)}")
+        current_app.logger.error(f"DEBUG: Exception traceback:", exc_info=True)
+        return jsonify({'error': 'Server Error', 'message': 'An unexpected error occurred.'}), 500
 
 # Rewards endpoints
 @api.route('/rewards', methods=['GET'])
