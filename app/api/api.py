@@ -283,7 +283,11 @@ def complete_survey(current_user_id, survey_id):
     current_app.logger.info(f"DEBUG: Starting complete_survey for user_id={current_user_id}, survey_id={survey_id}")
     
     try:
-        data = request.get_json()
+        # Handle cases where no JSON data is sent or Content-Type is missing
+        try:
+            data = request.get_json(force=True) or {}
+        except:
+            data = {}
         current_app.logger.info(f"DEBUG: Request data: {data}")
         
         # For completion, we can accept either limesurvey_response_id or just mark as complete
