@@ -107,10 +107,11 @@ def configure_security_headers(app):
             g._protecting_session = False
             return
         
-        # Skip protection for auth endpoints to prevent redirect loops
+        # Skip protection for auth endpoints and API routes to prevent redirect loops
         if (request.endpoint in ['auth.login', 'auth.register'] or 
             request.path.startswith('/auth/login') or 
-            request.path.startswith('/auth/register')):
+            request.path.startswith('/auth/register') or
+            request.path.startswith('/api/')):
             g._protecting_session = False
             return
         
