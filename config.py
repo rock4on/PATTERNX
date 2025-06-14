@@ -31,6 +31,9 @@ class Config:
     POINTS_PER_SURVEY = 10  # Default points per survey completion
     MIN_POINTS_FOR_REWARD = 100  # Minimum points needed for a reward
 
+    # Firebase settings
+    FIREBASE_SERVICE_ACCOUNT_KEY_PATH = os.environ.get('FIREBASE_SERVICE_ACCOUNT_KEY_PATH')
+
 
 
 class DevelopmentConfig(Config):

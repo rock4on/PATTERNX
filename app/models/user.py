@@ -19,6 +19,11 @@ class User(UserMixin, db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     
+    # OAuth fields
+    firebase_uid = db.Column(db.String(128), unique=True, nullable=True)
+    oauth_provider = db.Column(db.String(50), nullable=True)  # 'google', 'facebook', 'apple'
+    is_verified = db.Column(db.Boolean, default=False)
+    
     # Relationships
     points = db.relationship('Point', backref='user', lazy='dynamic')
     completions = db.relationship('SurveyCompletion', backref='user', lazy='dynamic')

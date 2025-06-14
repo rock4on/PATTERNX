@@ -17,3 +17,5 @@ wtforms
 gunicorn
 pytest
 PyJWT>=2.4.0
+firebase-admin>=6.0.0
+

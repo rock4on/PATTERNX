@@ -11,6 +11,7 @@ from app.extensions import db
 from app.api.auth import token_required, generate_token
 from app.services.points_service import PointsService
 from app.services.survey_service import SurveyService
+from app.services.firebase_service import FirebaseService
 
 api = Blueprint('api', __name__, url_prefix='/api')
 
@@ -100,6 +101,108 @@ def register():
     except Exception as e:
         db.session.rollback()
         return jsonify({'error': 'Registration failed'}), 500
+
+@api.route('/auth/firebase', methods=['POST'])
+def firebase_auth():
+    """Authenticate user with Firebase ID token."""
+    try:
+        data = request.get_json()
+        
+        if not data or not data.get('id_token'):
+            return jsonify({'error': 'ID token is required'}), 400
+        
+        id_token = data.get('id_token')
+        provider = data.get('provider', 'unknown')  # 'google', 'facebook', 'apple'
+        
+        # Check if Firebase is available
+        if not FirebaseService.is_available():
+            return jsonify({'error': 'Firebase authentication is not configured'}), 503
+        
+        # Verify the ID token with Firebase
+        try:
+            decoded_token = FirebaseService.verify_id_token(id_token)
+        except Exception as e:
+            return jsonify({'error': f'Token verification failed: {str(e)}'}), 401
+        
+        firebase_uid = decoded_token['uid']
+        email = decoded_token.get('email')
+        name = decoded_token.get('name', '')
+        
+        if not email:
+            return jsonify({'error': 'Email not provided by OAuth provider'}), 400
+        
+        # Check if user exists by email or firebase_uid
+        user = User.query.filter(
+            (User.email == email) | (User.firebase_uid == firebase_uid)
+        ).first()
+        
+        if not user:
+            # Create new user
+            name_parts = name.split(' ', 1) if name else ['', '']
+            first_name = name_parts[0] if len(name_parts) > 0 else ''
+            last_name = name_parts[1] if len(name_parts) > 1 else ''
+            
+            # Generate a unique username from email
+            base_username = email.split('@')[0]
+            username = base_username
+            counter = 1
+            while User.query.filter_by(username=username).first():
+                username = f"{base_username}{counter}"
+                counter += 1
+            
+            user = User(
+                email=email,
+                username=username,
+                first_name=first_name,
+                last_name=last_name,
+                password_hash='',  # OAuth users don't need password
+                firebase_uid=firebase_uid,
+                oauth_provider=provider,
+                is_verified=True  # OAuth users are pre-verified
+            )
+            
+            db.session.add(user)
+            db.session.commit()
+            
+            # Create welcome notification for new OAuth user
+            try:
+                Notification.create_welcome_notification(user.id)
+            except Exception as e:
+                # Log error but don't fail the authentication
+                print(f"Failed to create welcome notification: {e}")
+        else:
+            # Update existing user's Firebase UID and OAuth provider if not set
+            if not user.firebase_uid:
+                user.firebase_uid = firebase_uid
+                user.oauth_provider = provider
+                user.is_verified = True
+                db.session.commit()
+            elif user.firebase_uid != firebase_uid:
+                # This shouldn't happen normally, but handle edge case
+                return jsonify({'error': 'Account linking conflict'}), 409
+        
+        if not user.is_active:
+            return jsonify({'error': 'Account is deactivated'}), 401
+        
+        # Generate JWT token for the app
+        token = generate_token(user.id)
+        
+        return jsonify({
+            'token': token,
+            'user': {
+                'id': user.id,
+                'email': user.email,
+                'username': user.username,
+                'first_name': user.first_name,
+                'last_name': user.last_name,
+                'total_points': user.total_points,
+                'available_points': user.available_points
+            }
+        })
+        
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': f'Authentication failed: {str(e)}'}), 500
 
 # User endpoints
 @api.route('/user/profile', methods=['GET'])

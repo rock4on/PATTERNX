@@ -40,6 +40,10 @@ def create_app(config_name=None):
     # Initialize extensions
     register_extensions(app)
 
+    # Initialize Firebase
+    from .services.firebase_service import FirebaseService
+    FirebaseService.initialize_app(app)
+
     # Register blueprints
     register_blueprints(app)
 
